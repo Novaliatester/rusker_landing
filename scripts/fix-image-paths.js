@@ -13,11 +13,17 @@ function fixImagePaths(filePath) {
   // Replace image paths in href attributes (preload links)
   content = content.replace(/href="\/images\//g, `href="${basePath}/images/`);
   
-  // Replace image paths in url() in inline styles
-  content = content.replace(/url\((\/images\/[^)]+)\)/g, `url(${basePath}$1)`);
+  // Replace image paths in url() in inline styles (multiple patterns)
+  content = content.replace(/url\(['"]?(\/images\/[^)]+)\)/g, `url(${basePath}$1)`);
+  content = content.replace(/url\(['"]?(\/images\/[^)]+)['"]?\)/g, `url(${basePath}$1)`);
   
-  // Replace image paths in style attributes
+  // Replace image paths in style attributes (backgroundImage)
   content = content.replace(/backgroundImage:\s*['"]url\((\/images\/[^)]+)\)['"]/g, `backgroundImage: 'url(${basePath}$1)'`);
+  
+  // Replace image paths in style="background-image:url(...)" attributes
+  content = content.replace(/style="[^"]*background-image:\s*url\((\/images\/[^)]+)\)[^"]*"/g, (match, path) => {
+    return match.replace(`url(${path})`, `url(${basePath}${path})`);
+  });
   
   // Fix CSS and JS paths: /_next/ -> /rusker_landing/_next/
   content = content.replace(/href="\/_next\//g, `href="${basePath}/_next/`);
