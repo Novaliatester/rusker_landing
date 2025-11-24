@@ -213,7 +213,7 @@ export default function FormContainer() {
       </div>
 
       {/* Form Content */}
-      <div className="relative max-w-5xl mx-auto px-6 py-4 min-h-[calc(100vh-140px)] md:min-h-[calc(100vh-100px)] flex flex-col">
+      <div className="relative max-w-5xl mx-auto px-4 md:px-6 py-4 min-h-[calc(100vh-140px)] md:min-h-[calc(100vh-100px)] flex flex-col">
         {error && (
           <motion.div
             initial={{ opacity: 0, y: -10 }}
@@ -320,8 +320,8 @@ export default function FormContainer() {
         {/* Fixed button area at bottom */}
         {currentStep > 1 && (
           <div className="sticky bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-t border-gray-200/50 py-3 md:py-4 mt-auto z-10">
-            <div className="max-w-5xl mx-auto px-6">
-              <div className="flex justify-between max-w-md mx-auto">
+            <div className="max-w-5xl mx-auto px-4 md:px-6">
+              <div className="flex justify-between gap-3 max-w-md mx-auto">
                 <Button
                   onClick={prevStep}
                   variant="outline"

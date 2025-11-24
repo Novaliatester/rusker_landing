@@ -67,9 +67,9 @@ export default function Step5BudgetContact({
 
         {/* Contact Form */}
         <motion.div variants={fadeInUp} initial="hidden" animate="visible">
-          <h3 className="text-lg font-bold mb-4 text-text-dark">Vos coordonnées</h3>
+          <h3 className="text-base md:text-lg font-bold mb-3 md:mb-4 text-text-dark">Vos coordonnées</h3>
           <motion.div 
-            className="bg-white rounded-3xl p-6 shadow-lg border-2 border-gray-200 space-y-4"
+            className="bg-white rounded-2xl md:rounded-3xl p-4 md:p-6 shadow-lg border-2 border-gray-200 space-y-3 md:space-y-4"
             whileHover={{ scale: 1.01 }}
             transition={{ type: 'spring', stiffness: 300 }}
           >

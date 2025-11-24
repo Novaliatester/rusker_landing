@@ -160,7 +160,7 @@ export default function WhyBarcelona() {
   }, [isInView])
 
   return (
-    <section id="why-barcelona" ref={ref} className="relative overflow-hidden py-20 md:py-32 bg-white">
+    <section id="why-barcelona" ref={ref} className="relative overflow-hidden py-16 md:py-20 lg:py-32 bg-white">
       {/* Base white background */}
       <div
         className="absolute inset-0"
@@ -174,7 +174,7 @@ export default function WhyBarcelona() {
         <AnimatedBackground blobCount={2} baseOpacity={0.3} />
       </div>
 
-      <div className="relative mx-auto max-w-7xl px-6">
+      <div className="relative mx-auto max-w-7xl px-4 md:px-6">
         {/* Header Section - Enhanced */}
         <motion.div
           initial="hidden"
@@ -191,7 +191,7 @@ export default function WhyBarcelona() {
           
           <motion.h2
             variants={fadeInUp}
-            className="mb-6 text-4xl font-bold text-text-dark md:text-5xl lg:text-6xl leading-tight"
+            className="mb-6 text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-text-dark leading-tight px-2"
           >
             La capitale européenne des expériences mêlant{' '}
             <motion.span
@@ -223,7 +223,7 @@ export default function WhyBarcelona() {
           <motion.p
             variants={fadeInUp}
             transition={{ delay: 0.2 }}
-            className="mx-auto max-w-3xl text-xl text-gray-600 leading-relaxed"
+            className="mx-auto max-w-3xl text-base md:text-lg lg:text-xl text-gray-600 leading-relaxed px-2"
           >
             Chaque immersion est pensée comme une exploration à 360° : rencontres stratégiques,
             lieux iconiques, hubs d&apos;innovation et écosystème francophone engagé.
@@ -236,7 +236,7 @@ export default function WhyBarcelona() {
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
           variants={staggerContainer}
-          className="grid grid-cols-1 gap-8 md:grid-cols-2"
+          className="grid grid-cols-1 gap-6 md:gap-8 md:grid-cols-2"
         >
           {features.map((feature, index) => {
             const isSelected = selectedCard === index
@@ -255,7 +255,7 @@ export default function WhyBarcelona() {
                     setSelectedCard(null)
                   }
                 }}
-                className="group relative cursor-pointer h-full min-h-[320px]"
+                className="group relative cursor-pointer h-full min-h-[300px] md:min-h-[320px]"
                 style={{ perspective: '1000px' }}
               >
                 <motion.div
@@ -268,7 +268,7 @@ export default function WhyBarcelona() {
                 >
                   {/* Front of card */}
                   <div
-                    className="relative h-full min-h-[320px] rounded-2xl shadow-soft border border-white/40 overflow-hidden transition-all duration-300 group-hover:ring-2 group-hover:ring-rusker-blue group-hover:ring-offset-0 flex flex-col"
+                    className="relative h-full min-h-[300px] md:min-h-[320px] rounded-2xl shadow-soft border border-white/40 overflow-hidden transition-all duration-300 group-hover:ring-2 group-hover:ring-rusker-blue group-hover:ring-offset-0 flex flex-col"
                     style={{ 
                       backfaceVisibility: 'hidden', 
                       WebkitBackfaceVisibility: 'hidden',
@@ -276,29 +276,30 @@ export default function WhyBarcelona() {
                       backgroundSize: 'cover',
                       backgroundPosition: 'center',
                       pointerEvents: isSelected ? 'none' : 'auto',
+                      transform: 'translateZ(0)',
                     }}
                   >
-                    {/* White filter overlay for glassy effect */}
-                    <div className="absolute inset-0 bg-white/70 backdrop-blur-sm rounded-2xl" />
-                    <div className="absolute inset-0 bg-gradient-to-br from-white/30 to-white/10 rounded-2xl pointer-events-none" />
+                    {/* White filter overlay for glassy effect - more opaque on mobile */}
+                    <div className="absolute inset-0 bg-white/85 md:bg-white/70 backdrop-blur-sm md:backdrop-blur-sm rounded-2xl" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-white/40 md:from-white/30 to-white/15 md:to-white/10 rounded-2xl pointer-events-none" />
                     
                     {/* Content */}
-                    <div className="relative z-10 p-8 flex-1 flex flex-col justify-between">
+                    <div className="relative z-10 p-5 md:p-8 flex-1 flex flex-col justify-between">
                       <div>
-                        <h3 className="mb-4 text-2xl font-bold leading-tight text-text-dark tracking-tight">
+                        <h3 className="mb-3 md:mb-4 text-xl md:text-2xl font-bold leading-tight text-text-dark tracking-tight">
                           {feature.title}
                         </h3>
-                        <p className="mb-6 text-base leading-relaxed text-gray-700 font-medium">
+                        <p className="mb-4 md:mb-6 text-sm md:text-base leading-relaxed text-gray-700 font-medium">
                           {feature.description}
                         </p>
 
                         {/* Stats badges */}
                         {feature.stats && (
-                          <div className="mb-6 flex flex-wrap gap-2.5">
+                          <div className="mb-4 md:mb-6 flex flex-wrap gap-2">
                             {feature.stats.map((stat, statIndex) => (
                               <span
                                 key={statIndex}
-                                className="rounded-full bg-rusker-blue/10 px-4 py-2 text-sm font-semibold text-rusker-blue border border-rusker-blue/20 backdrop-blur-sm"
+                                className="rounded-full bg-rusker-blue/10 px-3 py-1.5 md:px-4 md:py-2 text-xs md:text-sm font-semibold text-rusker-blue border border-rusker-blue/20 backdrop-blur-sm"
                               >
                                 {stat}
                               </span>
@@ -308,8 +309,9 @@ export default function WhyBarcelona() {
                       </div>
 
                       {/* Click hint */}
-                      <div className="flex items-center gap-2.5 text-sm text-rusker-blue/70 font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300 mt-auto pt-4 border-t border-white/20">
-                        <span>Cliquez pour en savoir plus</span>
+                      <div className="flex items-center gap-2.5 text-xs md:text-sm text-rusker-blue/70 font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300 mt-auto pt-3 md:pt-4 border-t border-white/20">
+                        <span className="hidden sm:inline">Cliquez pour en savoir plus</span>
+                        <span className="sm:hidden">En savoir plus</span>
                         <motion.span
                           animate={{ x: [0, 4, 0] }}
                           transition={{ repeat: Infinity, duration: 1.5 }}
@@ -323,17 +325,17 @@ export default function WhyBarcelona() {
 
                   {/* Back of card */}
                   <div
-                    className="absolute inset-0 h-full min-h-[320px] max-h-[600px] rounded-2xl bg-white/50 backdrop-blur-xl shadow-soft border border-white/40 transition-all duration-300 flex flex-col overflow-hidden before:absolute before:inset-0 before:rounded-2xl before:bg-gradient-to-br before:from-white/20 before:to-transparent before:pointer-events-none"
+                    className="absolute inset-0 h-full min-h-[300px] md:min-h-[320px] max-h-[550px] md:max-h-[600px] rounded-2xl bg-white/95 md:bg-white/50 backdrop-blur-sm md:backdrop-blur-xl shadow-soft border border-white/40 transition-all duration-300 flex flex-col overflow-hidden before:absolute before:inset-0 before:rounded-2xl before:bg-gradient-to-br before:from-white/30 md:before:from-white/20 before:to-transparent before:pointer-events-none"
                     style={{
                       backfaceVisibility: 'hidden',
                       WebkitBackfaceVisibility: 'hidden',
-                      transform: 'rotateY(180deg)',
+                      transform: 'rotateY(180deg) translateZ(0)',
                       pointerEvents: isSelected ? 'auto' : 'none',
                     }}
                   >
                     <div 
-                      className="flex flex-col overflow-y-auto h-full"
-                      style={{ scrollbarWidth: 'thin', scrollbarColor: '#277396 transparent' }}
+                      className="flex flex-col overflow-y-auto h-full overscroll-contain"
+                      style={{ scrollbarWidth: 'thin', scrollbarColor: '#277396 transparent', WebkitOverflowScrolling: 'touch' }}
                     onWheel={(e) => {
                       // Prevent page scroll when scrolling inside the card
                       if (e.currentTarget.scrollHeight > e.currentTarget.clientHeight) {
@@ -349,6 +351,19 @@ export default function WhyBarcelona() {
                         e.stopPropagation()
                       }
                     }}
+                    onTouchMove={(e) => {
+                      // Prevent page scroll when scrolling inside the card on mobile
+                      const target = e.currentTarget
+                      if (target.scrollHeight > target.clientHeight) {
+                        const { scrollTop, scrollHeight, clientHeight } = target
+                        const isAtTop = scrollTop === 0
+                        const isAtBottom = scrollTop + clientHeight >= scrollHeight - 1
+                        
+                        if (!isAtTop && !isAtBottom) {
+                          e.stopPropagation()
+                        }
+                      }
+                    }}
                   >
                       {/* Close button */}
                       <button
@@ -356,7 +371,7 @@ export default function WhyBarcelona() {
                           e.stopPropagation()
                           setSelectedCard(null)
                         }}
-                        className="absolute right-4 top-4 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-white/80 backdrop-blur-sm text-gray-600 shadow-sm transition-colors hover:bg-white/90 hover:text-gray-900"
+                        className="absolute right-3 top-3 md:right-4 md:top-4 z-10 flex h-9 w-9 md:h-8 md:w-8 items-center justify-center rounded-full bg-white/80 backdrop-blur-sm text-gray-600 shadow-sm transition-colors hover:bg-white/90 hover:text-gray-900"
                       >
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                           <line x1="18" y1="6" x2="6" y2="18" />
@@ -365,15 +380,15 @@ export default function WhyBarcelona() {
                       </button>
 
                       {/* Header */}
-                      <div className="p-6 pb-4 border-b border-white/30">
-                        <h3 className="text-xl font-bold text-text-dark">
+                      <div className="p-4 md:p-6 pb-3 md:pb-4 border-b border-white/30">
+                        <h3 className="text-lg md:text-xl font-bold text-text-dark">
                           {feature.title}
                         </h3>
                       </div>
 
                       {/* Content */}
-                      <div className="flex-1 p-6">
-                        <p className="mb-4 text-sm text-gray-600 leading-relaxed">
+                      <div className="flex-1 p-4 md:p-6">
+                        <p className="mb-3 md:mb-4 text-xs md:text-sm text-gray-600 leading-relaxed">
                           {feature.description}
                         </p>
 

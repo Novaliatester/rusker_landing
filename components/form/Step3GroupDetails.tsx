@@ -67,17 +67,17 @@ export default function Step3GroupDetails({
       variants={fadeInUp}
       className="w-full"
     >
-      <h2 className="text-3xl md:text-4xl font-bold mb-2 text-center text-text-dark">
+      <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-2 text-center text-text-dark">
         Détails du groupe
       </h2>
-      <p className="text-base text-gray-600 text-center mb-4">
+      <p className="text-sm md:text-base text-gray-600 text-center mb-4">
         Renseignez les informations sur votre groupe
       </p>
 
-      <div className="space-y-4 max-w-2xl mx-auto">
+      <div className="space-y-3 md:space-y-4 max-w-2xl mx-auto">
         {/* Group Size */}
-        <Block className="p-4">
-          <label className="block text-base font-semibold mb-3 text-text-dark">
+        <Block className="p-4 md:p-5">
+          <label className="block text-sm md:text-base font-semibold mb-3 text-text-dark">
             Taille du groupe : {formData.groupSize === 200 ? '200+' : formData.groupSize} personnes
           </label>
           <input
@@ -95,7 +95,7 @@ export default function Step3GroupDetails({
         </Block>
 
         {/* Start Date */}
-        <Block className="p-4">
+        <Block className="p-4 md:p-5">
           <Input
             label="Date de début"
             type="date"
@@ -107,7 +107,7 @@ export default function Step3GroupDetails({
         </Block>
 
         {/* Duration */}
-        <Block className="p-4">
+        <Block className="p-4 md:p-5">
           <label className="block text-base font-semibold mb-3 text-text-dark">
             Durée du séjour
           </label>

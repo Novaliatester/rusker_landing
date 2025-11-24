@@ -57,8 +57,8 @@ export default function SocialProof() {
   }, [isInView])
 
   return (
-    <section ref={ref} className="bg-white py-20 md:py-32">
-      <div className="mx-auto max-w-7xl px-6">
+    <section ref={ref} className="bg-white py-16 md:py-20 lg:py-32">
+      <div className="mx-auto max-w-7xl px-4 md:px-6">
         <motion.div
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
@@ -68,7 +68,7 @@ export default function SocialProof() {
           <span className="mb-4 inline-flex items-center gap-2 rounded-full bg-bg-light px-4 py-1 text-sm font-semibold uppercase tracking-widest text-rusker-blue">
             Ils nous font confiance
           </span>
-          <h2 className="text-4xl font-bold text-text-dark md:text-5xl">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-text-dark leading-tight px-2">
             Des écoles, startups et grandes entreprises françaises et européennes
           </h2>
         </motion.div>
@@ -77,15 +77,15 @@ export default function SocialProof() {
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
           variants={fadeInUp}
-          className="mt-16 grid grid-cols-1 gap-10 text-center md:grid-cols-2 lg:grid-cols-4"
+          className="mt-12 md:mt-16 grid grid-cols-1 gap-6 md:gap-8 lg:gap-10 text-center md:grid-cols-2 lg:grid-cols-4"
         >
           {metrics.map((metric, index) => (
             <div key={index}>
-              <div className="text-5xl font-bold text-rusker-blue md:text-6xl">
+              <div className="text-4xl md:text-5xl lg:text-6xl font-bold text-rusker-blue">
                 {animatedValues[index]}
                 {metric.suffix}
               </div>
-              <p className="mt-3 text-lg text-gray-600">{metric.label}</p>
+              <p className="mt-2 md:mt-3 text-sm md:text-base lg:text-lg text-gray-600 px-2">{metric.label}</p>
             </div>
           ))}
         </motion.div>
@@ -95,9 +95,9 @@ export default function SocialProof() {
           animate={isInView ? 'visible' : 'hidden'}
           variants={fadeInUp}
           transition={{ delay: 0.2 }}
-          className="mt-16 overflow-hidden rounded-3xl border border-gray-100 bg-bg-light/60 py-8"
+          className="mt-12 md:mt-16 overflow-hidden rounded-2xl md:rounded-3xl border border-gray-100 bg-bg-light/60 py-6 md:py-8"
         >
-          <div className="flex items-center gap-2 px-8 text-sm uppercase tracking-[0.3em] text-gray-500">
+          <div className="flex items-center gap-2 px-4 md:px-8 text-xs md:text-sm uppercase tracking-[0.2em] md:tracking-[0.3em] text-gray-500">
             Partners
             <div className="h-px flex-1 bg-gradient-to-r from-gray-200 to-transparent" />
           </div>
@@ -106,13 +106,13 @@ export default function SocialProof() {
               {[...logos, ...logos].map((logo, index) => (
                 <div
                   key={`${logo.name}-${index}`}
-                  className="inline-flex items-center justify-center h-20 px-6 group"
+                  className="inline-flex items-center justify-center h-16 md:h-20 px-4 md:px-6 group"
                 >
                   <div className="relative w-full h-full flex items-center justify-center">
                     <img
                       src={logo.image}
                       alt={logo.alt}
-                      className="h-full w-auto max-w-[180px] object-contain opacity-60 hover:opacity-100 transition-all duration-300 group-hover:scale-110 rounded-lg"
+                      className="h-full w-auto max-w-[140px] md:max-w-[180px] object-contain opacity-60 hover:opacity-100 transition-all duration-300 group-hover:scale-110 rounded-lg"
                       onError={(e) => {
                         // Fallback to text if image doesn't exist
                         const target = e.target as HTMLImageElement

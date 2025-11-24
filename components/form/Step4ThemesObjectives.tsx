@@ -47,17 +47,17 @@ export default function Step4ThemesObjectives({
       variants={fadeInUp}
       className="w-full"
     >
-      <h2 className="text-3xl md:text-4xl font-bold mb-2 text-center text-text-dark">
+      <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-2 text-center text-text-dark">
         Thèmes & Objectifs
       </h2>
-      <p className="text-base text-gray-600 text-center mb-4">
+      <p className="text-sm md:text-base text-gray-600 text-center mb-4">
         Sélectionnez jusqu&apos;à 2 thèmes et 2 objectifs
       </p>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-5xl mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 max-w-5xl mx-auto">
         {/* Themes */}
-        <div className="bg-white rounded-card p-4 shadow-soft">
-          <h3 className="text-lg font-bold mb-3 text-text-dark">Thèmes</h3>
+        <div className="bg-white rounded-card p-4 md:p-5 shadow-soft">
+          <h3 className="text-base md:text-lg font-bold mb-3 text-text-dark">Thèmes</h3>
           <div className="flex flex-wrap gap-2">
             {THEMES.map((theme) => {
               const isSelected = formData.themes.includes(theme.id)
@@ -68,7 +68,7 @@ export default function Step4ThemesObjectives({
                   onClick={() => toggleTheme(theme.id)}
                   disabled={isDisabled}
                   className={`
-                    px-3 py-1.5 text-sm rounded-lg font-medium transition-all duration-200
+                    px-2.5 md:px-3 py-1.5 text-xs md:text-sm rounded-lg font-medium transition-all duration-200
                     ${
                       isSelected
                         ? 'bg-rusker-blue text-white shadow-soft'
@@ -86,8 +86,8 @@ export default function Step4ThemesObjectives({
         </div>
 
         {/* Objectives */}
-        <div className="bg-white rounded-card p-4 shadow-soft">
-          <h3 className="text-lg font-bold mb-3 text-text-dark">Objectifs</h3>
+        <div className="bg-white rounded-card p-4 md:p-5 shadow-soft">
+          <h3 className="text-base md:text-lg font-bold mb-3 text-text-dark">Objectifs</h3>
           <div className="flex flex-wrap gap-2">
             {OBJECTIVES.map((objective) => {
               const isSelected = formData.objectives.includes(objective.id)
@@ -98,7 +98,7 @@ export default function Step4ThemesObjectives({
                   onClick={() => toggleObjective(objective.id)}
                   disabled={isDisabled}
                   className={`
-                    px-3 py-1.5 text-sm rounded-lg font-medium transition-all duration-200
+                    px-2.5 md:px-3 py-1.5 text-xs md:text-sm rounded-lg font-medium transition-all duration-200
                     ${
                       isSelected
                         ? 'bg-rusker-blue text-white shadow-soft'

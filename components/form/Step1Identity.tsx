@@ -30,10 +30,10 @@ export default function Step1Identity({ formData, updateFormData, onNext }: Step
       variants={fadeInUp}
       className="w-full"
     >
-      <h2 className="text-3xl md:text-4xl font-bold mb-2 text-center text-text-dark">
+      <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-2 text-center text-text-dark">
         Qui êtes-vous ?
       </h2>
-      <p className="text-base text-gray-600 text-center mb-6">
+      <p className="text-sm md:text-base text-gray-600 text-center mb-4 md:mb-6">
         Sélectionnez votre profil pour commencer
       </p>
 
@@ -41,14 +41,14 @@ export default function Step1Identity({ formData, updateFormData, onNext }: Step
         variants={staggerContainer}
         initial="hidden"
         animate="visible"
-        className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto"
+        className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 max-w-4xl mx-auto"
       >
         <motion.div variants={fadeInUp} className="h-full">
           <Block
             selected={formData.identity === 'school'}
             onClick={() => handleSelect('school')}
-            icon={<div className="w-[88px] h-[88px]"><SchoolIcon /></div>}
-            className="text-center p-10 min-h-[280px] flex flex-col justify-center"
+            icon={<div className="w-16 h-16 md:w-20 md:h-20 lg:w-[88px] lg:h-[88px]"><SchoolIcon /></div>}
+            className="text-center p-6 md:p-8 lg:p-10 min-h-[240px] md:min-h-[280px] flex flex-col justify-center"
             role="button"
             aria-label="Sélectionner École/Université"
             tabIndex={0}
@@ -59,8 +59,8 @@ export default function Step1Identity({ formData, updateFormData, onNext }: Step
               }
             }}
           >
-            <h3 className={`text-3xl font-bold mb-5 ${formData.identity === 'school' ? 'text-white' : 'text-text-dark'}`}>École/Université</h3>
-            <p className={`text-lg opacity-90 ${formData.identity === 'school' ? 'text-white' : 'text-gray-600'}`}>
+            <h3 className={`text-xl md:text-2xl lg:text-3xl font-bold mb-3 md:mb-5 ${formData.identity === 'school' ? 'text-white' : 'text-text-dark'}`}>École/Université</h3>
+            <p className={`text-sm md:text-base lg:text-lg opacity-90 ${formData.identity === 'school' ? 'text-white' : 'text-gray-600'}`}>
               Vous organisez un séjour pour vos étudiants
             </p>
           </Block>
@@ -70,8 +70,8 @@ export default function Step1Identity({ formData, updateFormData, onNext }: Step
           <Block
             selected={formData.identity === 'company'}
             onClick={() => handleSelect('company')}
-            icon={<div className="w-[88px] h-[88px]"><CompanyIcon /></div>}
-            className="text-center p-10 min-h-[280px] flex flex-col justify-center"
+            icon={<div className="w-16 h-16 md:w-20 md:h-20 lg:w-[88px] lg:h-[88px]"><CompanyIcon /></div>}
+            className="text-center p-6 md:p-8 lg:p-10 min-h-[240px] md:min-h-[280px] flex flex-col justify-center"
             role="button"
             aria-label="Sélectionner Entreprise/Organisation"
             tabIndex={0}
@@ -82,8 +82,8 @@ export default function Step1Identity({ formData, updateFormData, onNext }: Step
               }
             }}
           >
-            <h3 className={`text-3xl font-bold mb-5 ${formData.identity === 'company' ? 'text-white' : 'text-text-dark'}`}>Entreprise/Organisation</h3>
-            <p className={`text-lg opacity-90 ${formData.identity === 'company' ? 'text-white' : 'text-gray-600'}`}>
+            <h3 className={`text-xl md:text-2xl lg:text-3xl font-bold mb-3 md:mb-5 ${formData.identity === 'company' ? 'text-white' : 'text-text-dark'}`}>Entreprise/Organisation</h3>
+            <p className={`text-sm md:text-base lg:text-lg opacity-90 ${formData.identity === 'company' ? 'text-white' : 'text-gray-600'}`}>
               Vous planifiez un événement ou un séminaire
             </p>
           </Block>

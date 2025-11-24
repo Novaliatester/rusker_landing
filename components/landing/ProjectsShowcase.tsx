@@ -104,11 +104,11 @@ export default function ProjectsShowcase() {
   const [selectedCard, setSelectedCard] = useState<number | null>(null)
 
   return (
-    <section id="projects" ref={ref} className="relative overflow-hidden bg-bg-light py-20 md:py-32">
+    <section id="projects" ref={ref} className="relative overflow-hidden bg-bg-light py-16 md:py-20 lg:py-32">
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(39,115,150,0.08),_transparent_60%)]" />
       </div>
-      <div className="relative mx-auto max-w-7xl px-6">
+      <div className="relative mx-auto max-w-7xl px-4 md:px-6">
         <motion.div
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
@@ -118,7 +118,7 @@ export default function ProjectsShowcase() {
           <span className="mb-4 inline-flex items-center gap-2 rounded-full bg-white px-4 py-1 text-sm font-semibold uppercase tracking-widest text-rusker-blue">
             Projets & Événements
           </span>
-          <h2 className="text-4xl font-bold text-text-dark md:text-5xl">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-text-dark leading-tight">
             Des expériences qui{' '}
             <motion.span
               className="relative inline-block text-rusker-blue"
@@ -136,7 +136,7 @@ export default function ProjectsShowcase() {
               inspirent
             </motion.span>
           </h2>
-          <p className="mt-4 text-lg text-gray-600">
+          <p className="mt-4 text-base md:text-lg text-gray-600">
             Découvrez comment nous avons orchestré des learning expeditions et événements à fort impact.
           </p>
         </motion.div>
@@ -145,12 +145,12 @@ export default function ProjectsShowcase() {
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
           variants={staggerContainer}
-          className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3"
+          className="grid grid-cols-1 gap-6 md:gap-8 md:grid-cols-2 lg:grid-cols-3"
         >
           {projects.map((project, index) => {
             const isSelected = selectedCard === index
             return (
-              <div key={index} className="p-4">
+              <div key={index} className="p-2 md:p-4">
             <motion.div
               variants={fadeInUp}
                   whileHover={!isSelected ? { y: -8 } : {}}
@@ -175,7 +175,7 @@ export default function ProjectsShowcase() {
                 >
                   {/* Front of card */}
                   <div
-                    className="relative h-full min-h-[440px] rounded-card bg-white shadow-soft overflow-hidden transition-all duration-300 group-hover:border-2 group-hover:border-rusker-blue flex flex-col"
+                    className="relative h-full min-h-[360px] md:min-h-[440px] rounded-card bg-white shadow-soft overflow-hidden transition-all duration-300 group-hover:border-2 group-hover:border-rusker-blue flex flex-col"
                     style={{
                       backfaceVisibility: 'hidden',
                       WebkitBackfaceVisibility: 'hidden',
@@ -183,7 +183,7 @@ export default function ProjectsShowcase() {
                     }}
             >
               {/* Image */}
-              <div className="relative h-48 overflow-hidden">
+              <div className="relative h-40 md:h-48 overflow-hidden">
                 <div
                         className="h-full w-full bg-cover bg-center"
                   style={{
@@ -199,10 +199,10 @@ export default function ProjectsShowcase() {
               </div>
 
               {/* Content */}
-                    <div className="relative p-6 flex-1 flex flex-col">
-                      <div className="flex-1 mb-8">
-                        <h3 className="text-xl font-bold text-text-dark whitespace-nowrap">{project.title}</h3>
-                <p className="mt-3 text-gray-600">{project.description}</p>
+                    <div className="relative p-4 md:p-6 flex-1 flex flex-col">
+                      <div className="flex-1 mb-4 md:mb-8">
+                        <h3 className="text-lg md:text-xl font-bold text-text-dark">{project.title}</h3>
+                <p className="mt-2 md:mt-3 text-sm md:text-base text-gray-600">{project.description}</p>
                       </div>
                 
                       {/* Stats - aligned at bottom */}
@@ -241,7 +241,7 @@ export default function ProjectsShowcase() {
 
                   {/* Back of card */}
                   <div
-                    className="absolute inset-0 h-full min-h-[440px] max-h-[660px] rounded-card bg-white/95 backdrop-blur-sm shadow-soft border-2 border-rusker-blue transition-all duration-300 flex flex-col overflow-hidden"
+                    className="absolute inset-0 h-full min-h-[360px] md:min-h-[440px] max-h-[600px] md:max-h-[660px] rounded-card bg-white/95 backdrop-blur-sm shadow-soft border-2 border-rusker-blue transition-all duration-300 flex flex-col overflow-hidden"
                     style={{
                       backfaceVisibility: 'hidden',
                       WebkitBackfaceVisibility: 'hidden',
@@ -250,8 +250,8 @@ export default function ProjectsShowcase() {
                     }}
                   >
                     <div 
-                      className="flex flex-col overflow-y-auto h-full"
-                      style={{ scrollbarWidth: 'thin', scrollbarColor: '#277396 transparent' }}
+                      className="flex flex-col overflow-y-auto h-full overscroll-contain"
+                      style={{ scrollbarWidth: 'thin', scrollbarColor: '#277396 transparent', WebkitOverflowScrolling: 'touch' }}
                       onWheel={(e) => {
                         if (e.currentTarget.scrollHeight > e.currentTarget.clientHeight) {
                           const { scrollTop, scrollHeight, clientHeight } = e.currentTarget
@@ -264,6 +264,19 @@ export default function ProjectsShowcase() {
                           e.stopPropagation()
                         }
                       }}
+                      onTouchMove={(e) => {
+                        // Prevent page scroll when scrolling inside the card on mobile
+                        const target = e.currentTarget
+                        if (target.scrollHeight > target.clientHeight) {
+                          const { scrollTop, scrollHeight, clientHeight } = target
+                          const isAtTop = scrollTop === 0
+                          const isAtBottom = scrollTop + clientHeight >= scrollHeight - 1
+                          
+                          if (!isAtTop && !isAtBottom) {
+                            e.stopPropagation()
+                          }
+                        }
+                      }}
                     >
                       {/* Close button */}
                       <button
@@ -271,7 +284,7 @@ export default function ProjectsShowcase() {
                           e.stopPropagation()
                           setSelectedCard(null)
                         }}
-                        className="absolute right-4 top-4 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-white/90 backdrop-blur-sm text-gray-600 shadow-sm transition-colors hover:bg-white hover:text-gray-900 border border-gray-200"
+                        className="absolute right-3 top-3 md:right-4 md:top-4 z-10 flex h-9 w-9 md:h-8 md:w-8 items-center justify-center rounded-full bg-white/90 backdrop-blur-sm text-gray-600 shadow-sm transition-colors hover:bg-white hover:text-gray-900 border border-gray-200"
                       >
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                           <line x1="18" y1="6" x2="6" y2="18" />
@@ -280,17 +293,17 @@ export default function ProjectsShowcase() {
                       </button>
 
                       {/* Header */}
-                      <div className="p-6 pb-4 border-b border-gray-200">
-                        <h3 className="text-xl font-bold text-text-dark whitespace-nowrap">
+                      <div className="p-4 md:p-6 pb-3 md:pb-4 border-b border-gray-200">
+                        <h3 className="text-lg md:text-xl font-bold text-text-dark">
                           {project.title}
                         </h3>
-                        <p className="mt-2 text-sm text-gray-600">
+                        <p className="mt-2 text-xs md:text-sm text-gray-600">
                           {project.description}
                         </p>
                       </div>
 
                       {/* Content */}
-                      <div className="flex-1 p-6">
+                      <div className="flex-1 p-4 md:p-6">
                         {/* Highlights */}
                         <div className="mb-6">
                           <h4 className="mb-3 text-sm font-bold text-text-dark">Points clés</h4>

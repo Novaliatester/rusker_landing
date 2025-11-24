@@ -183,7 +183,7 @@ export default function ServicesPreview() {
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   return (
-    <section ref={ref} className="relative bg-gradient-to-br from-rusker-blue via-[#1f5a75] via-rusker-blue to-[#1a4d66] py-28 md:py-36 overflow-hidden">
+    <section ref={ref} className="relative bg-gradient-to-br from-rusker-blue via-[#1f5a75] via-rusker-blue to-[#1a4d66] py-16 md:py-28 lg:py-36 overflow-hidden">
       {/* Animated background patterns */}
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,_rgba(255,255,255,0.08),_transparent_50%)]" />
@@ -198,12 +198,12 @@ export default function ServicesPreview() {
         backgroundSize: '50px 50px'
       }} />
       
-      <div className="relative mx-auto max-w-7xl px-6">
+      <div className="relative mx-auto max-w-7xl px-4 md:px-6">
         <motion.div
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
           variants={fadeInUp}
-          className="mb-24 text-center"
+          className="mb-12 md:mb-16 lg:mb-24 text-center"
         >
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
@@ -217,7 +217,7 @@ export default function ServicesPreview() {
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ delay: 0.2 }}
-            className="text-4xl font-bold text-white md:text-6xl mb-6 leading-tight"
+            className="text-3xl md:text-4xl lg:text-6xl font-bold text-white mb-4 md:mb-6 leading-tight px-2"
           >
             Trois expertises pour designer votre{' '}
             <motion.span 
@@ -296,7 +296,7 @@ export default function ServicesPreview() {
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ delay: 0.3 }}
-            className="mt-6 text-lg md:text-xl text-white/85 max-w-3xl mx-auto leading-relaxed"
+            className="mt-4 md:mt-6 text-base md:text-lg lg:text-xl text-white/85 max-w-3xl mx-auto leading-relaxed px-2"
           >
             Travel, Events, Network : combinez les formats pour créer une learning expedition unique.
           </motion.p>
@@ -306,7 +306,7 @@ export default function ServicesPreview() {
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
           variants={staggerContainer}
-          className="grid grid-cols-1 gap-10 md:grid-cols-3"
+          className="grid grid-cols-1 gap-6 md:gap-10 md:grid-cols-3"
         >
           {services.map((service, index) => {
             const IconComponent = service.icon
@@ -323,7 +323,7 @@ export default function ServicesPreview() {
                   setSelectedUniverse(service)
                   setIsModalOpen(true)
                 }}
-                className="group relative overflow-hidden rounded-[24px] border border-white/30 bg-white/95 backdrop-blur-sm p-10 shadow-[0_8px_32px_rgba(0,0,0,0.12)] hover:shadow-[0_20px_60px_rgba(0,0,0,0.2)] hover:border-white/40 transition-all duration-500 cursor-pointer"
+                className="group relative overflow-hidden rounded-[20px] md:rounded-[24px] border border-white/30 bg-white/95 backdrop-blur-sm p-6 md:p-8 lg:p-10 shadow-[0_8px_32px_rgba(0,0,0,0.12)] hover:shadow-[0_20px_60px_rgba(0,0,0,0.2)] hover:border-white/40 transition-all duration-500 cursor-pointer"
               >
                 {/* Animated gradient overlay */}
                 <motion.div 
@@ -362,7 +362,7 @@ export default function ServicesPreview() {
                 <div className="relative flex flex-col gap-7 h-full z-10">
                   {/* Enhanced Icon Container */}
                   <motion.div 
-                    className="flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-rusker-blue/20 via-rusker-blue/15 to-rusker-blue/10 group-hover:from-rusker-blue/30 group-hover:via-rusker-blue/20 group-hover:to-rusker-blue/15 transition-all duration-500 text-rusker-blue relative overflow-hidden"
+                    className="flex items-center justify-center w-16 h-16 md:w-20 md:h-20 rounded-xl md:rounded-2xl bg-gradient-to-br from-rusker-blue/20 via-rusker-blue/15 to-rusker-blue/10 group-hover:from-rusker-blue/30 group-hover:via-rusker-blue/20 group-hover:to-rusker-blue/15 transition-all duration-500 text-rusker-blue relative overflow-hidden"
                     whileHover={{ 
                       scale: 1.1,
                       rotate: [0, -5, 5, -5, 0],
@@ -379,11 +379,11 @@ export default function ServicesPreview() {
                     </div>
                   </motion.div>
                   
-                  <div className="flex-1 space-y-4">
-                    <h3 className="text-2xl font-bold text-text-dark mb-2 group-hover:text-rusker-blue transition-colors duration-500 leading-tight">
+                  <div className="flex-1 space-y-3 md:space-y-4">
+                    <h3 className="text-xl md:text-2xl font-bold text-text-dark mb-2 group-hover:text-rusker-blue transition-colors duration-500 leading-tight">
                       {service.title}
                     </h3>
-                    <p className="text-base text-gray-700 leading-relaxed group-hover:text-gray-800 transition-colors duration-300">
+                    <p className="text-sm md:text-base text-gray-700 leading-relaxed group-hover:text-gray-800 transition-colors duration-300">
                       {service.description}
                     </p>
                   </div>

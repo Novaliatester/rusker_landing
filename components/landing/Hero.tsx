@@ -166,7 +166,7 @@ export default function Hero() {
   return (
     <section
       ref={heroRef}
-      className="relative min-h-screen w-full overflow-hidden flex items-center justify-center bg-black pt-20 pb-12"
+      className="relative min-h-screen w-full overflow-hidden flex items-center justify-center bg-black pt-16 md:pt-20 pb-8 md:pb-12"
     >
       {/* Video Background */}
       {useVideo && (
@@ -251,16 +251,16 @@ export default function Hero() {
       {/* Content with proper padding and spacing */}
       <motion.div
         style={{ opacity: contentOpacity }}
-        className="relative z-10 max-w-5xl mx-auto px-6 text-center text-white py-12"
+        className="relative z-10 max-w-5xl mx-auto px-4 md:px-6 text-center text-white py-8 md:py-12"
       >
         <motion.h1
           initial="hidden"
           animate={isLoaded ? 'visible' : 'hidden'}
           variants={heroAnimation}
-          className="text-4xl md:text-6xl font-bold mb-6 leading-tight"
+          className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-bold mb-4 md:mb-6 leading-tight"
         >
-          <span className="block mb-3 text-2xl md:text-4xl">Learning Expeditions, événements et rencontres professionnelles</span>
-          <span className="block mb-8 mt-2 text-xl md:text-3xl">au cœur de</span>
+          <span className="block mb-2 md:mb-3 text-lg sm:text-xl md:text-2xl lg:text-4xl">Learning Expeditions, événements et rencontres professionnelles</span>
+          <span className="block mb-6 md:mb-8 mt-2 text-base sm:text-lg md:text-xl lg:text-3xl">au cœur de</span>
           <span className="relative inline-block h-[1.4em] md:h-[1.3em] mt-2">
             <AnimatePresence mode="wait">
               <motion.span
@@ -288,7 +288,7 @@ export default function Hero() {
           animate={isLoaded ? 'visible' : 'hidden'}
           variants={heroAnimation}
           transition={{ delay: 0.2 }}
-          className="text-lg md:text-xl mb-8 text-white/95 max-w-3xl mx-auto leading-relaxed font-medium"
+          className="text-base sm:text-lg md:text-xl mb-6 md:mb-8 text-white/95 max-w-3xl mx-auto leading-relaxed font-medium px-2"
         >
           On crée pour vous des expériences sur-mesure entre culture, innovation, et rencontres professionnelles.
         </motion.p>
@@ -304,7 +304,7 @@ export default function Hero() {
             onClick={scrollToForm}
             variant="primary"
             size="large"
-            className="bg-rusker-blue hover:bg-[#1f5a75] shadow-2xl text-lg px-10 py-5"
+            className="bg-rusker-blue hover:bg-[#1f5a75] shadow-2xl text-base md:text-lg px-6 md:px-10 py-4 md:py-5"
           >
             Construire mon projet
           </Button>
@@ -315,7 +315,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={isLoaded ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ delay: 0.6 }}
-          className="mt-12 grid grid-cols-1 gap-4 md:grid-cols-3 max-w-3xl mx-auto"
+          className="mt-8 md:mt-12 grid grid-cols-1 gap-3 md:gap-4 md:grid-cols-3 max-w-3xl mx-auto"
         >
           {heroStats.map((stat, index) => (
             <motion.div
@@ -323,10 +323,10 @@ export default function Hero() {
               initial={{ opacity: 0, y: 20 }}
               animate={isLoaded ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{ delay: 0.7 + index * 0.1 }}
-              className="rounded-lg border border-white/30 bg-white/15 backdrop-blur-md px-6 py-4 shadow-lg"
+              className="rounded-lg border border-white/30 bg-white/15 backdrop-blur-md px-4 md:px-6 py-3 md:py-4 shadow-lg"
             >
-              <div className="text-3xl font-bold text-white mb-1">{stat.value}</div>
-              <p className="text-xs uppercase tracking-wide text-white/90">{stat.label}</p>
+              <div className="text-2xl md:text-3xl font-bold text-white mb-1">{stat.value}</div>
+              <p className="text-[10px] md:text-xs uppercase tracking-wide text-white/90">{stat.label}</p>
             </motion.div>
           ))}
         </motion.div>
@@ -337,7 +337,7 @@ export default function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1 }}
-        className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10"
+        className="absolute bottom-4 md:bottom-8 left-1/2 transform -translate-x-1/2 z-10"
       >
         <motion.div
           animate={{ y: [0, 8, 0] }}
