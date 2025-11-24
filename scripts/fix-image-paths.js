@@ -19,6 +19,10 @@ function fixImagePaths(filePath) {
   // Replace image paths in style attributes
   content = content.replace(/backgroundImage:\s*['"]url\((\/images\/[^)]+)\)['"]/g, `backgroundImage: 'url(${basePath}$1)'`);
   
+  // Fix CSS and JS paths: /_next/ -> /rusker_landing/_next/
+  content = content.replace(/href="\/_next\//g, `href="${basePath}/_next/`);
+  content = content.replace(/src="\/_next\//g, `src="${basePath}/_next/`);
+  
   fs.writeFileSync(filePath, content, 'utf8');
 }
 
