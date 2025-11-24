@@ -38,7 +38,7 @@ export default function Step2ExperienceType({
       className="w-full"
     >
       <h2 className="text-3xl md:text-4xl font-bold mb-2 text-center text-text-dark">
-        Type d'expérience
+        Type d&apos;expérience
       </h2>
       <p className="text-base text-gray-600 text-center mb-6">
         Sélectionnez jusqu&apos;à 2 types d&apos;expérience

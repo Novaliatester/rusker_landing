@@ -247,7 +247,7 @@ export default function UniverseModal({ isOpen, onClose, universe }: UniverseMod
                       className="space-y-8"
                     >
                       <h3 className="text-3xl md:text-4xl font-bold text-text-dark">
-                        Un accompagnement complet, de la conception à l'expérience sur place.
+                        Un accompagnement complet, de la conception à l&apos;expérience sur place.
                       </h3>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {universe.content.process.map((step, index) => (
@@ -402,7 +402,7 @@ export default function UniverseModal({ isOpen, onClose, universe }: UniverseMod
                         Prêt à créer votre expérience sur mesure ?
                       </h4>
                       <p className="text-white/80 text-base md:text-lg">
-                        Discutons de votre projet et créons ensemble quelque chose d'exceptionnel.
+                        Discutons de votre projet et créons ensemble quelque chose d&apos;exceptionnel.
                       </p>
                     </motion.div>
                     

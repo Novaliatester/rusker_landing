@@ -322,7 +322,7 @@ export default function ProjectsShowcase() {
                                 className="rounded-lg border border-gray-200 bg-gray-50/50 p-4"
                               >
                                 <h5 className="mb-2 text-sm font-bold text-rusker-blue">
-                                  {item.name || item.title}
+                                  {'name' in item ? item.name : item.title}
                                 </h5>
                                 <p className="text-xs text-gray-600 leading-relaxed">
                                   {item.description}
