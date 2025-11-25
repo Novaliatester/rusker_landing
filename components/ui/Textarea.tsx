@@ -17,11 +17,11 @@ export default function Textarea({ label, error, className = '', ...props }: Tex
       )}
       <textarea
         className={`
-          w-full rounded-2xl bg-white px-4 py-2.5 text-sm
+          w-full rounded-2xl bg-white px-4 py-3 text-sm sm:text-base
           border-2 border-gray-200 focus:border-rusker-blue focus:outline-none focus:ring-2 focus:ring-rusker-blue/20
           text-text-dark placeholder-gray-400
           transition-all duration-200 resize-none hover:border-gray-300
-          min-h-[100px]
+          min-h-[100px] touch-manipulation
           ${error ? 'border-red-500' : ''}
           ${className}
         `}

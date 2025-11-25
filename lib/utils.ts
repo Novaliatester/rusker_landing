@@ -3,10 +3,11 @@
  * This ensures images work correctly when deployed to GitHub Pages
  */
 export function getAssetPath(path: string): string {
-  const basePath = '/rusker_landing'
+  // Only use basePath in production (GitHub Pages)
+  const basePath = process.env.NODE_ENV === 'production' ? '/rusker_landing' : ''
   // Remove leading slash if present to avoid double slashes
   const cleanPath = path.startsWith('/') ? path.slice(1) : path
-  return `${basePath}/${cleanPath}`
+  return basePath ? `${basePath}/${cleanPath}` : `/${cleanPath}`
 }
 
 /**

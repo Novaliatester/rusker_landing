@@ -137,12 +137,12 @@ export default function FormContainer() {
 
       {/* Progress Bar - Enhanced */}
       <div className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-200/50 shadow-sm">
-        <div className="max-w-5xl mx-auto px-6 py-3">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-2 sm:py-3">
           <motion.div
             initial="hidden"
             animate="visible"
             variants={staggerContainer}
-            className="space-y-2"
+            className="space-y-1.5 sm:space-y-2"
           >
             {/* Encouragement message */}
             <motion.div
@@ -170,7 +170,7 @@ export default function FormContainer() {
               className="text-center"
             >
               <motion.p 
-                className="text-base md:text-lg font-semibold text-rusker-blue"
+                className="text-sm sm:text-base md:text-lg font-semibold text-rusker-blue"
                 animate={timeOnStep > 15 ? {
                   color: ["#1a6b8a", "#2a8bb0", "#1a6b8a"],
                 } : {}}
@@ -319,13 +319,14 @@ export default function FormContainer() {
 
         {/* Fixed button area at bottom */}
         {currentStep > 1 && (
-          <div className="sticky bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-t border-gray-200/50 py-3 md:py-4 mt-auto z-10">
-            <div className="max-w-5xl mx-auto px-4 md:px-6">
-              <div className="flex justify-between gap-3 max-w-md mx-auto">
+          <div className="sticky bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-t border-gray-200/50 py-2 sm:py-3 md:py-4 mt-auto z-10">
+            <div className="max-w-5xl mx-auto px-3 sm:px-4 md:px-6">
+              <div className="flex justify-between gap-2 sm:gap-3 max-w-md mx-auto">
                 <Button
                   onClick={prevStep}
                   variant="outline"
                   size="large"
+                  className="min-h-[44px] text-sm sm:text-base"
                 >
                   Retour
                 </Button>
@@ -348,7 +349,7 @@ export default function FormContainer() {
                       isSubmitting
                     ))
                   }
-                  className="bg-rusker-blue hover:bg-[#1f5a75]"
+                  className="bg-rusker-blue hover:bg-[#1f5a75] min-h-[44px] text-sm sm:text-base"
                 >
                   {currentStep === 5 ? (isSubmitting ? 'Envoi...' : 'Envoyer') : 'Continuer'}
                 </Button>

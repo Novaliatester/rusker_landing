@@ -77,15 +77,15 @@ export default function SocialProof() {
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
           variants={fadeInUp}
-          className="mt-12 md:mt-16 grid grid-cols-1 gap-6 md:gap-8 lg:gap-10 text-center md:grid-cols-2 lg:grid-cols-4"
+          className="mt-12 md:mt-16 grid grid-cols-1 gap-6 md:gap-8 lg:gap-10 text-center sm:grid-cols-2 lg:grid-cols-4"
         >
           {metrics.map((metric, index) => (
-            <div key={index}>
-              <div className="text-4xl md:text-5xl lg:text-6xl font-bold text-rusker-blue">
+            <div key={index} className="px-2">
+              <div className="text-5xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-rusker-blue">
                 {animatedValues[index]}
                 {metric.suffix}
               </div>
-              <p className="mt-2 md:mt-3 text-sm md:text-base lg:text-lg text-gray-600 px-2">{metric.label}</p>
+              <p className="mt-2 md:mt-3 text-sm md:text-base lg:text-lg text-gray-600 leading-snug">{metric.label}</p>
             </div>
           ))}
         </motion.div>

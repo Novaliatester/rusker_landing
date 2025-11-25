@@ -30,10 +30,10 @@ export default function Step1Identity({ formData, updateFormData, onNext }: Step
       variants={fadeInUp}
       className="w-full"
     >
-      <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-2 text-center text-text-dark">
+      <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-2 text-center text-text-dark px-2">
         Qui êtes-vous ?
       </h2>
-      <p className="text-sm md:text-base text-gray-600 text-center mb-4 md:mb-6">
+      <p className="text-sm md:text-base text-gray-600 text-center mb-4 md:mb-6 px-2">
         Sélectionnez votre profil pour commencer
       </p>
 

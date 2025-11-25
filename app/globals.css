@@ -18,6 +18,16 @@
 
 html {
   scroll-behavior: smooth;
+  /* Fix for mobile viewport height issues */
+  -webkit-text-size-adjust: 100%;
+}
+
+/* Mobile viewport height fix */
+@supports (-webkit-touch-callout: none) {
+  /* CSS specific to iOS devices */ 
+  .min-h-screen {
+    min-height: -webkit-fill-available;
+  }
 }
 
 body {
@@ -181,6 +191,47 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
   .overscroll-contain {
     -webkit-overflow-scrolling: touch;
     overscroll-behavior: contain;
+  }
+  
+  /* Better tap highlighting */
+  * {
+    -webkit-tap-highlight-color: rgba(39, 115, 150, 0.1);
+  }
+  
+  /* Ensure video doesn't cause horizontal scroll */
+  video {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  /* Improve modal padding on mobile */
+  .prose {
+    font-size: 14px;
+  }
+  
+  /* Better touch scrolling */
+  * {
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* Extra small devices */
+@media (max-width: 480px) {
+  /* Smaller font sizes for very small screens */
+  h1 {
+    font-size: 2rem;
+    line-height: 1.1;
+  }
+  
+  h2 {
+    font-size: 1.5rem;
+    line-height: 1.2;
+  }
+  
+  /* More compact padding */
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
 }
 

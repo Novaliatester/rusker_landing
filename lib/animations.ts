@@ -81,3 +81,30 @@ export const cardHover = {
   transition: { duration: 0.25 },
 }
 
+export const buttonPulse = {
+  scale: [1, 1.05, 1],
+  boxShadow: [
+    '0 0 0 0 rgba(39, 115, 150, 0.7)',
+    '0 0 0 10px rgba(39, 115, 150, 0)',
+    '0 0 0 0 rgba(39, 115, 150, 0)',
+  ],
+  transition: {
+    duration: 2,
+    repeat: Infinity,
+    ease: 'easeInOut',
+  },
+}
+
+export const buttonGlow = {
+  boxShadow: [
+    '0 0 20px rgba(39, 115, 150, 0.5)',
+    '0 0 40px rgba(39, 115, 150, 0.8)',
+    '0 0 20px rgba(39, 115, 150, 0.5)',
+  ],
+  transition: {
+    duration: 2,
+    repeat: Infinity,
+    ease: 'easeInOut',
+  },
+}
+

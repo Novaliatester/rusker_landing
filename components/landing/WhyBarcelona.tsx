@@ -309,9 +309,9 @@ export default function WhyBarcelona() {
                       </div>
 
                       {/* Click hint */}
-                      <div className="flex items-center gap-2.5 text-xs md:text-sm text-rusker-blue/70 font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300 mt-auto pt-3 md:pt-4 border-t border-white/20">
+                      <div className="flex items-center gap-2.5 text-xs md:text-sm text-rusker-blue/70 font-medium md:opacity-0 opacity-100 group-hover:opacity-100 transition-opacity duration-300 mt-auto pt-3 md:pt-4 border-t border-white/20">
                         <span className="hidden sm:inline">Cliquez pour en savoir plus</span>
-                        <span className="sm:hidden">En savoir plus</span>
+                        <span className="sm:hidden">Toucher pour en savoir plus</span>
                         <motion.span
                           animate={{ x: [0, 4, 0] }}
                           transition={{ repeat: Infinity, duration: 1.5 }}

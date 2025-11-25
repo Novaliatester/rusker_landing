@@ -46,42 +46,41 @@ export const TRANSITIONS = {
   slow: '0.3s ease',
 } as const
 
-import { LearningIcon, SeminarIcon, NetworkingIcon, CustomEventIcon, ConferenceIcon } from '@/components/ui/Icons'
-
+// Experience types data (icons are added separately in components to avoid circular dependencies)
 export const EXPERIENCE_TYPES = [
   {
     id: 'learning-expedition',
     title: 'Learning Expedition',
     description: 'Séjours étudiants immersifs avec visites d\'entreprises et rencontres professionnelles',
-    icon: LearningIcon,
+    iconName: 'LearningIcon',
     recommended: 'schools',
   },
   {
     id: 'corporate-seminar',
     title: 'Séminaire d\'Entreprise',
     description: 'Séminaires sur mesure pour équipes et dirigeants',
-    icon: SeminarIcon,
+    iconName: 'SeminarIcon',
     recommended: 'companies',
   },
   {
     id: 'networking-event',
     title: 'Événement Networking',
     description: 'Rencontres professionnelles et connexions dans l\'écosystème barcelonais',
-    icon: NetworkingIcon,
+    iconName: 'NetworkingIcon',
     recommended: null,
   },
   {
     id: 'custom-event',
     title: 'Événement Sur Mesure',
     description: 'Création d\'événements uniques selon vos objectifs',
-    icon: CustomEventIcon,
+    iconName: 'CustomEventIcon',
     recommended: null,
   },
   {
     id: 'conference',
     title: 'Conférence & Summit',
     description: 'Organisation de conférences et sommets professionnels',
-    icon: ConferenceIcon,
+    iconName: 'ConferenceIcon',
     recommended: null,
   },
 ] as const

@@ -390,11 +390,12 @@ export default function ServicesPreview() {
                   
                   {/* Enhanced CTA */}
                   <motion.div 
-                    className="mt-auto flex items-center gap-2 text-sm font-semibold text-rusker-blue group-hover:gap-3 transition-all duration-500"
+                    className="mt-auto flex items-center gap-2 text-xs sm:text-sm font-semibold text-rusker-blue group-hover:gap-3 transition-all duration-500"
                     whileHover={{ x: 4 }}
                   >
                     <span className="relative">
-                      Explorer
+                      <span className="hidden sm:inline">Explorer</span>
+                      <span className="sm:hidden">En savoir plus</span>
                       <motion.span
                         className="absolute bottom-0 left-0 right-0 h-[2px] bg-rusker-blue origin-left"
                         initial={{ scaleX: 0 }}

@@ -126,9 +126,10 @@ export default function TransitionToForm() {
             onClick={scrollToForm}
             variant="secondary"
             size="large"
-                className="!bg-white !text-[#1a4d66] hover:!bg-yellow-50 shadow-lg hover:shadow-xl transition-all duration-300 font-semibold !border-2 !border-[#1a4d66]/20"
+                className="!bg-white !text-[#1a4d66] hover:!bg-yellow-50 shadow-lg hover:shadow-xl transition-all duration-300 font-semibold !border-2 !border-[#1a4d66]/20 text-base sm:text-lg"
           >
-            Construire votre expérience
+            <span className="hidden sm:inline">Construire votre expérience</span>
+            <span className="sm:hidden">Créer votre projet</span>
           </Button>
             </motion.div>
         </motion.div>

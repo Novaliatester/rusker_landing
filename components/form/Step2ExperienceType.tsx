@@ -5,6 +5,16 @@ import Block from '@/components/ui/Block'
 import { FormData } from '@/lib/formUtils'
 import { EXPERIENCE_TYPES } from '@/lib/constants'
 import { fadeInUp, staggerContainer } from '@/lib/animations'
+import { LearningIcon, SeminarIcon, NetworkingIcon, CustomEventIcon, ConferenceIcon } from '@/components/ui/Icons'
+
+// Map icon names to actual components
+const iconMap = {
+  LearningIcon,
+  SeminarIcon,
+  NetworkingIcon,
+  CustomEventIcon,
+  ConferenceIcon,
+} as const
 
 interface Step2ExperienceTypeProps {
   formData: FormData
@@ -37,10 +47,10 @@ export default function Step2ExperienceType({
       variants={fadeInUp}
       className="w-full"
     >
-      <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-2 text-center text-text-dark">
+      <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-2 text-center text-text-dark px-2">
         Type d&apos;expérience
       </h2>
-      <p className="text-sm md:text-base text-gray-600 text-center mb-4 md:mb-6">
+      <p className="text-sm md:text-base text-gray-600 text-center mb-4 md:mb-6 px-2">
         Sélectionnez jusqu&apos;à 2 types d&apos;expérience
       </p>
 
@@ -51,7 +61,7 @@ export default function Step2ExperienceType({
         className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4"
       >
         {EXPERIENCE_TYPES.map((experience) => {
-          const IconComponent = experience.icon
+          const IconComponent = iconMap[experience.iconName as keyof typeof iconMap]
           const isSelected = formData.experienceTypes.includes(experience.id)
           const isDisabled = !isSelected && formData.experienceTypes.length >= 2
           return (

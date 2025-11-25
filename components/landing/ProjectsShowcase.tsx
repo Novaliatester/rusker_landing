@@ -227,14 +227,17 @@ export default function ProjectsShowcase() {
               </div>
 
                       {/* Arrow hint - bottom right */}
-                      <div className="absolute bottom-6 right-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <motion.span
-                          animate={{ x: [0, 4, 0] }}
-                          transition={{ repeat: Infinity, duration: 1.5 }}
-                          className="text-2xl text-rusker-blue"
-                        >
-                          →
-                        </motion.span>
+                      <div className="absolute bottom-6 right-6 md:opacity-0 opacity-100 group-hover:opacity-100 transition-opacity duration-300">
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs text-rusker-blue font-medium md:hidden">Toucher pour détails</span>
+                          <motion.span
+                            animate={{ x: [0, 4, 0] }}
+                            transition={{ repeat: Infinity, duration: 1.5 }}
+                            className="text-2xl text-rusker-blue"
+                          >
+                            →
+                          </motion.span>
+                        </div>
                       </div>
                     </div>
                   </div>

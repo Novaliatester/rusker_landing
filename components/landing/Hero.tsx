@@ -1,34 +1,14 @@
 'use client'
 
-import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
+import { motion, useScroll, useTransform } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
 import Button from '@/components/ui/Button'
-import { heroAnimation } from '@/lib/animations'
-
-const heroStats = [
-  { label: 'Learning Expeditions', value: '120+' },
-  { label: 'Partenaires à Barcelone', value: '80+' },
-  { label: 'Étudiants accompagnés', value: '2 500+' },
-]
-
-const dynamicPhrases = [
-  "l'écosystème le plus inspirant d'Europe",
-  "l'innovation à portée de main",
-  "Barcelone comme vous ne l'avez jamais vécu",
-  "la créativité et l'entrepreneuriat",
-  "l'avenir de l'apprentissage",
-  "la French Tech Barcelona",
-  "la transformation digitale",
-  "la rencontre entre talents et opportunités",
-  "l'inspiration et la découverte",
-  "un réseau international de leaders",
-]
+// Animations are defined inline for specific layout needs
 
 export default function Hero() {
   const [isLoaded, setIsLoaded] = useState(false)
   const [videoLoaded, setVideoLoaded] = useState(false)
   const [useVideo, setUseVideo] = useState(true)
-  const [currentPhraseIndex, setCurrentPhraseIndex] = useState(0)
   const videoRef = useRef<HTMLVideoElement>(null)
   const heroRef = useRef<HTMLDivElement>(null)
   
@@ -37,321 +17,295 @@ export default function Hero() {
     offset: ['start start', 'end start'],
   })
 
-  const backgroundScale = useTransform(scrollYProgress, [0, 1], [1, 1.15])
-  const overlayOpacity = useTransform(scrollYProgress, [0, 1], [0.5, 0.9])
-  const contentOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0])
+  const backgroundScale = useTransform(scrollYProgress, [0, 1], [1, 1.1])
+  const contentY = useTransform(scrollYProgress, [0, 1], [0, -100])
+  const textParallax = useTransform(scrollYProgress, [0, 1], [0, -50])
 
   useEffect(() => {
     setIsLoaded(true)
   }, [])
 
-  // Separate effect for video loading and playing
   useEffect(() => {
     if (!useVideo) return
     
-    let retryTimeout: ReturnType<typeof setTimeout> | null = null
-    let cleanupFn: (() => void) | null = null
-    const timeouts: ReturnType<typeof setTimeout>[] = []
-    
-    // Use a small delay to ensure video element is in DOM
-    const initVideo = () => {
-      const video = videoRef.current
-      if (!video) {
-        // Retry if video ref is not ready
-        retryTimeout = setTimeout(initVideo, 50)
-        return
-      }
+    const video = videoRef.current
+    if (!video) return
 
-      // Set video properties
-      video.muted = true
-      video.playsInline = true
-      video.loop = true
-      video.preload = 'auto'
+    video.muted = true
+    video.playsInline = true
+    video.loop = true
+    video.preload = 'auto'
 
-      const attemptPlay = async () => {
-        try {
-          if (video.paused) {
-            await video.play()
-            setVideoLoaded(true)
-            console.log('Video is playing successfully')
-          } else {
-            // Video is already playing
-            setVideoLoaded(true)
-          }
-        } catch (error) {
-          console.log('Video play failed:', error)
-          // Don't disable video on first error, might be a timing issue
-          if (video.readyState === 0) {
-            // Video hasn't loaded at all, might be a real error
-            console.log('Video not loaded, will retry')
-          }
+    const attemptPlay = async () => {
+      try {
+        if (video.paused) {
+          await video.play()
+          setVideoLoaded(true)
         }
-      }
-
-      // Try to play immediately if video is already loaded (cached scenario on reload)
-      if (video.readyState >= 3) {
-        attemptPlay()
-      } else {
-        // Only call load() if video hasn't started loading yet
-        if (video.readyState === 0) {
-          video.load()
-        }
-      }
-
-      // Also try on various video events
-      const handleCanPlay = () => {
-        attemptPlay()
-      }
-      const handleCanPlayThrough = () => {
-        attemptPlay()
-      }
-      const handleLoadedData = () => {
-        attemptPlay()
-      }
-      const handleLoadedMetadata = () => {
-        attemptPlay()
-      }
-      const handlePlay = () => {
-        setVideoLoaded(true)
-      }
-
-      video.addEventListener('canplay', handleCanPlay)
-      video.addEventListener('canplaythrough', handleCanPlayThrough)
-      video.addEventListener('loadeddata', handleLoadedData)
-      video.addEventListener('loadedmetadata', handleLoadedMetadata)
-      video.addEventListener('play', handlePlay)
-      
-      // Multiple fallback attempts to handle reload scenarios
-      timeouts.push(
-        setTimeout(() => attemptPlay(), 100),
-        setTimeout(() => attemptPlay(), 300),
-        setTimeout(() => attemptPlay(), 500),
-        setTimeout(() => attemptPlay(), 1000)
-      )
-
-      cleanupFn = () => {
-        timeouts.forEach(clearTimeout)
-        video.removeEventListener('canplay', handleCanPlay)
-        video.removeEventListener('canplaythrough', handleCanPlayThrough)
-        video.removeEventListener('loadeddata', handleLoadedData)
-        video.removeEventListener('loadedmetadata', handleLoadedMetadata)
-        video.removeEventListener('play', handlePlay)
+      } catch (error) {
+        console.log('Video play failed:', error)
       }
     }
 
-    initVideo()
+    const handleCanPlay = () => {
+      attemptPlay()
+    }
     
+    const handleLoadedData = () => {
+      attemptPlay()
+    }
+
+    const handlePlay = () => {
+      setVideoLoaded(true)
+    }
+
+    const handleError = () => {
+      console.log('Video error, falling back to image')
+      setUseVideo(false)
+    }
+
+    video.addEventListener('canplay', handleCanPlay)
+    video.addEventListener('loadeddata', handleLoadedData)
+    video.addEventListener('play', handlePlay)
+    video.addEventListener('error', handleError)
+
+    // Try to play immediately if already loaded
+    if (video.readyState >= 3) {
+      attemptPlay()
+    } else {
+      video.load()
+    }
+
+    // Multiple fallback attempts
+    const timeouts = [
+      setTimeout(() => attemptPlay(), 100),
+      setTimeout(() => attemptPlay(), 500),
+      setTimeout(() => attemptPlay(), 1000)
+    ]
+
     return () => {
-      if (retryTimeout) clearTimeout(retryTimeout)
-      if (cleanupFn) cleanupFn()
+      timeouts.forEach(clearTimeout)
+      video.removeEventListener('canplay', handleCanPlay)
+      video.removeEventListener('loadeddata', handleLoadedData)
+      video.removeEventListener('play', handlePlay)
+      video.removeEventListener('error', handleError)
     }
-  }, [useVideo])
-
-  // Rotate through dynamic phrases
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentPhraseIndex((prev) => (prev + 1) % dynamicPhrases.length)
-    }, 4000) // Change every 4 seconds
-
-    return () => clearInterval(interval)
-  }, [])
+  }, [useVideo, videoLoaded])
 
   const scrollToForm = () => {
     const formSection = document.getElementById('form-section')
-    if (formSection) {
-      formSection.scrollIntoView({ behavior: 'smooth' })
-    }
+    if (formSection) formSection.scrollIntoView({ behavior: 'smooth' })
   }
 
   return (
     <section
       ref={heroRef}
-      className="relative min-h-screen w-full overflow-hidden flex items-center justify-center bg-black pt-16 md:pt-20 pb-8 md:pb-12"
+      className="relative h-screen w-full overflow-hidden bg-black"
     >
-      {/* Video Background */}
-      {useVideo && (
-        <motion.div
-          className="absolute inset-0 z-0"
-          style={{ scale: backgroundScale }}
-        >
-          <video
-            ref={videoRef}
-            autoPlay
-            loop
-            muted
-            playsInline
-            preload="auto"
-            onError={(e) => {
-              console.log('Video error:', e)
-              setUseVideo(false)
-            }}
-            onPlay={() => {
-              setVideoLoaded(true)
-            }}
-            onLoadedMetadata={() => {
-              const video = videoRef.current
-              if (video && video.paused) {
-                video.play().catch((err) => {
-                  console.log('Play error on loadedmetadata:', err)
-                })
-              }
-            }}
-            onCanPlay={() => {
-              const video = videoRef.current
-              if (video && video.paused && !videoLoaded) {
-                video.play()
-                  .then(() => setVideoLoaded(true))
-                  .catch((err) => {
-                    console.log('Play error on canplay:', err)
+      {/* Background Layer */}
+      <div className="absolute inset-0 z-0">
+        {useVideo ? (
+          <motion.div style={{ scale: backgroundScale }} className="relative h-full w-full">
+            <video
+              ref={videoRef}
+              autoPlay
+              loop
+              muted
+              playsInline
+              preload="auto"
+              onError={() => {
+                console.log('Video error, using fallback')
+                setUseVideo(false)
+              }}
+              onPlay={() => {
+                setVideoLoaded(true)
+              }}
+              onLoadedMetadata={() => {
+                const video = videoRef.current
+                if (video && video.paused) {
+                  video.play().catch((err) => {
+                    console.log('Play error on loadedmetadata:', err)
                   })
-              }
-            }}
-            className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ${
-              videoLoaded ? 'opacity-100' : 'opacity-0'
-            }`}
-          >
-            <source src="/images/hero-video.mp4" type="video/mp4" />
-          </video>
-          {/* Fallback image if video doesn't load */}
-          <div
-            className={`absolute inset-0 h-full w-full bg-cover bg-center transition-opacity duration-1000 ${
-              videoLoaded ? 'opacity-0' : 'opacity-100'
-            }`}
-            style={{
-              backgroundImage: 'url(/images/hero-barcelona.jpg)',
-            }}
-          />
-        </motion.div>
-      )}
-
-      {/* Image Background (fallback or primary) */}
-      {!useVideo && (
-        <motion.div
-          className="absolute inset-0 z-0"
-          style={{ scale: backgroundScale }}
-        >
-          <div
-            className="w-full h-full bg-cover bg-center"
-            style={{
-              backgroundImage: 'url(/images/hero-barcelona.jpg)',
-            }}
-          />
-        </motion.div>
-      )}
-
-      {/* Stronger, cleaner overlay for better text readability */}
-      <motion.div
-        className="absolute inset-0 z-[1] bg-black/90"
-        style={{ opacity: overlayOpacity }}
-      />
-      
-      {/* Additional dark layer for extra darkness */}
-      <div className="absolute inset-0 z-[1] bg-black/70" />
-
-      {/* Content with proper padding and spacing */}
-      <motion.div
-        style={{ opacity: contentOpacity }}
-        className="relative z-10 max-w-5xl mx-auto px-4 md:px-6 text-center text-white py-8 md:py-12"
-      >
-        <motion.h1
-          initial="hidden"
-          animate={isLoaded ? 'visible' : 'hidden'}
-          variants={heroAnimation}
-          className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-bold mb-4 md:mb-6 leading-tight"
-        >
-          <span className="block mb-2 md:mb-3 text-lg sm:text-xl md:text-2xl lg:text-4xl">Learning Expeditions, événements et rencontres professionnelles</span>
-          <span className="block mb-6 md:mb-8 mt-2 text-base sm:text-lg md:text-xl lg:text-3xl">au cœur de</span>
-          <span className="relative inline-block h-[1.4em] md:h-[1.3em] mt-2">
-            <AnimatePresence mode="wait">
-              <motion.span
-                key={currentPhraseIndex}
-                initial={{ opacity: 0, y: 30, scale: 0.95 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: -30, scale: 0.95 }}
-                transition={{ duration: 0.6, ease: 'easeInOut' }}
-                className="absolute left-0 right-0 top-0 bottom-0 flex items-center justify-center text-rusker-blue drop-shadow-[0_0_20px_rgba(39,115,150,0.6)]"
-              >
-                {dynamicPhrases[currentPhraseIndex]}
-              </motion.span>
-            </AnimatePresence>
-            {/* Invisible placeholder to maintain width - using the longest phrase */}
-            <span className="invisible inline-block" aria-hidden="true">
-              {dynamicPhrases.reduce((longest, phrase) => 
-                phrase.length > longest.length ? phrase : longest, ''
-              )}
-            </span>
-          </span>
-        </motion.h1>
-        
-        <motion.p
-          initial="hidden"
-          animate={isLoaded ? 'visible' : 'hidden'}
-          variants={heroAnimation}
-          transition={{ delay: 0.2 }}
-          className="text-base sm:text-lg md:text-xl mb-6 md:mb-8 text-white/95 max-w-3xl mx-auto leading-relaxed font-medium px-2"
-        >
-          On crée pour vous des expériences sur-mesure entre culture, innovation, et rencontres professionnelles.
-        </motion.p>
-
-        <motion.div
-          initial="hidden"
-          animate={isLoaded ? 'visible' : 'hidden'}
-          variants={heroAnimation}
-          transition={{ delay: 0.4 }}
-          className="mb-10"
-        >
-          <Button
-            onClick={scrollToForm}
-            variant="primary"
-            size="large"
-            className="bg-rusker-blue hover:bg-[#1f5a75] shadow-2xl text-base md:text-lg px-6 md:px-10 py-4 md:py-5"
-          >
-            Construire mon projet
-          </Button>
-        </motion.div>
-
-        {/* Simplified Stats - moved up and cleaner */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={isLoaded ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ delay: 0.6 }}
-          className="mt-8 md:mt-12 grid grid-cols-1 gap-3 md:gap-4 md:grid-cols-3 max-w-3xl mx-auto"
-        >
-          {heroStats.map((stat, index) => (
-            <motion.div
-              key={stat.label}
-              initial={{ opacity: 0, y: 20 }}
-              animate={isLoaded ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-              transition={{ delay: 0.7 + index * 0.1 }}
-              className="rounded-lg border border-white/30 bg-white/15 backdrop-blur-md px-4 md:px-6 py-3 md:py-4 shadow-lg"
+                }
+              }}
+              onCanPlay={() => {
+                const video = videoRef.current
+                if (video && video.paused && !videoLoaded) {
+                  video.play()
+                    .then(() => setVideoLoaded(true))
+                    .catch((err) => {
+                      console.log('Play error on canplay:', err)
+                    })
+                }
+              }}
+              className={`h-full w-full object-cover transition-opacity duration-1000 ${
+                videoLoaded ? 'opacity-100' : 'opacity-0'
+              }`}
             >
-              <div className="text-2xl md:text-3xl font-bold text-white mb-1">{stat.value}</div>
-              <p className="text-[10px] md:text-xs uppercase tracking-wide text-white/90">{stat.label}</p>
-            </motion.div>
-          ))}
-        </motion.div>
+              <source src="/images/hero-video.mp4" type="video/mp4" />
+            </video>
+            {/* Fallback while loading */}
+            <div
+              className={`absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ${
+                videoLoaded ? 'opacity-0' : 'opacity-100'
+              }`}
+              style={{ backgroundImage: 'url(/images/hero-barcelona.jpg)' }}
+            />
+          </motion.div>
+        ) : (
+          <motion.div
+            style={{ 
+              scale: backgroundScale,
+              backgroundImage: 'url(/images/hero-barcelona.jpg)'
+            }}
+            className="h-full w-full bg-cover bg-center"
+          />
+        )}
+      </div>
+
+      {/* Modern Gradient Overlays */}
+      {/* Left gradient for text readability */}
+      <div className="absolute inset-0 z-[1] bg-gradient-to-r from-black/80 via-black/40 to-transparent md:from-black/90 md:via-black/20" />
+      {/* Bottom gradient for depth */}
+      <div className="absolute inset-0 z-[1] bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+      
+      {/* Decorative "Grain" Overlay for texture (optional, subtle modern touch) */}
+      <div className="absolute inset-0 z-[1] opacity-[0.03] pointer-events-none mix-blend-overlay" 
+           style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }} 
+      />
+
+      {/* Rusker Logo - Top Left */}
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={isLoaded ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.8, delay: 0.1 }}
+        className="absolute top-6 left-6 md:top-10 md:left-10 lg:top-12 lg:left-16 z-20"
+      >
+        <img 
+          src="/images/logos/Logo 2025 (long) (white).png" 
+          alt="Rusker Travel" 
+          className="h-8 md:h-10 lg:h-12 w-auto opacity-90"
+        />
       </motion.div>
 
-      {/* Simplified Scroll Indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1 }}
-        className="absolute bottom-4 md:bottom-8 left-1/2 transform -translate-x-1/2 z-10"
-      >
-        <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 1.5, repeat: Infinity }}
-          className="flex flex-col items-center gap-2"
+      {/* Main Content - Editorial Layout (Bottom Left) */}
+      <div className="absolute inset-0 z-10 flex flex-col justify-end pb-24 md:pb-32 px-6 md:px-16 lg:px-24">
+        <motion.div 
+          style={{ y: textParallax }}
+          className="max-w-4xl"
         >
-          <div className="w-6 h-10 border-2 border-white/50 rounded-full flex items-start justify-center p-2">
-            <motion.div
-              animate={{ y: [0, 10, 0] }}
-              transition={{ duration: 1.5, repeat: Infinity }}
-              className="w-1 h-3 bg-white rounded-full"
-            />
+          {/* Badge / Top Label */}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={isLoaded ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="mb-5 flex items-center gap-3"
+          >
+            <span className="h-[1px] w-8 bg-rusker-blue/70"></span>
+            <span className="text-xs md:text-sm font-medium tracking-[0.25em] text-rusker-blue/90 uppercase">
+              Travel • Events • Network
+            </span>
+          </motion.div>
+
+          {/* Main Headline - Compact & Bold */}
+          <div className="overflow-hidden mb-5">
+            <motion.h1
+              initial={{ y: '100%' }}
+              animate={isLoaded ? { y: 0 } : {}}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-bold text-white leading-[0.95] tracking-tighter"
+            >
+              BARCELONE
+              <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-white/80 to-white/60">
+                AUTREMENT
+              </span>
+            </motion.h1>
           </div>
+
+          {/* Compact Descriptive Line */}
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={isLoaded ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8, delay: 0.5 }}
+            className="text-base sm:text-lg md:text-xl text-white/85 max-w-2xl mb-8 leading-snug"
+          >
+            Immersions sur mesure pour entreprises et grandes écoles dans l'écosystème le plus inspirant d'Europe
+          </motion.p>
+
+          {/* Thematic Pills - Compact */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={isLoaded ? { opacity: 1 } : {}}
+            transition={{ duration: 0.8, delay: 0.6 }}
+            className="mb-8"
+          >
+            <div className="flex flex-wrap gap-2">
+              {['Learning Expeditions', 'Séminaires', 'Événements'].map((tag) => (
+                <span
+                  key={tag}
+                  className="text-xs uppercase tracking-wider text-white/60 border border-white/20 rounded-full px-3 py-1.5 backdrop-blur-sm bg-white/5"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* CTA Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={isLoaded ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8, delay: 0.7 }}
+            className="flex flex-col sm:flex-row gap-6 items-start sm:items-center"
+          >
+            <Button
+              onClick={scrollToForm}
+              variant="custom"
+              className="group relative px-6 sm:px-8 py-3 sm:py-4 bg-white text-black hover:bg-rusker-blue hover:text-white transition-all duration-500 text-base sm:text-lg font-bold tracking-wide overflow-hidden rounded-full w-full sm:w-auto"
+            >
+              <span className="relative z-10 flex items-center justify-center gap-2">
+                <span className="hidden sm:inline">CONSTRUIRE MON IMMERSION</span>
+                <span className="sm:hidden">CRÉER MON PROJET</span>
+                <svg className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </span>
+            </Button>
+            
+            <div className="flex items-center gap-3 md:gap-4 text-white/60 text-xs sm:text-sm">
+              <div className="flex -space-x-2">
+                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white border-2 border-black/20 backdrop-blur-sm overflow-hidden flex items-center justify-center p-0.5">
+                  <img src="/images/logos/essec-new.png" alt="ESSEC" className="w-full h-full object-contain" />
+                </div>
+                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white border-2 border-black/20 backdrop-blur-sm overflow-hidden flex items-center justify-center p-0.5">
+                  <img src="/images/logos/norrsken.png" alt="Norrsken" className="w-full h-full object-contain" />
+                </div>
+                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white border-2 border-black/20 backdrop-blur-sm overflow-hidden flex items-center justify-center p-0.5">
+                  <img src="/images/logos/papernest-new.png" alt="Papernest" className="w-full h-full object-contain" />
+                </div>
+              </div>
+              <p className="leading-tight">Partenaire de +80 écoles & entreprises</p>
+            </div>
+          </motion.div>
         </motion.div>
+      </div>
+
+      {/* Side Elements / Indicators */}
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={isLoaded ? { opacity: 1 } : {}}
+        transition={{ delay: 1.2, duration: 1 }}
+        className="absolute bottom-12 right-12 z-20 hidden md:flex flex-col items-end gap-2 text-white/50 text-xs font-mono tracking-widest uppercase"
+      >
+        <span>Découvrir</span>
+        <div className="h-16 w-[1px] bg-white/30 mt-2 relative overflow-hidden">
+          <motion.div 
+            animate={{ y: ['-100%', '100%'] }}
+            transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
+            className="absolute inset-0 w-full bg-white"
+          />
+        </div>
       </motion.div>
     </section>
   )
