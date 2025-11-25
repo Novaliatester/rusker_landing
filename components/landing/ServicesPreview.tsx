@@ -6,13 +6,14 @@ import { useRef, useState } from 'react'
 import { fadeInUp, staggerContainer, cardHover } from '@/lib/animations'
 import UniverseModal from '@/components/ui/UniverseModal'
 import { TravelIcon, EventsIcon, NetworkIconAlt } from '@/components/ui/Icons'
+import { getAssetPath } from '@/lib/utils'
 
 const services = [
   {
     icon: TravelIcon,
     title: 'RUSKER TRAVEL',
     description: 'Séjours étudiants et séminaires d\'entreprise à Barcelone. Entre culture, apprentissage et rencontres inspirantes.',
-    image: '/images/service-travel.jpg',
+    image: getAssetPath('/images/service-travel.jpg'),
     content: {
       about: {
         title: 'À PROPOS DE RUSKER TRAVEL',
@@ -80,7 +81,7 @@ Chaque séjour est une rencontre : entre une ville, des acteurs, et une ambition
     icon: EventsIcon,
     title: 'RUSKER EVENTS',
     description: 'Événements sur mesure pour les entreprises. De la salle à la scène, nous concevons des expériences à impact.',
-    image: '/images/events-hero.jpg',
+    image: getAssetPath('/images/events-hero.jpg'),
     content: {
       about: {
         title: 'À PROPOS DE RUSKER EVENTS',
@@ -146,7 +147,7 @@ Notre mission : faire rayonner vos projets au cœur de Barcelone, capitale europ
     icon: NetworkIconAlt,
     title: 'RUSKER NETWORK',
     description: 'Un réseau vivant de talents et d\'entreprises innovantes à Barcelone connectés à la French Tech. Rencontrez, collaborez, évoluez.',
-    image: '/images/barcelona-feature.jpg',
+    image: getAssetPath('/images/barcelona-feature.jpg'),
     content: {
       about: {
         title: 'À PROPOS DE RUSKER NETWORK',

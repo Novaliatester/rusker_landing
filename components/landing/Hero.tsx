@@ -3,6 +3,7 @@
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
 import Button from '@/components/ui/Button'
+import { getAssetPath } from '@/lib/utils'
 // Animations are defined inline for specific layout needs
 
 export default function Hero() {
@@ -142,7 +143,7 @@ export default function Hero() {
                 videoLoaded ? 'opacity-100' : 'opacity-0'
               }`}
             >
-              <source src="/images/hero-video.mp4" type="video/mp4" />
+              <source src={getAssetPath('/images/hero-video.mp4')} type="video/mp4" />
             </video>
             {/* Fallback while loading */}
             <div
@@ -156,7 +157,7 @@ export default function Hero() {
           <motion.div
             style={{ 
               scale: backgroundScale,
-              backgroundImage: 'url(/images/hero-barcelona.jpg)'
+              backgroundImage: `url(${getAssetPath('/images/hero-barcelona.jpg')})`
             }}
             className="h-full w-full bg-cover bg-center"
           />
@@ -182,7 +183,7 @@ export default function Hero() {
         className="absolute top-6 left-6 md:top-10 md:left-10 lg:top-12 lg:left-16 z-20"
       >
         <img 
-          src="/images/logos/Logo 2025 (long) (white).png" 
+          src={getAssetPath('/images/logos/Logo 2025 (long) (white).png')} 
           alt="Rusker Travel" 
           className="h-8 md:h-10 lg:h-12 w-auto opacity-90"
         />
@@ -276,13 +277,13 @@ export default function Hero() {
             <div className="flex items-center gap-3 md:gap-4 text-white/60 text-xs sm:text-sm">
               <div className="flex -space-x-2">
                 <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white border-2 border-black/20 backdrop-blur-sm overflow-hidden flex items-center justify-center p-0.5">
-                  <img src="/images/logos/essec-new.png" alt="ESSEC" className="w-full h-full object-contain" />
+                  <img src={getAssetPath('/images/logos/essec-new.png')} alt="ESSEC" className="w-full h-full object-contain" />
                 </div>
                 <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white border-2 border-black/20 backdrop-blur-sm overflow-hidden flex items-center justify-center p-0.5">
-                  <img src="/images/logos/norrsken.png" alt="Norrsken" className="w-full h-full object-contain" />
+                  <img src={getAssetPath('/images/logos/norrsken.png')} alt="Norrsken" className="w-full h-full object-contain" />
                 </div>
                 <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white border-2 border-black/20 backdrop-blur-sm overflow-hidden flex items-center justify-center p-0.5">
-                  <img src="/images/logos/papernest-new.png" alt="Papernest" className="w-full h-full object-contain" />
+                  <img src={getAssetPath('/images/logos/papernest-new.png')} alt="Papernest" className="w-full h-full object-contain" />
                 </div>
               </div>
               <p className="leading-tight">Partenaire de +80 écoles & entreprises</p>

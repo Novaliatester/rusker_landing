@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import { useInView } from 'framer-motion'
 import { useRef, useEffect, useState } from 'react'
 import { fadeInUp } from '@/lib/animations'
+import { getAssetPath } from '@/lib/utils'
 
 const metrics = [
   { value: 50, label: 'écoles et universités accompagnées', suffix: '+' },
@@ -13,14 +14,14 @@ const metrics = [
 ]
 
 const logos = [
-  { name: 'ESSEC', image: '/images/logos/essec.png', alt: 'ESSEC Business School' },
-  { name: 'French Tech', image: '/images/logos/french-tech.png', alt: 'French Tech Barcelona' },
-  { name: 'Station F', image: '/images/logos/station-f.png', alt: 'Station F' },
-  { name: 'Shoptalk', image: '/images/logos/shoptalk.png', alt: 'Shoptalk Europe' },
-  { name: 'AI Summit', image: '/images/logos/ai-summit.svg', alt: 'AI Summit Barcelona' },
-  { name: 'TravelPerk', image: '/images/logos/travelperk.png', alt: 'TravelPerk' },
-  { name: 'Papernest', image: '/images/logos/papernest.png', alt: 'Papernest' },
-  { name: 'Norrsken', image: '/images/logos/norrsken.png', alt: 'Norrsken' },
+  { name: 'ESSEC', image: getAssetPath('/images/logos/essec.png'), alt: 'ESSEC Business School' },
+  { name: 'French Tech', image: getAssetPath('/images/logos/french-tech.png'), alt: 'French Tech Barcelona' },
+  { name: 'Station F', image: getAssetPath('/images/logos/station-f.png'), alt: 'Station F' },
+  { name: 'Shoptalk', image: getAssetPath('/images/logos/shoptalk.png'), alt: 'Shoptalk Europe' },
+  { name: 'AI Summit', image: getAssetPath('/images/logos/ai-summit.svg'), alt: 'AI Summit Barcelona' },
+  { name: 'TravelPerk', image: getAssetPath('/images/logos/travelperk.png'), alt: 'TravelPerk' },
+  { name: 'Papernest', image: getAssetPath('/images/logos/papernest.png'), alt: 'Papernest' },
+  { name: 'Norrsken', image: getAssetPath('/images/logos/norrsken.png'), alt: 'Norrsken' },
 ]
 
 export default function SocialProof() {

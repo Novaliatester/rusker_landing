@@ -4,13 +4,14 @@ import { motion } from 'framer-motion'
 import { useInView } from 'framer-motion'
 import { useRef, useState } from 'react'
 import { fadeInUp, staggerContainer } from '@/lib/animations'
+import { getAssetPath } from '@/lib/utils'
 
 const projects = [
   {
     title: 'Learning Expedition',
     client: 'Essec Business School',
     description: '22 étudiants, 5 entreprises visitées, 2 soirées networking. Résultat : une immersion concrète dans l\'écosystème entrepreneurial catalan.',
-    image: '/images/project-essec.jpg',
+    image: getAssetPath('/images/project-essec.jpg'),
     stats: { students: 22, companies: 5, events: 2 },
     details: {
       highlights: [
@@ -40,7 +41,7 @@ const projects = [
     title: 'AI Summit Barcelona',
     client: 'Évènement Public',
     description: '1 200 participants, 80 intervenants, 3 jours de conférences et d\'expériences tech. Résultat : Barcelone au cœur de l\'intelligence artificielle européenne.',
-    image: '/images/events-hero.jpg',
+    image: getAssetPath('/images/events-hero.jpg'),
     stats: { participants: '1 200', speakers: 80, days: 3 },
     details: {
       highlights: [
@@ -70,7 +71,7 @@ const projects = [
     title: 'Event for Shoptalk Europe 2025',
     client: 'WESHARETRUST',
     description: '100+ décideurs dans le retail et le retail média. Démos et Panels enrichissants et networking high-level sur un des plus beaux rooftops de Barcelone.',
-    image: '/images/travel-hero.jpg',
+    image: getAssetPath('/images/travel-hero.jpg'),
     stats: { attendees: '100+', format: 'High-level' },
     details: {
       highlights: [
@@ -230,13 +231,13 @@ export default function ProjectsShowcase() {
                       <div className="absolute bottom-6 right-6 md:opacity-0 opacity-100 group-hover:opacity-100 transition-opacity duration-300">
                         <div className="flex items-center gap-2">
                           <span className="text-xs text-rusker-blue font-medium md:hidden">Toucher pour détails</span>
-                          <motion.span
-                            animate={{ x: [0, 4, 0] }}
-                            transition={{ repeat: Infinity, duration: 1.5 }}
-                            className="text-2xl text-rusker-blue"
-                          >
-                            →
-                          </motion.span>
+                        <motion.span
+                          animate={{ x: [0, 4, 0] }}
+                          transition={{ repeat: Infinity, duration: 1.5 }}
+                          className="text-2xl text-rusker-blue"
+                        >
+                          →
+                        </motion.span>
                         </div>
                       </div>
                     </div>

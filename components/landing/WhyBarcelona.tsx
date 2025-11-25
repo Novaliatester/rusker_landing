@@ -6,6 +6,7 @@ import { useRef, useState, useEffect } from 'react'
 import { fadeInUp, staggerContainer } from '@/lib/animations'
 import { CreativeIcon, InnovationIcon, NetworkIcon, LifestyleIcon } from '@/components/ui/Icons'
 import AnimatedBackground from '@/components/ui/AnimatedBackground'
+import { getAssetPath } from '@/lib/utils'
 
 const features = [
   {
@@ -13,7 +14,7 @@ const features = [
     title: 'Une énergie créative unique',
     description: 'Architecture, gastronomie, design : Barcelone inspire et connecte.',
     stats: null,
-    image: '/images/creative-barcelona.jpg',
+    image: getAssetPath('/images/creative-barcelona.jpg'),
     details: {
       highlights: [
         'Architecture moderniste de Gaudí et contemporaine',
@@ -43,7 +44,7 @@ const features = [
     title: 'Un écosystème tourné vers l\'avenir',
     description: 'Plus de 1 500 startups, 300 000 m² dédiés à l\'innovation, des hubs comme 22@, Norrsken, Pier 01.',
     stats: ['1 500+ startups', '300 000 m² innovation'],
-    image: '/images/innovation-hub.jpg',
+    image: getAssetPath('/images/innovation-hub.jpg'),
     details: {
       highlights: [
         '22@ Barcelona : quartier de l\'innovation',
@@ -73,7 +74,7 @@ const features = [
     title: 'Une communauté francophone engagée',
     description: 'French Tech Barcelona, chambres de commerce, entrepreneurs et talents : un réseau solide qui vous ouvre ses portes.',
     stats: null,
-    image: '/images/network-meeting.jpg',
+    image: getAssetPath('/images/network-meeting.jpg'),
     details: {
       highlights: [
         'French Tech Barcelona : réseau de 200+ startups',
@@ -103,7 +104,7 @@ const features = [
     title: 'Un cadre de vie stimulant',
     description: 'Plages urbaines, climat méditerranéen, espaces verts : Barcelone offre un environnement inspirant qui favorise l\'apprentissage et la cohésion.',
     stats: null,
-    image: '/images/barcelona-beach.jpg',
+    image: getAssetPath('/images/barcelona-beach.jpg'),
     details: {
       highlights: [
         'Plages urbaines accessibles toute l\'année',
