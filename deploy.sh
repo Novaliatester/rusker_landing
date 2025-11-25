@@ -21,6 +21,9 @@ find . -mindepth 1 -maxdepth 1 ! -name '.git' -exec rm -rf {} + 2>/dev/null || t
 echo "📋 Copying built files from backup..."
 cp -r "$TEMP_DIR"/* .
 
+echo "📝 Creating .nojekyll file..."
+touch .nojekyll
+
 echo "🗑️  Cleaning up temp..."
 rm -rf "$TEMP_DIR"
 
