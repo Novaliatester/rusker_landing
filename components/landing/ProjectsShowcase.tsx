@@ -176,7 +176,7 @@ export default function ProjectsShowcase() {
                 >
                   {/* Front of card */}
                   <div
-                    className="relative h-full min-h-[360px] md:min-h-[440px] rounded-card bg-white shadow-soft overflow-hidden transition-all duration-300 group-hover:border-2 group-hover:border-rusker-blue flex flex-col"
+                    className="relative h-full min-h-[360px] md:min-h-[440px] rounded-card bg-white shadow-soft overflow-hidden transition-all duration-300 border-2 border-transparent group-hover:border-rusker-blue flex flex-col"
                     style={{
                       backfaceVisibility: 'hidden',
                       WebkitBackfaceVisibility: 'hidden',

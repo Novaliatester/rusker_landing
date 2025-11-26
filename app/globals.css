@@ -115,7 +115,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 
 .animate-marquee {
   display: inline-flex;
-  animation: marquee 18s linear infinite;
+  animation: marquee 35s linear infinite;
 }
 
 @keyframes marquee {

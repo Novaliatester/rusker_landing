@@ -12,6 +12,7 @@ export default function Hero() {
   const [useVideo, setUseVideo] = useState(true)
   const videoRef = useRef<HTMLVideoElement>(null)
   const heroRef = useRef<HTMLDivElement>(null)
+  const playAttempted = useRef(false)
   
   const { scrollYProgress } = useScroll({
     target: heroRef,
@@ -32,32 +33,31 @@ export default function Hero() {
     const video = videoRef.current
     if (!video) return
 
+    // Set video properties immediately
     video.muted = true
     video.playsInline = true
     video.loop = true
     video.preload = 'auto'
+    video.setAttribute('playsinline', '')
+    video.setAttribute('webkit-playsinline', '')
 
     const attemptPlay = async () => {
+      if (playAttempted.current) return
       try {
         if (video.paused) {
+          playAttempted.current = true
           await video.play()
           setVideoLoaded(true)
         }
       } catch (error) {
+        playAttempted.current = false
         console.log('Video play failed:', error)
       }
     }
 
-    const handleCanPlay = () => {
-      attemptPlay()
-    }
-    
-    const handleLoadedData = () => {
-      attemptPlay()
-    }
-
     const handlePlay = () => {
       setVideoLoaded(true)
+      playAttempted.current = true
     }
 
     const handleError = () => {
@@ -65,33 +65,31 @@ export default function Hero() {
       setUseVideo(false)
     }
 
-    video.addEventListener('canplay', handleCanPlay)
-    video.addEventListener('loadeddata', handleLoadedData)
     video.addEventListener('play', handlePlay)
+    video.addEventListener('playing', handlePlay)
     video.addEventListener('error', handleError)
 
-    // Try to play immediately if already loaded
-    if (video.readyState >= 3) {
-      attemptPlay()
-    } else {
-      video.load()
+    // Aggressive immediate play attempts
+    const playImmediately = async () => {
+      try {
+        // Try playing immediately without waiting
+        await video.play()
+        setVideoLoaded(true)
+      } catch (err) {
+        // If immediate play fails, wait for events
+        video.addEventListener('loadeddata', attemptPlay, { once: true })
+        video.addEventListener('canplay', attemptPlay, { once: true })
+      }
     }
 
-    // Multiple fallback attempts
-    const timeouts = [
-      setTimeout(() => attemptPlay(), 100),
-      setTimeout(() => attemptPlay(), 500),
-      setTimeout(() => attemptPlay(), 1000)
-    ]
+    playImmediately()
 
     return () => {
-      timeouts.forEach(clearTimeout)
-      video.removeEventListener('canplay', handleCanPlay)
-      video.removeEventListener('loadeddata', handleLoadedData)
       video.removeEventListener('play', handlePlay)
+      video.removeEventListener('playing', handlePlay)
       video.removeEventListener('error', handleError)
     }
-  }, [useVideo, videoLoaded])
+  }, [useVideo])
 
   const scrollToForm = () => {
     const formSection = document.getElementById('form-section')
@@ -114,43 +112,15 @@ export default function Hero() {
               muted
               playsInline
               preload="auto"
-              onError={() => {
-                console.log('Video error, using fallback')
-                setUseVideo(false)
-              }}
-              onPlay={() => {
-                setVideoLoaded(true)
-              }}
-              onLoadedMetadata={() => {
-                const video = videoRef.current
-                if (video && video.paused) {
-                  video.play().catch((err) => {
-                    console.log('Play error on loadedmetadata:', err)
-                  })
-                }
-              }}
-              onCanPlay={() => {
-                const video = videoRef.current
-                if (video && video.paused && !videoLoaded) {
-                  video.play()
-                    .then(() => setVideoLoaded(true))
-                    .catch((err) => {
-                      console.log('Play error on canplay:', err)
-                    })
-                }
-              }}
-              className={`h-full w-full object-cover transition-opacity duration-1000 ${
-                videoLoaded ? 'opacity-100' : 'opacity-0'
-              }`}
+              className="h-full w-full object-cover opacity-100"
             >
               <source src={getAssetPath('/images/hero-video.mp4')} type="video/mp4" />
             </video>
-            {/* Fallback while loading */}
+            {/* Simple dark fallback while loading */}
             <div
-              className={`absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ${
+              className={`absolute inset-0 bg-black transition-opacity duration-200 ${
                 videoLoaded ? 'opacity-0' : 'opacity-100'
               }`}
-              style={{ backgroundImage: 'url(/images/hero-barcelona.jpg)' }}
             />
           </motion.div>
         ) : (
@@ -186,6 +156,8 @@ export default function Hero() {
           src={getAssetPath('/images/logos/Logo 2025 (long) (white).png')} 
           alt="Rusker Travel" 
           className="h-8 md:h-10 lg:h-12 w-auto opacity-90"
+          fetchPriority="high"
+          loading="eager"
         />
       </motion.div>
 
@@ -277,13 +249,13 @@ export default function Hero() {
             <div className="flex items-center gap-3 md:gap-4 text-white/60 text-xs sm:text-sm">
               <div className="flex -space-x-2">
                 <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white border-2 border-black/20 backdrop-blur-sm overflow-hidden flex items-center justify-center p-0.5">
-                  <img src={getAssetPath('/images/logos/essec-new.png')} alt="ESSEC" className="w-full h-full object-contain" />
+                  <img src={getAssetPath('/images/logos/essec-new.png')} alt="ESSEC" className="w-full h-full object-contain" loading="lazy" />
                 </div>
                 <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white border-2 border-black/20 backdrop-blur-sm overflow-hidden flex items-center justify-center p-0.5">
-                  <img src={getAssetPath('/images/logos/norrsken.png')} alt="Norrsken" className="w-full h-full object-contain" />
+                  <img src={getAssetPath('/images/logos/norrsken.png')} alt="Norrsken" className="w-full h-full object-contain" loading="lazy" />
                 </div>
                 <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white border-2 border-black/20 backdrop-blur-sm overflow-hidden flex items-center justify-center p-0.5">
-                  <img src={getAssetPath('/images/logos/papernest-new.png')} alt="Papernest" className="w-full h-full object-contain" />
+                  <img src={getAssetPath('/images/logos/papernest-new.png')} alt="Papernest" className="w-full h-full object-contain" loading="lazy" />
                 </div>
               </div>
               <p className="leading-tight">Partenaire de +80 écoles & entreprises</p>

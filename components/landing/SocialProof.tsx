@@ -14,14 +14,23 @@ const metrics = [
 ]
 
 const logos = [
-  { name: 'ESSEC', image: getAssetPath('/images/logos/essec.png'), alt: 'ESSEC Business School' },
-  { name: 'French Tech', image: getAssetPath('/images/logos/french-tech.png'), alt: 'French Tech Barcelona' },
-  { name: 'Station F', image: getAssetPath('/images/logos/station-f.png'), alt: 'Station F' },
-  { name: 'Shoptalk', image: getAssetPath('/images/logos/shoptalk.png'), alt: 'Shoptalk Europe' },
-  { name: 'AI Summit', image: getAssetPath('/images/logos/ai-summit.svg'), alt: 'AI Summit Barcelona' },
-  { name: 'TravelPerk', image: getAssetPath('/images/logos/travelperk.png'), alt: 'TravelPerk' },
+  { name: 'Perk', image: getAssetPath('/images/logos/Perk_(Company)_Logo.svg.png'), alt: 'Perk' },
   { name: 'Papernest', image: getAssetPath('/images/logos/papernest.png'), alt: 'Papernest' },
+  { name: 'Glovo', image: getAssetPath('/images/logos/Glovo_Logo.svg.png'), alt: 'Glovo' },
+  { name: 'Kantox', image: getAssetPath('/images/logos/Kantox-color_(1).png'), alt: 'Kantox' },
+  { name: 'French Tech', image: getAssetPath('/images/logos/french-tech.png'), alt: 'French Tech Barcelona' },
   { name: 'Norrsken', image: getAssetPath('/images/logos/norrsken.png'), alt: 'Norrsken' },
+  { name: 'Amazon', image: getAssetPath('/images/logos/Amazon-Logo-2000.png'), alt: 'Amazon' },
+  { name: 'ManoMano', image: getAssetPath('/images/logos/ManoMano_2018.png'), alt: 'ManoMano' },
+  { name: 'AI Summit Barcelona', image: getAssetPath('/images/logos/ai-summit.svg'), alt: 'AI Summit Barcelona' },
+  { name: 'Amenitiz', image: getAssetPath('/images/logos/amenitiz-logo.webp'), alt: 'Amenitiz' },
+  { name: 'YEGO', image: getAssetPath('/images/logos/original.png'), alt: 'YEGO' },
+  { name: 'eDreams', image: getAssetPath('/images/logos/imagesedreasm.png'), alt: 'eDreams' },
+  { name: 'Factorial', image: getAssetPath('/images/logos/Factorial-logo-color.webp'), alt: 'Factorial' },
+  { name: 'Tool4Staffing', image: getAssetPath('/images/logos/logo-blue.png'), alt: 'Tool4Staffing' },
+  { name: 'Typeform', image: getAssetPath('/images/logos/typeform.svg'), alt: 'Typeform' },
+  { name: 'PayFit', image: getAssetPath('/images/logos/Payfit_logo_blue.png'), alt: 'PayFit' },
+  { name: 'Criteo', image: getAssetPath('/images/logos/criteo-1.svg'), alt: 'Criteo' },
 ]
 
 export default function SocialProof() {
@@ -99,21 +108,25 @@ export default function SocialProof() {
           className="mt-12 md:mt-16 overflow-hidden rounded-2xl md:rounded-3xl border border-gray-100 bg-bg-light/60 py-6 md:py-8"
         >
           <div className="flex items-center gap-2 px-4 md:px-8 text-xs md:text-sm uppercase tracking-[0.2em] md:tracking-[0.3em] text-gray-500">
-            Partners
+            Nos Partenaires
             <div className="h-px flex-1 bg-gradient-to-r from-gray-200 to-transparent" />
           </div>
           <div className="relative mt-6 overflow-hidden">
-            <div className="animate-marquee flex min-w-full gap-16 whitespace-nowrap px-8">
+            <div className="animate-marquee flex min-w-full gap-24 whitespace-nowrap px-8 items-center" style={{ height: '80px' }}>
               {[...logos, ...logos].map((logo, index) => (
                 <div
                   key={`${logo.name}-${index}`}
-                  className="inline-flex items-center justify-center h-16 md:h-20 px-4 md:px-6 group"
+                  className="inline-flex items-center justify-center flex-shrink-0 group"
+                  style={{ height: '80px', width: 'auto' }}
                 >
-                  <div className="relative w-full h-full flex items-center justify-center">
+                  <div className="relative flex items-center justify-center" style={{ height: '56px', width: 'auto', display: 'flex', alignItems: 'center' }}>
                     <img
                       src={logo.image}
                       alt={logo.alt}
-                      className="h-full w-auto max-w-[140px] md:max-w-[180px] object-contain opacity-60 hover:opacity-100 transition-all duration-300 group-hover:scale-110 rounded-lg"
+                      className="max-h-[56px] w-auto max-w-[180px] object-contain object-center opacity-60 hover:opacity-100 transition-all duration-300 group-hover:scale-110 rounded-lg"
+                      style={{ height: 'auto', width: 'auto', display: 'block' }}
+                      loading="lazy"
+                      decoding="async"
                       onError={(e) => {
                         // Fallback to text if image doesn't exist
                         const target = e.target as HTMLImageElement
