@@ -72,6 +72,10 @@ jobs:
       - name: Build with Next.js
         env:
           NODE_ENV: production
+          # Set NEXT_PUBLIC_BASE_PATH to empty string ('') for custom domains
+          # Leave unset or set to '/rusker_landing' for GitHub Pages (github.io)
+          # You can override this in repository Settings > Secrets and variables > Actions
+          NEXT_PUBLIC_BASE_PATH: ${{ vars.NEXT_PUBLIC_BASE_PATH || '/rusker_landing' }}
         run: npm run build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

@@ -1,10 +1,10 @@
 /**
  * Get the base path for assets (images, etc.)
- * This ensures images work correctly when deployed to GitHub Pages
+ * For Vercel: No basePath needed (empty by default)
+ * For GitHub Pages: Set NEXT_PUBLIC_BASE_PATH='/rusker_landing' if needed
  */
 export function getAssetPath(path: string): string {
-  // Only use basePath in production (GitHub Pages)
-  const basePath = process.env.NODE_ENV === 'production' ? '/rusker_landing' : ''
+  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || ''
   // Remove leading slash if present to avoid double slashes
   const cleanPath = path.startsWith('/') ? path.slice(1) : path
   return basePath ? `${basePath}/${cleanPath}` : `/${cleanPath}`

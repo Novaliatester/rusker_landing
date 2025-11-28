@@ -1,7 +1,9 @@
 import type { Metadata, Viewport } from 'next'
 import './globals.css'
 
-const basePath = process.env.NODE_ENV === 'production' ? '/rusker_landing' : ''
+// For Vercel: No basePath needed (empty by default)
+// For GitHub Pages: Set NEXT_PUBLIC_BASE_PATH='/rusker_landing' if needed
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || ''
 
 export const metadata: Metadata = {
   title: 'Rusker Travel | Voyages à Barcelone',
