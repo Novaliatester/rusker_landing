@@ -76,7 +76,7 @@ jobs:
           # Leave unset or set to '/rusker_landing' for GitHub Pages (github.io)
           # You can override this in repository Settings > Secrets and variables > Actions
           NEXT_PUBLIC_BASE_PATH: ${{ vars.NEXT_PUBLIC_BASE_PATH || '/rusker_landing' }}
-        run: npm run build
+        run: npm run build:static
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
