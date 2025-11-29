@@ -76,7 +76,7 @@ export const validateStep = (step: number, data: FormData): boolean => {
 import { EXPERIENCE_TYPES, THEMES, OBJECTIVES, BUDGET_RANGES } from '@/lib/constants'
 
 export const submitForm = async (data: FormData): Promise<boolean> => {
-  const webhookUrl = process.env.NEXT_PUBLIC_WEBHOOK_URL || 'https://prod.lucasaibot.uk/webhook/f1e97fe9-ce31-4e6f-8d59-6b75c2715480'
+  const webhookUrl = process.env.NEXT_PUBLIC_WEBHOOK_URL || 'https://rusker.lucasaibot.uk/webhook/f1e97fe9-ce31-4e6f-8d59-6b75c2715480'
 
   // Transform IDs to human-readable labels
   const experienceTypesLabels = data.experienceTypes
