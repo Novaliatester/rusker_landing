@@ -10,6 +10,9 @@ const config: Config = {
     extend: {
       colors: {
         'rusker-blue': '#277396',
+        'rusker-travel': '#287497',
+        'rusker-events': '#0b5d56',
+        'rusker-network': '#a61e3f',
         'text-dark': '#333333',
         'bg-light': '#F6F6F6',
       },
