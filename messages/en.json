@@ -359,6 +359,226 @@
     "50k-100k": "€50,000 - €100,000",
     "over-100k": "More than €100,000"
   },
+  "newForm": {
+    "universeSelector": {
+      "title": "What type of project",
+      "titleHighlight": "would you like to create?",
+      "subtitle": "Choose your universe to start creating your customized experience in Barcelona",
+      "travel": {
+        "title": "Travel",
+        "subtitle": "Customized trips to Barcelona",
+        "description": "Learning expeditions, seminars, cultural stays for schools and companies",
+        "cta": "Get started"
+      },
+      "events": {
+        "title": "Events",
+        "subtitle": "Corporate events",
+        "description": "Conferences, launches, anniversaries, teambuilding and customized events",
+        "cta": "Get started"
+      }
+    },
+    "identity": {
+      "title": "Who are you?",
+      "subtitle": "This helps us personalize your experience",
+      "school": {
+        "title": "School / University",
+        "description": "Higher education institution, business school, university"
+      },
+      "company": {
+        "title": "Company / Organization",
+        "description": "Company, startup, association, public institution"
+      }
+    },
+    "travel": {
+      "experience": {
+        "title": "What type of experience are you looking for?",
+        "subtitle": "Select the format that best matches your objectives",
+        "learningExpedition": {
+          "title": "Learning Expedition",
+          "description": "Immersive stays with company visits, professional meetings and practical workshops"
+        },
+        "seminarOffsite": {
+          "title": "Seminar / Offsite",
+          "description": "Team seminars, strategic offsites in an inspiring setting"
+        },
+        "culturalStay": {
+          "title": "Cultural Stay",
+          "description": "Discover Barcelona through culture, art and gastronomy"
+        }
+      },
+      "groupDetails": {
+        "title": "Group details & dates",
+        "subtitle": "This information helps us prepare the best proposal",
+        "groupSize": "Group size",
+        "persons": "people",
+        "dates": "Preferred dates",
+        "flexible": "My dates are flexible (± a few days)",
+        "duration": "Stay duration",
+        "durations": {
+          "2-3": "2-3 days",
+          "4": "4 days",
+          "1-week": "1 week",
+          "other": "Other"
+        }
+      },
+      "themesObjectives": {
+        "title": "Themes & objectives",
+        "subtitle": "Select up to 3 items in each category",
+        "themes": "Themes",
+        "objectives": "Key objectives",
+        "themeLabels": {
+          "innovation": "Innovation & Tech",
+          "sustainability": "Sustainability",
+          "entrepreneurship": "Entrepreneurship",
+          "smart-city": "Smart City",
+          "culture": "Culture & Design",
+          "gastronomy": "Gastronomy",
+          "mobility": "Mobility",
+          "tourism": "Tourism"
+        },
+        "objectiveLabels": {
+          "learning": "Learning",
+          "networking": "Networking",
+          "team-building": "Team Building",
+          "inspiration": "Inspiration",
+          "partnerships": "Partnerships",
+          "discovery": "Discovery"
+        }
+      }
+    },
+    "events": {
+      "eventType": {
+        "title": "What type of event are you organizing?",
+        "subtitle": "Select up to 2 event types",
+        "types": {
+          "anniversary": "Anniversary",
+          "inauguration": "Inauguration",
+          "product-launch": "Product Launch",
+          "conference": "Conference",
+          "workshop": "Workshop",
+          "teambuilding": "Teambuilding",
+          "hackathon": "Hackathon"
+        },
+        "scope": "Event scope",
+        "internal": {
+          "label": "Internal event (private)",
+          "description": "Reserved for employees or guests"
+        },
+        "external": {
+          "label": "External event (public)",
+          "description": "Open to the public or external participants"
+        }
+      },
+      "details": {
+        "title": "Event details",
+        "subtitle": "Date, duration and expected number of participants",
+        "date": "Event date",
+        "duration": "Event duration",
+        "participants": "Number of participants",
+        "durations": {
+          "half-day": "Half day",
+          "full-day": "1 day",
+          "2-days": "2 days",
+          "3-days": "3 days",
+          "week": "1 week",
+          "custom": "Other"
+        }
+      },
+      "objective": {
+        "title": "Describe your event",
+        "subtitle": "Tell us about your objectives and desired format",
+        "label": "Event description",
+        "description": "Describe the context, objectives, expected format, and any relevant element to help us understand your vision.",
+        "placeholder": "E.g.: We want to organize an annual conference for 200 employees, combining inspiring presentations and collaborative workshops. The objective is to strengthen company culture and share our strategic vision for 2025...",
+        "minChars": "Minimum 30 characters",
+        "remaining": "remaining",
+        "prompts": {
+          "context": "What is the context of this event?",
+          "goals": "What are your main objectives?",
+          "format": "What format/atmosphere do you want?",
+          "constraints": "Are there any particular constraints?"
+        }
+      }
+    },
+    "budgetContact": {
+      "title": "Budget & contact",
+      "subtitle": "Last step to finalize your request",
+      "budget": "Budget per person",
+      "budgetEstimated": "Estimated budget",
+      "budgetType": {
+        "global": "Total budget",
+        "perPerson": "Per person"
+      },
+      "budgetRanges": {
+        "under-100": "Less than €100/pers",
+        "100-200": "€100 - €200/pers",
+        "200-350": "€200 - €350/pers",
+        "350-500": "€350 - €500/pers",
+        "over-500": "More than €500/pers",
+        "custom": "Total budget to be specified"
+      },
+      "eventsBudgetRanges": {
+        "under-5k": "Less than €5,000",
+        "5k-15k": "€5,000 - €15,000",
+        "15k-30k": "€15,000 - €30,000",
+        "30k-60k": "€30,000 - €60,000",
+        "60k-100k": "€60,000 - €100,000",
+        "over-100k": "More than €100,000"
+      },
+      "contact": "Your contact details",
+      "name": "Full name",
+      "email": "Professional email",
+      "role": "Position / Role",
+      "rolePlaceholder": "Program Director, HR, etc.",
+      "phone": "Phone (optional)",
+      "message": "Free note",
+      "messagePlaceholder": "Details about your project, particular questions..."
+    },
+    "navigation": {
+      "back": "Back",
+      "continue": "Continue",
+      "submit": "Create my project",
+      "submitting": "Sending..."
+    },
+    "progress": {
+      "step": "Step",
+      "of": "of"
+    },
+    "confirmation": {
+      "title": "Sent!",
+      "thanks": "Thank you for your request",
+      "message": "Our team will contact you within",
+      "delay": "24-48h",
+      "messageSuffix": "to discuss your project.",
+      "nextSteps": "Next steps:",
+      "steps": {
+        "1": "We analyze your request in detail",
+        "2": "An expert contacts you to refine the project",
+        "3": "You receive a personalized proposal"
+      },
+      "backHome": "Back to home"
+    },
+    "errors": {
+      "fillRequired": "Please fill in all required fields",
+      "submitError": "An error occurred. Please try again."
+    },
+    "stepTitles": {
+      "travel": {
+        "1": "Identity",
+        "2": "Experience",
+        "3": "Group & dates",
+        "4": "Themes",
+        "5": "Contact"
+      },
+      "events": {
+        "1": "Identity",
+        "2": "Event type",
+        "3": "Details",
+        "4": "Objective",
+        "5": "Contact"
+      }
+    }
+  },
   "socialProof": {
     "badge": "They trust us",
     "title": "French and European schools, startups and large companies",

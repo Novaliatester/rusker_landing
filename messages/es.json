@@ -359,6 +359,226 @@
     "50k-100k": "50.000€ - 100.000€",
     "over-100k": "Más de 100.000€"
   },
+  "newForm": {
+    "universeSelector": {
+      "title": "¿Qué tipo de proyecto",
+      "titleHighlight": "quieres crear?",
+      "subtitle": "Elige tu universo para comenzar a crear tu experiencia a medida en Barcelona",
+      "travel": {
+        "title": "Travel",
+        "subtitle": "Viajes a medida a Barcelona",
+        "description": "Expediciones de aprendizaje, seminarios, estancias culturales para escuelas y empresas",
+        "cta": "Comenzar"
+      },
+      "events": {
+        "title": "Events",
+        "subtitle": "Eventos corporativos",
+        "description": "Conferencias, lanzamientos, aniversarios, teambuilding y eventos a medida",
+        "cta": "Comenzar"
+      }
+    },
+    "identity": {
+      "title": "¿Quién eres?",
+      "subtitle": "Esto nos permite personalizar tu experiencia",
+      "school": {
+        "title": "Escuela / Universidad",
+        "description": "Institución de educación superior, escuela de negocios, universidad"
+      },
+      "company": {
+        "title": "Empresa / Organización",
+        "description": "Empresa, startup, asociación, institución pública"
+      }
+    },
+    "travel": {
+      "experience": {
+        "title": "¿Qué tipo de experiencia buscas?",
+        "subtitle": "Selecciona el formato que mejor se adapte a tus objetivos",
+        "learningExpedition": {
+          "title": "Learning Expedition",
+          "description": "Estancias inmersivas con visitas a empresas, encuentros profesionales y talleres prácticos"
+        },
+        "seminarOffsite": {
+          "title": "Seminario / Offsite",
+          "description": "Seminarios de equipo, offsites estratégicos en un entorno inspirador"
+        },
+        "culturalStay": {
+          "title": "Estancia cultural",
+          "description": "Descubre Barcelona a través de la cultura, el arte y la gastronomía"
+        }
+      },
+      "groupDetails": {
+        "title": "Detalles del grupo y fechas",
+        "subtitle": "Esta información nos ayuda a preparar la mejor propuesta",
+        "groupSize": "Tamaño del grupo",
+        "persons": "personas",
+        "dates": "Fechas preferidas",
+        "flexible": "Mis fechas son flexibles (± algunos días)",
+        "duration": "Duración de la estancia",
+        "durations": {
+          "2-3": "2-3 días",
+          "4": "4 días",
+          "1-week": "1 semana",
+          "other": "Otro"
+        }
+      },
+      "themesObjectives": {
+        "title": "Temáticas y objetivos",
+        "subtitle": "Selecciona hasta 3 elementos en cada categoría",
+        "themes": "Temáticas",
+        "objectives": "Objetivos clave",
+        "themeLabels": {
+          "innovation": "Innovación y Tech",
+          "sustainability": "Sostenibilidad",
+          "entrepreneurship": "Emprendimiento",
+          "smart-city": "Ciudad Inteligente",
+          "culture": "Cultura y Diseño",
+          "gastronomy": "Gastronomía",
+          "mobility": "Movilidad",
+          "tourism": "Turismo"
+        },
+        "objectiveLabels": {
+          "learning": "Aprendizaje",
+          "networking": "Networking",
+          "team-building": "Team Building",
+          "inspiration": "Inspiración",
+          "partnerships": "Alianzas",
+          "discovery": "Descubrimiento"
+        }
+      }
+    },
+    "events": {
+      "eventType": {
+        "title": "¿Qué tipo de evento organizas?",
+        "subtitle": "Selecciona hasta 2 tipos de eventos",
+        "types": {
+          "anniversary": "Aniversario",
+          "inauguration": "Inauguración",
+          "product-launch": "Lanzamiento de producto",
+          "conference": "Conferencia",
+          "workshop": "Taller / Workshop",
+          "teambuilding": "Teambuilding",
+          "hackathon": "Hackathon"
+        },
+        "scope": "Alcance del evento",
+        "internal": {
+          "label": "Evento interno (privado)",
+          "description": "Reservado para empleados o invitados"
+        },
+        "external": {
+          "label": "Evento externo (público)",
+          "description": "Abierto al público o participantes externos"
+        }
+      },
+      "details": {
+        "title": "Detalles del evento",
+        "subtitle": "Fecha, duración y número de participantes esperados",
+        "date": "Fecha del evento",
+        "duration": "Duración del evento",
+        "participants": "Número de participantes",
+        "durations": {
+          "half-day": "Media jornada",
+          "full-day": "1 día",
+          "2-days": "2 días",
+          "3-days": "3 días",
+          "week": "1 semana",
+          "custom": "Otro"
+        }
+      },
+      "objective": {
+        "title": "Describe tu evento",
+        "subtitle": "Cuéntanos sobre tus objetivos y el formato deseado",
+        "label": "Descripción del evento",
+        "description": "Describe el contexto, los objetivos, el formato esperado y cualquier elemento relevante para ayudarnos a entender tu visión.",
+        "placeholder": "Ej: Queremos organizar una conferencia anual para 200 empleados, combinando presentaciones inspiradoras y talleres colaborativos. El objetivo es reforzar la cultura empresarial y compartir nuestra visión estratégica para 2025...",
+        "minChars": "Mínimo 30 caracteres",
+        "remaining": "restantes",
+        "prompts": {
+          "context": "¿Cuál es el contexto de este evento?",
+          "goals": "¿Cuáles son tus objetivos principales?",
+          "format": "¿Qué formato/ambiente deseas?",
+          "constraints": "¿Hay restricciones particulares?"
+        }
+      }
+    },
+    "budgetContact": {
+      "title": "Presupuesto y contacto",
+      "subtitle": "Último paso para finalizar tu solicitud",
+      "budget": "Presupuesto por persona",
+      "budgetEstimated": "Presupuesto estimado",
+      "budgetType": {
+        "global": "Presupuesto total",
+        "perPerson": "Por persona"
+      },
+      "budgetRanges": {
+        "under-100": "Menos de 100€/pers",
+        "100-200": "100€ - 200€/pers",
+        "200-350": "200€ - 350€/pers",
+        "350-500": "350€ - 500€/pers",
+        "over-500": "Más de 500€/pers",
+        "custom": "Presupuesto total a especificar"
+      },
+      "eventsBudgetRanges": {
+        "under-5k": "Menos de 5.000€",
+        "5k-15k": "5.000€ - 15.000€",
+        "15k-30k": "15.000€ - 30.000€",
+        "30k-60k": "30.000€ - 60.000€",
+        "60k-100k": "60.000€ - 100.000€",
+        "over-100k": "Más de 100.000€"
+      },
+      "contact": "Tus datos de contacto",
+      "name": "Nombre completo",
+      "email": "Email profesional",
+      "role": "Cargo / Rol",
+      "rolePlaceholder": "Director de programa, RRHH, etc.",
+      "phone": "Teléfono (opcional)",
+      "message": "Nota libre",
+      "messagePlaceholder": "Detalles sobre tu proyecto, preguntas particulares..."
+    },
+    "navigation": {
+      "back": "Atrás",
+      "continue": "Continuar",
+      "submit": "Crear mi proyecto",
+      "submitting": "Enviando..."
+    },
+    "progress": {
+      "step": "Paso",
+      "of": "de"
+    },
+    "confirmation": {
+      "title": "¡Enviado!",
+      "thanks": "Gracias por tu solicitud",
+      "message": "Nuestro equipo te contactará en",
+      "delay": "24-48h",
+      "messageSuffix": "para hablar sobre tu proyecto.",
+      "nextSteps": "Próximos pasos:",
+      "steps": {
+        "1": "Analizamos tu solicitud en detalle",
+        "2": "Un experto te contacta para afinar el proyecto",
+        "3": "Recibes una propuesta personalizada"
+      },
+      "backHome": "Volver al inicio"
+    },
+    "errors": {
+      "fillRequired": "Por favor completa todos los campos requeridos",
+      "submitError": "Ocurrió un error. Por favor intenta de nuevo."
+    },
+    "stepTitles": {
+      "travel": {
+        "1": "Identidad",
+        "2": "Experiencia",
+        "3": "Grupo y fechas",
+        "4": "Temáticas",
+        "5": "Contacto"
+      },
+      "events": {
+        "1": "Identidad",
+        "2": "Tipo de evento",
+        "3": "Detalles",
+        "4": "Objetivo",
+        "5": "Contacto"
+      }
+    }
+  },
   "socialProof": {
     "badge": "Confían en nosotros",
     "title": "Escuelas, startups y grandes empresas francesas y europeas",

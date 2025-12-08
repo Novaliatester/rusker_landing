@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { getAssetPath } from '@/lib/utils'
 
 export default function NetworkFooter() {
@@ -9,18 +10,20 @@ export default function NetworkFooter() {
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           {/* Logo */}
           <div className="flex items-center gap-3">
-            <img 
-              src={getAssetPath('/images/2026 Rusker/Logos/Rusker NETWORK (white).png')} 
-              alt="Rusker Network" 
-              className="h-8 w-auto"
-            />
+            <Link href="/">
+              <img 
+                src={getAssetPath('/images/2026 Rusker/Logos/Rusker NETWORK (white).png')} 
+                alt="Rusker Network" 
+                className="h-8 w-auto"
+              />
+            </Link>
           </div>
 
           {/* Links */}
           <div className="flex items-center gap-8 text-sm text-white/60">
-            <a href="/" className="hover:text-white transition-colors">Accueil</a>
-            <a href="/form" className="hover:text-white transition-colors">Formulaire</a>
-            <a href="mailto:contact@rusker.com" className="hover:text-white transition-colors">Contact</a>
+            <Link href="/" className="hover:text-white transition-colors">Accueil</Link>
+            <Link href="/form" className="hover:text-white transition-colors">Formulaire</Link>
+            <a href="mailto:info@rusker-travel.com" className="hover:text-white transition-colors">Contact</a>
           </div>
 
           {/* Copyright */}

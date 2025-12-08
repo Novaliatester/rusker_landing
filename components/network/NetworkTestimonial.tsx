@@ -31,8 +31,8 @@ export default function NetworkTestimonial() {
             className="relative"
           >
             <div className="relative rounded-2xl overflow-hidden shadow-2xl">
-              <img
-                src={getAssetPath('/images/network-meeting.jpg')}
+                <img
+                  src={getAssetPath('/images/french-tech-talentboard-etc-0201.jpg')}
                 alt="French Tech Networking"
                 className="w-full h-64 md:h-80 object-cover"
               />

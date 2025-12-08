@@ -17,7 +17,7 @@ export default function WhyBarcelona() {
     {
       title: t('whyBarcelona.features.creative.title'),
       description: t('whyBarcelona.features.creative.description'),
-      image: getAssetPath('/images/creative-barcelona.jpg'),
+      image: getAssetPath('/images/accueil-une-energie-creative-unique-0201.jpg'),
       color: '#6ee3a8',
       highlights: [
         t('whyBarcelona.features.creative.highlights.0'),

@@ -83,6 +83,7 @@ export default function TravelHero() {
               muted
               playsInline
               preload="auto"
+              poster={getAssetPath('/images/travel-entreprises-0201.jpg')}
               className="h-full w-full object-cover"
             >
               <source src={getAssetPath('/images/hero-video.mp4')} type="video/mp4" />
@@ -93,7 +94,7 @@ export default function TravelHero() {
           <motion.div
             style={{ 
               scale: backgroundScale,
-              backgroundImage: `url(${getAssetPath('/images/travel-hero.jpg')})`
+              backgroundImage: `url(${getAssetPath('/images/travel-entreprises-0201.jpg')})`
             }}
             className="h-full w-full bg-cover bg-center"
           />

@@ -2,24 +2,12 @@
 
 import { motion, useInView } from 'framer-motion'
 import { useRef, useState, useEffect } from 'react'
-import { getAssetPath } from '@/lib/utils'
 
 const metrics = [
   { value: 1200, label: 'Participants AI Summit', suffix: '+' },
   { value: 80, label: 'Speakers & experts', suffix: '+' },
   { value: 50, label: 'Événements organisés', suffix: '+' },
   { value: 100, label: 'Entreprises présentes', suffix: '+' },
-]
-
-const logos = [
-  { name: 'AI Summit', image: getAssetPath('/images/logos/ai-summit.svg') },
-  { name: 'French Tech', image: getAssetPath('/images/logos/french-tech.png') },
-  { name: 'Shoptalk', image: getAssetPath('/images/logos/shoptalk.png') },
-  { name: 'Norrsken', image: getAssetPath('/images/logos/norrsken.png') },
-  { name: 'TravelPerk', image: getAssetPath('/images/logos/travelperk.png') },
-  { name: 'Station F', image: getAssetPath('/images/logos/station-f.png') },
-  { name: 'Papernest', image: getAssetPath('/images/logos/papernest-new.png') },
-  { name: 'ESSEC', image: getAssetPath('/images/logos/essec-new.png') },
 ]
 
 export default function EventsTrustBar() {
@@ -65,7 +53,7 @@ export default function EventsTrustBar() {
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 mb-12"
+          className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8"
         >
           {metrics.map((metric, index) => (
             <motion.div
@@ -81,40 +69,6 @@ export default function EventsTrustBar() {
               <p className="mt-1 text-sm md:text-base text-gray-600">{metric.label}</p>
             </motion.div>
           ))}
-        </motion.div>
-
-        {/* Logos marquee */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 1 } : {}}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="relative"
-        >
-          <div className="flex items-center gap-3 mb-4">
-            <span className="text-xs uppercase tracking-[0.2em] text-gray-400 font-medium">Ils nous font confiance</span>
-            <div className="h-px flex-1 bg-gray-200" />
-          </div>
-          
-          <div className="relative overflow-hidden py-4">
-            <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-white to-transparent z-10" />
-            <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-white to-transparent z-10" />
-            
-            <div className="animate-marquee flex items-center gap-16 whitespace-nowrap">
-              {[...logos, ...logos].map((logo, index) => (
-                <div
-                  key={`${logo.name}-${index}`}
-                  className="flex-shrink-0 h-10 md:h-12 w-auto flex items-center justify-center"
-                >
-                  <img
-                    src={logo.image}
-                    alt={logo.name}
-                    className="h-full w-auto max-w-[120px] object-contain opacity-60 hover:opacity-100 transition-opacity grayscale hover:grayscale-0"
-                    loading="lazy"
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
         </motion.div>
       </div>
     </section>

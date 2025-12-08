@@ -1,33 +1,107 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, memo, Suspense } from 'react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
+import Image from 'next/image'
+import dynamic from 'next/dynamic'
 import Footer from '@/components/landing/Footer'
-import BlogArticleContent from '@/components/blog/BlogArticleContent'
 import { useI18n } from '@/lib/i18n'
 import { getBlogPost, blogPosts } from '@/lib/blogData'
 import { getAssetPath } from '@/lib/utils'
 
+// Lazy load the article content for faster initial page load
+const BlogArticleContent = dynamic(() => import('@/components/blog/BlogArticleContent'), {
+  loading: () => (
+    <div className="space-y-4 animate-pulse">
+      <div className="h-6 bg-gray-200 rounded w-3/4"></div>
+      <div className="h-4 bg-gray-200 rounded w-full"></div>
+      <div className="h-4 bg-gray-200 rounded w-5/6"></div>
+      <div className="h-4 bg-gray-200 rounded w-full"></div>
+    </div>
+  ),
+})
+
 interface BlogPostClientProps {
   slug: string;
 }
+
+// Memoized related post card component
+const RelatedPostCard = memo(function RelatedPostCard({ 
+  post, 
+  categoryColors,
+  t 
+}: { 
+  post: typeof blogPosts[0];
+  categoryColors: Record<string, string>;
+  t: (key: string, params?: Record<string, string | number>) => string;
+}) {
+  const [imageLoaded, setImageLoaded] = useState(false)
+  
+  return (
+    <Link
+      href={`/blog/${post.slug}`}
+      className="group block bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300"
+      prefetch={false}
+    >
+      {post.image && (
+        <div className="relative h-48 overflow-hidden bg-gray-100">
+          {/* Skeleton loader */}
+          {!imageLoaded && (
+            <div className="absolute inset-0 bg-gradient-to-r from-gray-100 via-gray-200 to-gray-100 animate-shimmer" />
+          )}
+          <Image
+            src={getAssetPath(post.image)}
+            alt={t(`blog.posts.${post.id}.title`)}
+            fill
+            sizes="(max-width: 768px) 100vw, 33vw"
+            className={`object-cover transition-all duration-500 group-hover:scale-105 ${
+              imageLoaded ? 'opacity-100' : 'opacity-0'
+            }`}
+            onLoad={() => setImageLoaded(true)}
+            loading="lazy"
+          />
+        </div>
+      )}
+      <div className="p-6">
+        <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium mb-3 ${categoryColors[post.category]}`}>
+          {t(`blog.categories.${post.category}`)}
+        </span>
+        <h3 className="text-lg font-bold text-gray-900 group-hover:text-neutral-dark transition-colors line-clamp-2">
+          {t(`blog.posts.${post.id}.title`)}
+        </h3>
+      </div>
+    </Link>
+  )
+})
 
 export default function BlogPostClient({ slug }: BlogPostClientProps) {
   const { t } = useI18n()
   const post = getBlogPost(slug)
 
   const [mounted, setMounted] = useState(false)
+  const [heroImageLoaded, setHeroImageLoaded] = useState(false)
 
   useEffect(() => {
     setMounted(true)
   }, [])
 
   if (!mounted || !post) {
-    return null
+    return (
+      <main className="min-h-screen pt-20">
+        <div className="animate-pulse">
+          <div className="h-96 bg-gray-200"></div>
+          <div className="max-w-4xl mx-auto px-4 py-16 space-y-4">
+            <div className="h-8 bg-gray-200 rounded w-3/4"></div>
+            <div className="h-4 bg-gray-200 rounded w-full"></div>
+            <div className="h-4 bg-gray-200 rounded w-5/6"></div>
+          </div>
+        </div>
+      </main>
+    )
   }
 
-  const categoryColors = {
+  const categoryColors: Record<string, string> = {
     'insight': 'bg-purple-100 text-purple-700',
     'case-study': 'bg-blue-100 text-blue-700',
     'ecosystem': 'bg-green-100 text-green-700',
@@ -45,10 +119,16 @@ export default function BlogPostClient({ slug }: BlogPostClientProps) {
       <section className="relative py-20 bg-gradient-to-br from-neutral-dark via-neutral-dark/90 to-neutral-dark/80">
         {post.image && (
           <div className="absolute inset-0 opacity-10">
-            <img
+            <Image
               src={getAssetPath(post.image)}
               alt=""
-              className="w-full h-full object-cover"
+              fill
+              sizes="100vw"
+              className={`object-cover transition-opacity duration-500 ${
+                heroImageLoaded ? 'opacity-100' : 'opacity-0'
+              }`}
+              onLoad={() => setHeroImageLoaded(true)}
+              priority // Hero image should load immediately
             />
           </div>
         )}
@@ -57,14 +137,14 @@ export default function BlogPostClient({ slug }: BlogPostClientProps) {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.5 }}
           >
             {/* Back Button */}
             <Link
               href="/blog"
               className="inline-flex items-center gap-2 text-white/80 hover:text-white mb-8 transition-colors group"
             >
-              <svg className="w-5 h-5 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
               </svg>
               {t('blog.backToBlog')}
@@ -75,13 +155,13 @@ export default function BlogPostClient({ slug }: BlogPostClientProps) {
               <span className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium ${categoryColors[post.category]}`}>
                 {t(`blog.categories.${post.category}`)}
               </span>
-              <span className="text-white/70">
+              <time dateTime={post.date} className="text-white/70">
                 {new Date(post.date).toLocaleDateString('fr-FR', { 
                   year: 'numeric', 
                   month: 'long', 
                   day: 'numeric' 
                 })}
-              </span>
+              </time>
               <span className="text-white/70">
                 {t('blog.readTime', { time: post.readTime })}
               </span>
@@ -104,11 +184,19 @@ export default function BlogPostClient({ slug }: BlogPostClientProps) {
       <section className="py-16 md:py-24 bg-white">
         <div className="mx-auto max-w-4xl px-4 md:px-6">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            transition={{ duration: 0.4, delay: 0.1 }}
           >
-            <BlogArticleContent postId={post.id} />
+            <Suspense fallback={
+              <div className="space-y-4 animate-pulse">
+                <div className="h-6 bg-gray-200 rounded w-3/4"></div>
+                <div className="h-4 bg-gray-200 rounded w-full"></div>
+                <div className="h-4 bg-gray-200 rounded w-5/6"></div>
+              </div>
+            }>
+              <BlogArticleContent postId={post.id} />
+            </Suspense>
           </motion.div>
         </div>
       </section>
@@ -121,30 +209,13 @@ export default function BlogPostClient({ slug }: BlogPostClientProps) {
               {t('blog.relatedArticles')}
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {relatedPosts.map((relatedPost, index) => (
-                <Link
+              {relatedPosts.map((relatedPost) => (
+                <RelatedPostCard
                   key={relatedPost.id}
-                  href={`/blog/${relatedPost.slug}`}
-                  className="group block bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300"
-                >
-                  {relatedPost.image && (
-                    <div className="relative h-48 overflow-hidden bg-gray-100">
-                      <img
-                        src={getAssetPath(relatedPost.image)}
-                        alt={t(`blog.posts.${relatedPost.id}.title`)}
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                      />
-                    </div>
-                  )}
-                  <div className="p-6">
-                    <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium mb-3 ${categoryColors[relatedPost.category]}`}>
-                      {t(`blog.categories.${relatedPost.category}`)}
-                    </span>
-                    <h3 className="text-lg font-bold text-gray-900 group-hover:text-neutral-dark transition-colors line-clamp-2">
-                      {t(`blog.posts.${relatedPost.id}.title`)}
-                    </h3>
-                  </div>
-                </Link>
+                  post={relatedPost}
+                  categoryColors={categoryColors}
+                  t={t}
+                />
               ))}
             </div>
           </div>

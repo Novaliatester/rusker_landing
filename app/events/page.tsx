@@ -11,7 +11,7 @@ import EventsFooter from '@/components/events/EventsFooter'
 
 export default function EventsPage() {
   return (
-    <PageTransition color="#0d5c4a">
+    <PageTransition color="#0b5d56">
     <main className="min-h-screen">
       <EventsHero />
       <EventsTrustBar />

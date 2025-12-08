@@ -33,15 +33,20 @@ export default function EventsHero() {
       ref={heroRef}
       className="relative h-screen w-full overflow-hidden bg-events"
     >
-      {/* Background */}
+      {/* Background Video */}
       <div className="absolute inset-0 z-0">
-        <motion.div
-          style={{ 
-            scale: backgroundScale,
-            backgroundImage: `url(${getAssetPath('/images/events-hero.jpg')})`
-          }}
-          className="h-full w-full bg-cover bg-center"
-        />
+        <motion.div style={{ scale: backgroundScale }} className="relative h-full w-full">
+          <video
+            src={getAssetPath('/images/events-hero-video.mp4')}
+            poster={getAssetPath('/images/ai-summit-0201.jpg')}
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="h-full w-full object-cover"
+            style={{ objectFit: 'cover' }}
+          />
+        </motion.div>
       </div>
 
       {/* Gradient Overlays - Events themed */}

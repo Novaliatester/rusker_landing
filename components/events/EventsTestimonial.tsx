@@ -32,7 +32,7 @@ export default function EventsTestimonial() {
           >
             <div className="relative rounded-2xl overflow-hidden shadow-2xl">
               <img
-                src={getAssetPath('/images/events-hero.jpg')}
+                src={getAssetPath('/images/ai-summit-0201.jpg')}
                 alt="AI Summit Barcelona"
                 className="w-full h-64 md:h-80 object-cover"
               />

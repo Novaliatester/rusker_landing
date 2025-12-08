@@ -11,7 +11,7 @@ import TravelFooter from '@/components/travel/TravelFooter'
 
 export default function TravelPage() {
   return (
-    <PageTransition color="#236a89">
+    <PageTransition color="#287497">
     <main className="min-h-screen">
       <TravelHero />
       <TravelTrustBar />

@@ -33,15 +33,20 @@ export default function NetworkHero() {
       ref={heroRef}
       className="relative h-screen w-full overflow-hidden bg-network"
     >
-      {/* Background */}
+      {/* Background Video */}
       <div className="absolute inset-0 z-0">
-        <motion.div
-          style={{ 
-            scale: backgroundScale,
-            backgroundImage: `url(${getAssetPath('/images/network-meeting.jpg')})`
-          }}
-          className="h-full w-full bg-cover bg-center"
-        />
+        <motion.div style={{ scale: backgroundScale }} className="relative h-full w-full">
+          <video
+            src={getAssetPath('/images/network-hero-video.mp4')}
+            poster={getAssetPath('/images/network-talentboard-barcelona-0201.jpg')}
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="h-full w-full object-cover"
+            style={{ objectFit: 'cover' }}
+          />
+        </motion.div>
       </div>
 
       {/* Gradient Overlays - Network themed */}

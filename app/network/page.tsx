@@ -11,7 +11,7 @@ import NetworkFooter from '@/components/network/NetworkFooter'
 
 export default function NetworkPage() {
   return (
-    <PageTransition color="#a61e40">
+    <PageTransition color="#a61e3f">
     <main className="min-h-screen">
       <NetworkHero />
       <NetworkTrustBar />

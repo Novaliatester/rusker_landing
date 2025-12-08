@@ -1,94 +1,126 @@
 'use client'
 
-import { useState, useEffect, useRef, useMemo } from 'react'
-import { AnimatePresence, motion, useInView } from 'framer-motion'
-import ProgressBar from '@/components/ui/ProgressBar'
-import Button from '@/components/ui/Button'
-import Step1Identity from './Step1Identity'
-import Step2ExperienceType from './Step2ExperienceType'
-import Step3GroupDetails from './Step3GroupDetails'
-import Step4ThemesObjectives from './Step4ThemesObjectives'
-import Step5BudgetContact from './Step5BudgetContact'
-import ConfirmationScreen from './ConfirmationScreen'
-import { FormData, defaultFormData, validateStep, submitForm } from '@/lib/formUtils'
-import { fadeInUp, staggerContainer } from '@/lib/animations'
+import { useState, useMemo, Suspense } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
+import { useSearchParams } from 'next/navigation'
 import { useI18n } from '@/lib/i18n'
 
-export default function FormContainer() {
+// Types and utilities
+import {
+  Universe,
+  TravelFormData,
+  EventsFormData,
+  defaultTravelFormData,
+  defaultEventsFormData,
+  validateTravelStep,
+  validateEventsStep,
+  submitForm,
+} from '@/lib/formUtils'
+
+// Step components
+import Step0UniverseSelector from './Step0UniverseSelector'
+import TravelStep1Identity from './travel/TravelStep1Identity'
+import TravelStep2Experience from './travel/TravelStep2Experience'
+import TravelStep3GroupDetails from './travel/TravelStep3GroupDetails'
+import TravelStep4ThemesObjectives from './travel/TravelStep4ThemesObjectives'
+import TravelStep5BudgetContact from './travel/TravelStep5BudgetContact'
+import EventsStep1Identity from './events/EventsStep1Identity'
+import EventsStep2EventType from './events/EventsStep2EventType'
+import EventsStep3Details from './events/EventsStep3Details'
+import EventsStep4Objective from './events/EventsStep4Objective'
+import EventsStep5BudgetContact from './events/EventsStep5BudgetContact'
+import ConfirmationScreen from './ConfirmationScreen'
+
+// UI Constants
+const UNIVERSE_COLORS = {
+  travel: {
+    primary: '#287497',
+    light: '#bfeff4',
+    dark: '#1f6580',
+    gradient: 'from-travel via-travel-dark to-travel',
+  },
+  events: {
+    primary: '#0b5d56',
+    light: '#6ee3a8',
+    dark: '#094a44',
+    gradient: 'from-events via-events-dark to-events',
+  },
+} as const
+
+interface FormContainerProps {
+  initialUniverse?: Universe
+}
+
+// Inner component that uses useSearchParams
+function FormContainerInner({ initialUniverse = null }: FormContainerProps) {
+  const searchParams = useSearchParams()
   const { t } = useI18n()
   
-  const stepDescriptions = useMemo(() => ({
-    1: {
-      title: t('form.steps.1.title'),
-      detail: t('form.steps.1.detail'),
-    },
-    2: {
-      title: t('form.steps.2.title'),
-      detail: t('form.steps.2.detail'),
-    },
-    3: {
-      title: t('form.steps.3.title'),
-      detail: t('form.steps.3.detail'),
-    },
-    4: {
-      title: t('form.steps.4.title'),
-      detail: t('form.steps.4.detail'),
-    },
-    5: {
-      title: t('form.steps.5.title'),
-      detail: t('form.steps.5.detail'),
-    },
-  }), [t])
-  const [currentStep, setCurrentStep] = useState(1)
-  const [formData, setFormData] = useState<FormData>(defaultFormData)
+  // Determine initial universe from props or URL params
+  const getInitialUniverse = (): Universe => {
+    if (initialUniverse) return initialUniverse
+    const urlUniverse = searchParams.get('universe')
+    if (urlUniverse === 'travel' || urlUniverse === 'events') return urlUniverse
+    return null
+  }
+
+  // State
+  const [universe, setUniverse] = useState<Universe>(getInitialUniverse())
+  const [currentStep, setCurrentStep] = useState(universe ? 1 : 0)
+  const [travelFormData, setTravelFormData] = useState<TravelFormData>(defaultTravelFormData)
+  const [eventsFormData, setEventsFormData] = useState<EventsFormData>(defaultEventsFormData)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [timeOnStep, setTimeOnStep] = useState(0)
-  const stepStartTimeRef = useRef<number>(Date.now())
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: '-50px' })
 
-  const updateFormData = (updates: Partial<FormData>) => {
-    setFormData(prev => ({ ...prev, ...updates }))
+  // Get current colors based on universe
+  const colors = useMemo(() => {
+    if (!universe) return UNIVERSE_COLORS.travel
+    return UNIVERSE_COLORS[universe]
+  }, [universe])
+
+  // Total steps (5 for both Travel and Events)
+  const totalSteps = 5
+
+  // Handle universe selection
+  const handleUniverseSelect = (selected: Universe) => {
+    setUniverse(selected)
+    setCurrentStep(1)
+    setError(null)
   }
 
-  // Clear error when on step 1
-  useEffect(() => {
-    if (currentStep === 1) {
-      setError(null)
-    }
-  }, [currentStep])
+  // Update form data
+  const updateTravelFormData = (updates: Partial<TravelFormData>) => {
+    setTravelFormData(prev => ({ ...prev, ...updates }))
+  }
 
-  // Track time spent on current step
-  useEffect(() => {
-    stepStartTimeRef.current = Date.now()
-    setTimeOnStep(0)
-    
-    const interval = setInterval(() => {
-      setTimeOnStep(Math.floor((Date.now() - stepStartTimeRef.current) / 1000))
-    }, 1000)
+  const updateEventsFormData = (updates: Partial<EventsFormData>) => {
+    setEventsFormData(prev => ({ ...prev, ...updates }))
+  }
 
-    return () => clearInterval(interval)
-  }, [currentStep])
+  // Navigation
+  const nextStep = () => {
+    const isValid = universe === 'travel'
+      ? validateTravelStep(currentStep, travelFormData)
+      : validateEventsStep(currentStep, eventsFormData)
 
-  const nextStep = (skipValidationForStep1 = false) => {
-    // For step 1, skip validation since identity is set via card click
-    if (currentStep === 1 && skipValidationForStep1) {
-      setCurrentStep(2)
-      setError(null)
-      return
-    }
-    
-    if (validateStep(currentStep, formData)) {
-      if (currentStep < 5) {
+    if (isValid) {
+      if (currentStep < totalSteps) {
         setCurrentStep(prev => prev + 1)
         setError(null)
       } else {
-        handleFinalSubmit()
+        handleSubmit()
       }
     } else {
-      setError(t('form.errors.fillAllFields'))
+      setError(t('newForm.errors.fillRequired'))
+    }
+  }
+
+  // Auto-advance without validation (for steps that auto-advance after selection)
+  const autoAdvance = () => {
+    if (currentStep < totalSteps) {
+      setCurrentStep(prev => prev + 1)
+      setError(null)
     }
   }
 
@@ -96,222 +128,317 @@ export default function FormContainer() {
     if (currentStep > 1) {
       setCurrentStep(prev => prev - 1)
       setError(null)
+    } else if (currentStep === 1 && !initialUniverse) {
+      // Go back to universe selection only if not pre-selected
+      setUniverse(null)
+      setCurrentStep(0)
+      setError(null)
     }
   }
 
-  const handleFinalSubmit = async () => {
+  // Handle form submission
+  const handleSubmit = async () => {
     setIsSubmitting(true)
     setError(null)
-    
+
+    const formData = universe === 'travel' ? travelFormData : eventsFormData
     const success = await submitForm(formData)
-    
+
     if (success) {
       setIsSubmitted(true)
     } else {
-      setError(t('form.errors.submitError'))
+      setError(t('newForm.errors.submitError'))
       setIsSubmitting(false)
     }
   }
 
+  // Check if current step is valid for enabling next button
+  const isCurrentStepValid = useMemo(() => {
+    if (!universe) return false
+    return universe === 'travel'
+      ? validateTravelStep(currentStep, travelFormData)
+      : validateEventsStep(currentStep, eventsFormData)
+  }, [universe, currentStep, travelFormData, eventsFormData])
+
+  // Show confirmation screen
   if (isSubmitted) {
-    return <ConfirmationScreen />
+    return <ConfirmationScreen accentColor={colors.primary} />
   }
 
-  const encouragementMessages = useMemo(() => ({
-    1: t('form.steps.1.encouragement'),
-    2: t('form.steps.2.encouragement'),
-    3: t('form.steps.3.encouragement'),
-    4: t('form.steps.4.encouragement'),
-    5: t('form.steps.5.encouragement'),
-  }), [t])
+  // Progress calculation
+  const progress = currentStep === 0 ? 0 : (currentStep / totalSteps) * 100
+
+  // Step titles for breadcrumb
+  const getStepTitle = () => {
+    if (currentStep === 0) return t('newForm.universeSelector.title')
+    if (universe === 'travel') {
+      return t(`newForm.stepTitles.travel.${currentStep}`)
+    } else {
+      return t(`newForm.stepTitles.events.${currentStep}`)
+    }
+  }
 
   return (
-    <section
-      id="form-section"
-      ref={ref}
-      className="relative min-h-screen bg-gradient-to-b from-white via-[#f8fbfc] to-white"
-    >
+    <section className="relative min-h-screen bg-gradient-to-b from-white via-gray-50/50 to-white">
       {/* Animated background elements */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-rusker-blue/5 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-rusker-blue/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+        <motion.div
+          animate={{
+            scale: [1, 1.1, 1],
+            opacity: [0.03, 0.06, 0.03],
+          }}
+          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+          className="absolute top-0 left-1/4 w-[600px] h-[600px] rounded-full blur-3xl"
+          style={{ backgroundColor: colors.primary }}
+        />
+        <motion.div
+          animate={{
+            scale: [1.1, 1, 1.1],
+            opacity: [0.03, 0.06, 0.03],
+          }}
+          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', delay: 4 }}
+          className="absolute bottom-0 right-1/4 w-[600px] h-[600px] rounded-full blur-3xl"
+          style={{ backgroundColor: colors.primary }}
+        />
       </div>
 
-      {/* Progress Bar - Enhanced */}
-      <div className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-200/50 shadow-sm">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-2 sm:py-3">
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={staggerContainer}
-            className="space-y-1.5 sm:space-y-2"
-          >
-            {/* Encouragement message */}
-            <motion.div
-              key={currentStep}
-              initial={{ opacity: 0, y: -10, scale: 0.95 }}
-              animate={{ 
-                opacity: 1, 
-                y: 0, 
-                scale: 1,
-                ...(timeOnStep > 10 ? {
-                  scale: [1, 1.02, 1],
-                } : {})
-              }}
-              exit={{ opacity: 0, y: 10 }}
-              transition={{ 
-                duration: 0.4,
-                ...(timeOnStep > 10 ? {
-                  scale: {
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                  }
-                } : {})
-              }}
-              className="text-center"
-            >
-              <motion.p 
-                className="text-sm sm:text-base md:text-lg font-semibold text-rusker-blue"
-                animate={timeOnStep > 15 ? {
-                  color: ["#1a6b8a", "#2a8bb0", "#1a6b8a"],
-                } : {}}
-                transition={timeOnStep > 15 ? {
-                  duration: 2,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                } : {}}
+      {/* Progress Bar - Only show when universe is selected */}
+      {universe && currentStep > 0 && (
+        <div 
+          className="sticky top-0 z-50 backdrop-blur-md border-b"
+          style={{
+            backgroundColor: 'rgba(255, 255, 255, 0.95)',
+            borderColor: `${colors.primary}20`,
+          }}
+        >
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 py-3 sm:py-4">
+            {/* Step indicator */}
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center gap-2">
+                <span 
+                  className="text-sm font-bold px-2.5 py-1 rounded-full text-white"
+                  style={{ backgroundColor: colors.primary }}
+                >
+                  {currentStep}/{totalSteps}
+                </span>
+                <span className="text-sm font-medium text-gray-600 hidden sm:inline">
+                  {getStepTitle()}
+                </span>
+              </div>
+              <span 
+                className="text-sm font-semibold"
+                style={{ color: colors.primary }}
               >
-                {encouragementMessages[currentStep as keyof typeof encouragementMessages]}
-                {timeOnStep > 20 && (
-                  <motion.span
-                    initial={{ opacity: 0, scale: 0 }}
-                    animate={{ 
-                      opacity: [0, 1, 0],
-                      scale: [0, 1, 0],
-                      rotate: [0, 10, -10, 0]
-                    }}
-                    transition={{ duration: 1.5, repeat: Infinity }}
-                    className="ml-2 inline-block"
-                  >
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-rusker-blue">
-                      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-                      <polyline points="22 4 12 14.01 9 11.01" />
-                    </svg>
-                  </motion.span>
-                )}
-              </motion.p>
-            </motion.div>
-            
+                {Math.round(progress)}%
+              </span>
+            </div>
+
             {/* Progress bar */}
-            <motion.div
-              variants={fadeInUp}
-              className="relative"
-            >
-              <ProgressBar currentStep={currentStep} totalSteps={5} />
-            </motion.div>
-          </motion.div>
+            <div className="w-full h-1.5 bg-gray-200 rounded-full overflow-hidden">
+              <motion.div
+                initial={{ width: 0 }}
+                animate={{ width: `${progress}%` }}
+                transition={{ duration: 0.4, ease: 'easeOut' }}
+                className="h-full rounded-full"
+                style={{ backgroundColor: colors.primary }}
+              />
+            </div>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Form Content */}
-      <div className="relative max-w-5xl mx-auto px-4 md:px-6 py-4 min-h-[calc(100vh-140px)] md:min-h-[calc(100vh-100px)] flex flex-col">
-        {error && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0 }}
-            className="mb-6 p-4 bg-red-50 border-l-4 border-red-400 rounded-lg text-red-700 shadow-sm"
-            role="alert"
-          >
-            <div className="flex items-center gap-2">
-              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-              </svg>
-              <span className="font-medium">{error}</span>
-            </div>
-          </motion.div>
-        )}
+      <div className="relative max-w-5xl mx-auto px-4 md:px-6 py-6 md:py-10 min-h-[calc(100vh-140px)] flex flex-col">
+        {/* Error Message */}
+        <AnimatePresence>
+          {error && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              className="mb-6 p-4 bg-red-50 border-l-4 border-red-400 rounded-lg text-red-700"
+            >
+              <div className="flex items-center gap-2">
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                </svg>
+                <span className="font-medium">{error}</span>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-
-        <div className="flex-1 flex flex-col relative pb-24 md:pb-20">
+        {/* Steps Container */}
+        <div className="flex-1 flex flex-col pb-24 md:pb-20">
           <AnimatePresence mode="wait">
-            {currentStep === 1 && (
+            {/* Step 0: Universe Selection */}
+            {currentStep === 0 && (
               <motion.div
-                key="step1"
-                initial={{ opacity: 0, x: 30, scale: 0.95 }}
-                animate={{ opacity: 1, x: 0, scale: 1 }}
-                exit={{ opacity: 0, x: -30, scale: 0.95 }}
-                transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                key="step0"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.4 }}
+                className="flex-1 flex items-center justify-center py-8"
               >
-                <Step1Identity
-                  formData={formData}
-                  updateFormData={updateFormData}
-                  onNext={nextStep}
+                <Step0UniverseSelector onSelect={handleUniverseSelect} />
+              </motion.div>
+            )}
+
+            {/* Travel Steps */}
+            {universe === 'travel' && currentStep === 1 && (
+              <motion.div
+                key="travel-step1"
+                initial={{ opacity: 0, x: 30 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -30 }}
+                transition={{ duration: 0.4 }}
+              >
+                <TravelStep1Identity
+                  formData={travelFormData}
+                  updateFormData={updateTravelFormData}
+                  onNext={autoAdvance}
+                  accentColor={colors.primary}
                 />
               </motion.div>
             )}
-            {currentStep === 2 && (
+            {universe === 'travel' && currentStep === 2 && (
               <motion.div
-                key="step2"
-                initial={{ opacity: 0, x: 30, scale: 0.95 }}
-                animate={{ opacity: 1, x: 0, scale: 1 }}
-                exit={{ opacity: 0, x: -30, scale: 0.95 }}
-                transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                key="travel-step2"
+                initial={{ opacity: 0, x: 30 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -30 }}
+                transition={{ duration: 0.4 }}
               >
-                <Step2ExperienceType
-                  formData={formData}
-                  updateFormData={updateFormData}
-                  onNext={nextStep}
-                  onPrev={prevStep}
+                <TravelStep2Experience
+                  formData={travelFormData}
+                  updateFormData={updateTravelFormData}
+                  onNext={autoAdvance}
+                  accentColor={colors.primary}
                 />
               </motion.div>
             )}
-            {currentStep === 3 && (
+            {universe === 'travel' && currentStep === 3 && (
               <motion.div
-                key="step3"
-                initial={{ opacity: 0, x: 30, scale: 0.95 }}
-                animate={{ opacity: 1, x: 0, scale: 1 }}
-                exit={{ opacity: 0, x: -30, scale: 0.95 }}
-                transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                key="travel-step3"
+                initial={{ opacity: 0, x: 30 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -30 }}
+                transition={{ duration: 0.4 }}
               >
-                <Step3GroupDetails
-                  formData={formData}
-                  updateFormData={updateFormData}
-                  onNext={nextStep}
-                  onPrev={prevStep}
+                <TravelStep3GroupDetails
+                  formData={travelFormData}
+                  updateFormData={updateTravelFormData}
+                  accentColor={colors.primary}
                 />
               </motion.div>
             )}
-            {currentStep === 4 && (
+            {universe === 'travel' && currentStep === 4 && (
               <motion.div
-                key="step4"
-                initial={{ opacity: 0, x: 30, scale: 0.95 }}
-                animate={{ opacity: 1, x: 0, scale: 1 }}
-                exit={{ opacity: 0, x: -30, scale: 0.95 }}
-                transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                key="travel-step4"
+                initial={{ opacity: 0, x: 30 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -30 }}
+                transition={{ duration: 0.4 }}
               >
-                <Step4ThemesObjectives
-                  formData={formData}
-                  updateFormData={updateFormData}
-                  onNext={nextStep}
-                  onPrev={prevStep}
+                <TravelStep4ThemesObjectives
+                  formData={travelFormData}
+                  updateFormData={updateTravelFormData}
+                  accentColor={colors.primary}
                 />
               </motion.div>
             )}
-            {currentStep === 5 && (
+            {universe === 'travel' && currentStep === 5 && (
               <motion.div
-                key="step5"
-                initial={{ opacity: 0, x: 30, scale: 0.95 }}
-                animate={{ opacity: 1, x: 0, scale: 1 }}
-                exit={{ opacity: 0, x: -30, scale: 0.95 }}
-                transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                key="travel-step5"
+                initial={{ opacity: 0, x: 30 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -30 }}
+                transition={{ duration: 0.4 }}
               >
-                <Step5BudgetContact
-                  formData={formData}
-                  updateFormData={updateFormData}
-                  onNext={nextStep}
-                  onPrev={prevStep}
+                <TravelStep5BudgetContact
+                  formData={travelFormData}
+                  updateFormData={updateTravelFormData}
+                  accentColor={colors.primary}
+                  isSubmitting={isSubmitting}
+                />
+              </motion.div>
+            )}
+
+            {/* Events Steps */}
+            {universe === 'events' && currentStep === 1 && (
+              <motion.div
+                key="events-step1"
+                initial={{ opacity: 0, x: 30 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -30 }}
+                transition={{ duration: 0.4 }}
+              >
+                <EventsStep1Identity
+                  formData={eventsFormData}
+                  updateFormData={updateEventsFormData}
+                  onNext={autoAdvance}
+                  accentColor={colors.primary}
+                />
+              </motion.div>
+            )}
+            {universe === 'events' && currentStep === 2 && (
+              <motion.div
+                key="events-step2"
+                initial={{ opacity: 0, x: 30 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -30 }}
+                transition={{ duration: 0.4 }}
+              >
+                <EventsStep2EventType
+                  formData={eventsFormData}
+                  updateFormData={updateEventsFormData}
+                  accentColor={colors.primary}
+                />
+              </motion.div>
+            )}
+            {universe === 'events' && currentStep === 3 && (
+              <motion.div
+                key="events-step3"
+                initial={{ opacity: 0, x: 30 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -30 }}
+                transition={{ duration: 0.4 }}
+              >
+                <EventsStep3Details
+                  formData={eventsFormData}
+                  updateFormData={updateEventsFormData}
+                  accentColor={colors.primary}
+                />
+              </motion.div>
+            )}
+            {universe === 'events' && currentStep === 4 && (
+              <motion.div
+                key="events-step4"
+                initial={{ opacity: 0, x: 30 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -30 }}
+                transition={{ duration: 0.4 }}
+              >
+                <EventsStep4Objective
+                  formData={eventsFormData}
+                  updateFormData={updateEventsFormData}
+                  accentColor={colors.primary}
+                />
+              </motion.div>
+            )}
+            {universe === 'events' && currentStep === 5 && (
+              <motion.div
+                key="events-step5"
+                initial={{ opacity: 0, x: 30 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -30 }}
+                transition={{ duration: 0.4 }}
+              >
+                <EventsStep5BudgetContact
+                  formData={eventsFormData}
+                  updateFormData={updateEventsFormData}
+                  accentColor={colors.primary}
                   isSubmitting={isSubmitting}
                 />
               </motion.div>
@@ -319,47 +446,78 @@ export default function FormContainer() {
           </AnimatePresence>
         </div>
 
-        {/* Fixed button area at bottom */}
-        {currentStep > 1 && (
-          <div className="sticky bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-t border-gray-200/50 py-2 sm:py-3 md:py-4 mt-auto z-10">
+        {/* Navigation Buttons - Only show when universe is selected and step > 0 */}
+        {universe && currentStep > 0 && (
+          <div 
+            className="sticky bottom-0 left-0 right-0 backdrop-blur-md border-t py-3 sm:py-4 mt-auto z-10"
+            style={{
+              backgroundColor: 'rgba(255, 255, 255, 0.95)',
+              borderColor: `${colors.primary}15`,
+            }}
+          >
             <div className="max-w-5xl mx-auto px-3 sm:px-4 md:px-6">
-              <div className="flex justify-between gap-2 sm:gap-3 max-w-md mx-auto">
-                <Button
+              <div className="flex justify-between gap-3 max-w-lg mx-auto">
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                   onClick={prevStep}
-                  variant="outline"
-                  size="large"
-                  className="min-h-[44px] text-sm sm:text-base"
+                  className="flex-1 py-3 px-6 rounded-xl font-semibold border-2 transition-all duration-200"
+                  style={{
+                    borderColor: colors.primary,
+                    color: colors.primary,
+                  }}
                 >
-                  {t('common.back')}
-                </Button>
-                <Button
+                  {t('newForm.navigation.back')}
+                </motion.button>
+                <motion.button
+                  whileHover={isCurrentStepValid && !isSubmitting ? { scale: 1.02 } : undefined}
+                  whileTap={isCurrentStepValid && !isSubmitting ? { scale: 0.98 } : undefined}
                   onClick={nextStep}
-                  variant="primary"
-                  size="large"
-                  disabled={
-                    (currentStep === 2 && formData.experienceTypes.length === 0) ||
-                    (currentStep === 3 && (
-                      formData.groupSize === 0 ||
-                      !formData.dates.start ||
-                      formData.duration === 0
-                    )) ||
-                    (currentStep === 4 && (formData.themes.length === 0 || formData.objectives.length === 0)) ||
-                    (currentStep === 5 && (
-                      !formData.budget ||
-                      !formData.contact.name ||
-                      !formData.contact.email ||
-                      isSubmitting
-                    ))
-                  }
-                  className="bg-rusker-blue hover:bg-[#1f5a75] min-h-[44px] text-sm sm:text-base"
+                  disabled={!isCurrentStepValid || isSubmitting}
+                  className={`
+                    flex-1 py-3 px-6 rounded-xl font-semibold text-white transition-all duration-200
+                    ${!isCurrentStepValid || isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}
+                  `}
+                  style={{
+                    backgroundColor: colors.primary,
+                    boxShadow: isCurrentStepValid && !isSubmitting 
+                      ? `0 4px 14px ${colors.primary}40` 
+                      : 'none',
+                  }}
                 >
-                  {currentStep === 5 ? (isSubmitting ? t('common.sending') : t('common.send')) : t('common.continue')}
-                </Button>
+                  {isSubmitting ? (
+                    <span className="flex items-center justify-center gap-2">
+                      <motion.span
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+                        className="w-5 h-5 border-2 border-white border-t-transparent rounded-full"
+                      />
+                      {t('newForm.navigation.submitting')}
+                    </span>
+                  ) : currentStep === totalSteps ? (
+                    t('newForm.navigation.submit')
+                  ) : (
+                    t('newForm.navigation.continue')
+                  )}
+                </motion.button>
               </div>
             </div>
           </div>
         )}
       </div>
     </section>
+  )
+}
+
+// Main export with Suspense wrapper
+export default function FormContainer({ initialUniverse = null }: FormContainerProps) {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="w-12 h-12 border-4 border-travel border-t-transparent rounded-full animate-spin" />
+      </div>
+    }>
+      <FormContainerInner initialUniverse={initialUniverse} />
+    </Suspense>
   )
 }

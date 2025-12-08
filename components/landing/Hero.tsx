@@ -10,7 +10,9 @@ import { useI18n } from '@/lib/i18n'
 export default function Hero() {
   const { t } = useI18n()
   const [isLoaded, setIsLoaded] = useState(false)
+  const [fadeOpacity, setFadeOpacity] = useState(0)
   const heroRef = useRef<HTMLDivElement>(null)
+  const videoRef = useRef<HTMLVideoElement>(null)
   
   const { scrollYProgress } = useScroll({
     target: heroRef,
@@ -23,6 +25,52 @@ export default function Hero() {
 
   useEffect(() => {
     setIsLoaded(true)
+  }, [])
+
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video) return
+
+    const handleTimeUpdate = () => {
+      const duration = video.duration
+      const currentTime = video.currentTime
+      
+      // Start fading in the last 0.5 seconds of the video
+      if (duration > 0) {
+        const fadeStartTime = duration - 0.5
+        if (currentTime >= fadeStartTime) {
+          const fadeProgress = (currentTime - fadeStartTime) / 0.5
+          setFadeOpacity(Math.min(fadeProgress, 1))
+        } else if (currentTime < 0.1) {
+          // Reset fade at the beginning of the video (when it loops)
+          setFadeOpacity(0)
+        } else {
+          setFadeOpacity(0)
+        }
+      }
+    }
+
+    const handleSeeked = () => {
+      // Reset fade when video seeks (including loop restart)
+      if (video.currentTime < 0.1) {
+        setFadeOpacity(0)
+      }
+    }
+
+    const handleEnded = () => {
+      // Reset fade when video ends (before loop)
+      setFadeOpacity(0)
+    }
+
+    video.addEventListener('timeupdate', handleTimeUpdate)
+    video.addEventListener('seeked', handleSeeked)
+    video.addEventListener('ended', handleEnded)
+
+    return () => {
+      video.removeEventListener('timeupdate', handleTimeUpdate)
+      video.removeEventListener('seeked', handleSeeked)
+      video.removeEventListener('ended', handleEnded)
+    }
   }, [])
 
   const scrollToForm = () => {
@@ -39,13 +87,19 @@ export default function Hero() {
       <div className="absolute inset-0 z-0">
           <motion.div style={{ scale: backgroundScale }} className="relative h-full w-full">
             <video
-            src={getAssetPath('/images/Hero Barcelona Video 1 4K (1).mp4')}
+              ref={videoRef}
+              src={getAssetPath('/images/Hero Barcelona Video 1 4K (1).mp4')}
               autoPlay
               loop
               muted
               playsInline
               className="h-full w-full object-cover opacity-100"
-            style={{ objectFit: 'cover' }}
+              style={{ objectFit: 'cover' }}
+            />
+            {/* Fade overlay at end of loop */}
+            <div 
+              className="absolute inset-0 bg-black transition-opacity duration-500"
+              style={{ opacity: fadeOpacity }}
             />
           </motion.div>
       </div>

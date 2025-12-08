@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     url: `${baseUrl}/travel`,
     images: [
       {
-        url: `${baseUrl}/images/travel-hero.jpg`,
+        url: `${baseUrl}/images/travel-entreprises-0201.jpg`,
         width: 1200,
         height: 630,
         alt: 'Rusker Travel - Learning Expeditions',
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Rusker Travel - Learning Expeditions à Barcelone',
     description: 'Organisez des Learning Expeditions uniques à Barcelone.',
-    images: [`${baseUrl}/images/travel-hero.jpg`],
+    images: [`${baseUrl}/images/travel-entreprises-0201.jpg`],
   },
   alternates: {
     canonical: `${baseUrl}/travel`,

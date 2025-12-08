@@ -24,7 +24,7 @@ export const blogPosts: BlogPost[] = [
     category: 'event',
     date: '2024-11-25',
     readTime: 10,
-    image: '/images/events-feature.png',
+    image: '/images/ai-summit-keynote.jpg',
     featured: true,
   },
   {
@@ -42,7 +42,7 @@ export const blogPosts: BlogPost[] = [
     category: 'insight',
     date: '2024-11-15',
     readTime: 9,
-    image: '/images/hero-barcelona.jpg',
+    image: '/images/barcelona-placa-espanya.jpg',
     featured: true,
   },
   {
@@ -51,7 +51,7 @@ export const blogPosts: BlogPost[] = [
     category: 'ecosystem',
     date: '2024-11-10',
     readTime: 8,
-    image: '/images/network-meeting.jpg',
+    image: '/images/french-tech-networking.jpg',
     featured: false,
   },
   {
@@ -78,7 +78,7 @@ export const blogPosts: BlogPost[] = [
     category: 'case-study',
     date: '2024-10-20',
     readTime: 5,
-    image: '/images/events-hero.jpg',
+    image: '/images/shoptalk-presentation.jpg',
     featured: false,
   },
   {
@@ -87,7 +87,7 @@ export const blogPosts: BlogPost[] = [
     category: 'ecosystem',
     date: '2024-10-15',
     readTime: 12,
-    image: '/images/barcelona-beach.jpg',
+    image: '/images/barcelona-skyline-sagrada.jpg',
     featured: true,
   },
 ];

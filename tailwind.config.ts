@@ -14,20 +14,26 @@ const config: Config = {
         'neutral-dark': '#2f3433',
         'neutral-mid': '#cfcfcf',
         
-        // Travel universe
-        'travel': '#236a89',
+        // Travel universe (blue/teal)
+        'travel': '#287497',
         'travel-light': '#bfeff4',
+        'travel-dark': '#1f6580',
         
-        // Events universe
-        'events': '#0d5c4a',
+        // Events universe (green)
+        'events': '#0b5d56',
         'events-light': '#6ee3a8',
+        'events-dark': '#094a44',
         
-        // Network universe
-        'network': '#a61e40',
+        // Network universe (burgundy/red)
+        'network': '#a61e3f',
         'network-light': '#ffdfeb',
+        'network-dark': '#8a1935',
         
         // Legacy (keep for backwards compatibility)
-        'rusker-blue': '#236a89',
+        'rusker-blue': '#287497',
+        'rusker-travel': '#287497',
+        'rusker-events': '#0b5d56',
+        'rusker-network': '#a61e3f',
         'text-dark': '#2f3433',
         'bg-light': '#f5f5f5',
       },

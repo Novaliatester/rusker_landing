@@ -15,12 +15,12 @@ export default function TravelCTA() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    // Navigate to form with email pre-filled
-    router.push(`/form?email=${encodeURIComponent(email)}&source=travel`)
+    // Navigate to form with email pre-filled and travel universe pre-selected
+    router.push(`/form?universe=travel&email=${encodeURIComponent(email)}`)
   }
 
   const goToForm = () => {
-    router.push('/form?source=travel')
+    router.push('/form?universe=travel')
   }
 
   return (

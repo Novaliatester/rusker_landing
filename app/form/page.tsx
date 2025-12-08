@@ -1,11 +1,12 @@
 'use client'
 
+import { Suspense } from 'react'
 import { motion } from 'framer-motion'
 import FormContainer from '@/components/form/FormContainer'
 import { getAssetPath } from '@/lib/utils'
 import { fadeInUp } from '@/lib/animations'
 
-export default function FormPage() {
+function FormContent() {
   return (
     <main className="min-h-screen bg-white">
       {/* Header Section with Logo */}
@@ -13,12 +14,12 @@ export default function FormPage() {
         initial="hidden"
         animate="visible"
         variants={fadeInUp}
-        className="relative bg-gradient-to-br from-rusker-blue via-[#1f5a75] to-rusker-blue overflow-hidden"
+        className="relative bg-gradient-to-br from-neutral-dark via-neutral-dark/95 to-neutral-dark overflow-hidden"
       >
         {/* Background decorative elements */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-0 left-1/4 w-96 h-96 bg-white rounded-full blur-3xl" />
-          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-white rounded-full blur-3xl" />
+        <div className="absolute inset-0 opacity-20">
+          <div className="absolute top-0 left-1/4 w-96 h-96 bg-travel rounded-full blur-3xl" />
+          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-events rounded-full blur-3xl" />
         </div>
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-10 md:pt-12 pb-16 sm:pb-20 md:pb-24">
@@ -31,7 +32,7 @@ export default function FormPage() {
             >
               <img 
                 src={getAssetPath('/images/2026 Rusker/Logos/Rusker (white).png')} 
-                alt="Rusker Travel" 
+                alt="Rusker" 
                 className="h-8 sm:h-10 md:h-12 w-auto mx-auto"
               />
             </motion.div>
@@ -41,12 +42,25 @@ export default function FormPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="max-w-2xl w-full"
+              className="max-w-3xl w-full"
             >
-              <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-white leading-[1.2] px-2 break-words">
-                Créez votre expérience sur mesure à Barcelone
+              <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white leading-tight px-2">
+                Créez votre expérience
+                <span className="block mt-1 bg-gradient-to-r from-travel-light via-white to-events-light bg-clip-text text-transparent">
+                  sur mesure à Barcelone
+                </span>
               </h1>
             </motion.div>
+
+            {/* Subtitle */}
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="text-white/80 text-sm sm:text-base max-w-xl"
+            >
+              Voyages, séminaires ou événements : nous créons des expériences uniques adaptées à vos objectifs
+            </motion.p>
           </div>
         </div>
 
@@ -75,3 +89,14 @@ export default function FormPage() {
   )
 }
 
+export default function FormPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-white">
+        <div className="w-12 h-12 border-4 border-travel border-t-transparent rounded-full animate-spin" />
+      </div>
+    }>
+      <FormContent />
+    </Suspense>
+  )
+}

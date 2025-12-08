@@ -5,6 +5,7 @@ import { useInView } from 'framer-motion'
 import { useRef, useMemo } from 'react'
 import Button from '@/components/ui/Button'
 import { fadeInUp, staggerContainer } from '@/lib/animations'
+import { getAssetPath } from '@/lib/utils'
 import { useI18n } from '@/lib/i18n'
 
 export default function TransitionToForm() {
@@ -32,6 +33,16 @@ export default function TransitionToForm() {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,_rgba(255,255,255,0.1)_0%,_transparent_50%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,_rgba(255,255,255,0.08)_0%,_transparent_50%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,_rgba(255,255,255,0.06)_0%,_transparent_50%)]" />
+        <div
+          className="absolute inset-0 opacity-30"
+          style={{
+            backgroundImage: `url(${getAssetPath('/images/rusker-travel-events-network-0201.jpg')})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            filter: 'brightness(0.45) saturate(0.8)',
+            mixBlendMode: 'screen',
+          }}
+        />
       </div>
 
       <div className="relative mx-auto max-w-5xl px-4 md:px-6 text-center">

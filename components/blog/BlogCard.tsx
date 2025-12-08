@@ -1,7 +1,9 @@
 'use client'
 
+import { useState, memo } from 'react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
+import Image from 'next/image'
 import { getAssetPath } from '@/lib/utils'
 import { BlogPost } from '@/lib/blogData'
 import { useI18n } from '@/lib/i18n'
@@ -9,10 +11,13 @@ import { useI18n } from '@/lib/i18n'
 interface BlogCardProps {
   post: BlogPost;
   index: number;
+  priority?: boolean; // For above-the-fold images
 }
 
-export default function BlogCard({ post, index }: BlogCardProps) {
+function BlogCard({ post, index, priority = false }: BlogCardProps) {
   const { t } = useI18n()
+  const [imageLoaded, setImageLoaded] = useState(false)
+  const [imageError, setImageError] = useState(false)
   
   const categoryColors = {
     'insight': 'bg-purple-100 text-purple-700',
@@ -21,27 +26,48 @@ export default function BlogCard({ post, index }: BlogCardProps) {
     'event': 'bg-orange-100 text-orange-700',
   }
 
+  // Limit animation delay to first 6 cards for faster perceived load
+  const animationDelay = index < 6 ? index * 0.05 : 0.3
+
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
+    <motion.article
+      initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
+      transition={{ duration: 0.4, delay: animationDelay }}
+      layout
     >
       <Link 
         href={`/blog/${post.slug}`}
         className="group block h-full"
+        prefetch={index < 3} // Prefetch only first 3 posts
       >
         <div className="h-full bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100">
-          {/* Image */}
+          {/* Image with loading state */}
           {post.image && (
             <div className="relative h-56 overflow-hidden bg-gray-100">
-              <img
+              {/* Skeleton loader */}
+              {!imageLoaded && !imageError && (
+                <div className="absolute inset-0 bg-gradient-to-r from-gray-100 via-gray-200 to-gray-100 animate-shimmer" />
+              )}
+              
+              {/* Optimized Image */}
+              <Image
                 src={getAssetPath(post.image)}
                 alt={t(`blog.posts.${post.id}.title`)}
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                className={`object-cover transition-all duration-500 group-hover:scale-105 ${
+                  imageLoaded ? 'opacity-100' : 'opacity-0'
+                }`}
+                onLoad={() => setImageLoaded(true)}
+                onError={() => setImageError(true)}
+                priority={priority || index < 3} // Prioritize first 3 images
+                loading={priority || index < 3 ? 'eager' : 'lazy'}
               />
+              
+              {/* Featured badge */}
               {post.featured && (
-                <div className="absolute top-4 right-4 bg-neutral-dark text-white px-3 py-1 rounded-full text-xs font-medium">
+                <div className="absolute top-4 right-4 bg-neutral-dark text-white px-3 py-1 rounded-full text-xs font-medium z-10">
                   Featured
                 </div>
               )}
@@ -55,13 +81,16 @@ export default function BlogCard({ post, index }: BlogCardProps) {
               <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${categoryColors[post.category]}`}>
                 {t(`blog.categories.${post.category}`)}
               </span>
-              <span className="text-sm text-gray-500">
+              <time 
+                dateTime={post.date}
+                className="text-sm text-gray-500"
+              >
                 {new Date(post.date).toLocaleDateString('fr-FR', { 
                   year: 'numeric', 
                   month: 'long', 
                   day: 'numeric' 
                 })}
-              </span>
+              </time>
             </div>
 
             {/* Title */}
@@ -78,7 +107,7 @@ export default function BlogCard({ post, index }: BlogCardProps) {
             <div className="flex items-center justify-between pt-4 border-t border-gray-100">
               <span className="text-sm font-semibold text-neutral-dark group-hover:gap-3 inline-flex items-center gap-2 transition-all">
                 {t('blog.readMore')}
-                <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
               </span>
@@ -89,7 +118,10 @@ export default function BlogCard({ post, index }: BlogCardProps) {
           </div>
         </div>
       </Link>
-    </motion.div>
+    </motion.article>
   )
 }
+
+// Memoize to prevent unnecessary re-renders
+export default memo(BlogCard)
 

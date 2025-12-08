@@ -15,11 +15,12 @@ export default function EventsCTA() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    router.push(`/form?email=${encodeURIComponent(email)}&source=events`)
+    // Navigate to form with email pre-filled and events universe pre-selected
+    router.push(`/form?universe=events&email=${encodeURIComponent(email)}`)
   }
 
   const goToForm = () => {
-    router.push('/form?source=events')
+    router.push('/form?universe=events')
   }
 
   return (

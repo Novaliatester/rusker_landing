@@ -31,7 +31,7 @@ const audiences = [
       'Ateliers innovation',
       'Soirées networking',
     ],
-    image: getAssetPath('/images/service-travel.jpg'),
+    image: getAssetPath('/images/travel-entreprises-0201.jpg'),
     cta: 'Créer mon séminaire',
     stats: { value: '30+', label: 'entreprises partenaires' },
   },

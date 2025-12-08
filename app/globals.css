@@ -54,22 +54,14 @@ h1, h2, h3, h4, h5, h6 {
   letter-spacing: -0.005em;
 }
 
-/* Custom scrollbar */
+/* Hide scrollbar globally */
 ::-webkit-scrollbar {
-  width: 10px;
+  display: none;
 }
 
-::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--rusker-blue);
-  border-radius: 5px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #1f5a75;
+html, body {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
 }
 
 /* Input range slider styling */
@@ -142,23 +134,14 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
   }
 }
 
-/* Custom scrollbar for modal */
+/* Custom scrollbar for modal - hidden */
+.custom-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
 .custom-scrollbar::-webkit-scrollbar {
-  width: 8px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 10px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background: var(--rusker-blue);
-  border-radius: 10px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #1f5a75;
+  display: none;
 }
 
 /* Mobile optimizations for flip cards */
@@ -248,5 +231,51 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     padding-left: 1rem;
     padding-right: 1rem;
   }
+}
+
+/* Skeleton shimmer animation for loading states */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    #f0f0f0 0%,
+    #e0e0e0 20%,
+    #f0f0f0 40%,
+    #f0f0f0 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+/* Image optimization - prevent layout shift */
+.aspect-video {
+  aspect-ratio: 16 / 9;
+}
+
+.aspect-blog-card {
+  aspect-ratio: 16 / 10;
+}
+
+/* Optimize image rendering */
+img {
+  content-visibility: auto;
+}
+
+/* Blur-up effect for images */
+.img-blur-up {
+  filter: blur(5px);
+  transition: filter 0.3s ease-out;
+}
+
+.img-blur-up.loaded {
+  filter: blur(0);
 }
 
