@@ -185,7 +185,7 @@ export default function TravelStep3GroupDetails({
               const isSelected = formData.duration === duration.id
               return (
                 <button
-                  key={duration.id}
+                  key={duration.id || 'unknown'}
                   onClick={() => handleDurationSelect(duration.id)}
                   className={`
                     px-4 py-3 rounded-xl font-medium text-sm md:text-base transition-all duration-200
@@ -198,7 +198,7 @@ export default function TravelStep3GroupDetails({
                     boxShadow: isSelected ? `0 4px 12px ${accentColor}40` : 'none',
                   }}
                 >
-                  {durationLabels[duration.id] || duration.label}
+                  {duration.id ? durationLabels[duration.id] || duration.label : duration.label}
                 </button>
               )
             })}
