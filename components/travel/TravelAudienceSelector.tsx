@@ -18,7 +18,7 @@ const audiences = [
     ],
     image: getAssetPath('/images/project-essec.jpg'),
     cta: 'Organiser une Learning Expedition',
-    stats: { value: '50+', label: 'écoles accompagnées' },
+    stats: { value: '20+', label: 'écoles accompagnées' },
   },
   {
     id: 'companies',
@@ -33,7 +33,7 @@ const audiences = [
     ],
     image: getAssetPath('/images/travel-entreprises-0201.jpg'),
     cta: 'Créer mon séminaire',
-    stats: { value: '30+', label: 'entreprises partenaires' },
+    stats: { value: '50+', label: 'entreprises partenaires' },
   },
 ]
 

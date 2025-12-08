@@ -39,6 +39,7 @@ export interface TravelFormData {
   contact: {
     name: string
     email: string
+    establishment: string
     role: string
     phone: string
     message: string
@@ -59,6 +60,7 @@ export interface EventsFormData {
   contact: {
     name: string
     email: string
+    establishment: string
     role: string
     phone: string
     message: string
@@ -84,6 +86,7 @@ export const defaultTravelFormData: TravelFormData = {
   contact: {
     name: '',
     email: '',
+    establishment: '',
     role: '',
     phone: '',
     message: '',
@@ -105,6 +108,7 @@ export const defaultEventsFormData: EventsFormData = {
   contact: {
     name: '',
     email: '',
+    establishment: '',
     role: '',
     phone: '',
     message: '',
@@ -238,6 +242,7 @@ export const validateTravelStep = (step: number, data: TravelFormData): boolean 
         data.budget !== null &&
         data.contact.name.trim() !== '' &&
         data.contact.email.trim() !== '' &&
+        data.contact.establishment.trim() !== '' &&
         isValidEmail(data.contact.email)
       )
     default:
@@ -265,6 +270,7 @@ export const validateEventsStep = (step: number, data: EventsFormData): boolean 
         data.budget !== null &&
         data.contact.name.trim() !== '' &&
         data.contact.email.trim() !== '' &&
+        data.contact.establishment.trim() !== '' &&
         isValidEmail(data.contact.email)
       )
     default:
@@ -318,6 +324,7 @@ const formatTravelPayload = (data: TravelFormData) => ({
   contact: {
     name: data.contact.name,
     email: data.contact.email,
+    establishment: data.contact.establishment,
     role: data.contact.role || null,
     phone: data.contact.phone || null,
     message: data.contact.message || null,
@@ -341,6 +348,7 @@ const formatEventsPayload = (data: EventsFormData) => ({
   contact: {
     name: data.contact.name,
     email: data.contact.email,
+    establishment: data.contact.establishment,
     role: data.contact.role || null,
     phone: data.contact.phone || null,
     message: data.contact.message || null,

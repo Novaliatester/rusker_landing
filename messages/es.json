@@ -180,6 +180,11 @@
     }
   },
   "form": {
+    "pageHeader": {
+      "title": "Crea tu experiencia",
+      "titleHighlight": "a medida en Barcelona",
+      "subtitle": "Viajes, seminarios o eventos: creamos experiencias únicas adaptadas a tus objetivos"
+    },
     "steps": {
       "1": {
         "title": "Identidad del portador del proyecto",
@@ -528,6 +533,8 @@
       "contact": "Tus datos de contacto",
       "name": "Nombre completo",
       "email": "Email profesional",
+      "establishment": "Establecimiento",
+      "establishmentPlaceholder": "Nombre de tu escuela, universidad o empresa",
       "role": "Cargo / Rol",
       "rolePlaceholder": "Director de programa, RRHH, etc.",
       "phone": "Teléfono (opcional)",

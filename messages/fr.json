@@ -180,6 +180,11 @@
     }
   },
   "form": {
+    "pageHeader": {
+      "title": "Créez votre expérience",
+      "titleHighlight": "sur mesure à Barcelone",
+      "subtitle": "Voyages, séminaires ou événements : nous créons des expériences uniques adaptées à vos objectifs"
+    },
     "steps": {
       "1": {
         "title": "Identité du porteur de projet",
@@ -528,6 +533,8 @@
       "contact": "Vos coordonnées",
       "name": "Nom complet",
       "email": "Email professionnel",
+      "establishment": "Établissement",
+      "establishmentPlaceholder": "Nom de votre école, université ou entreprise",
       "role": "Fonction / Rôle",
       "rolePlaceholder": "Directeur de programme, RH, etc.",
       "phone": "Téléphone (optionnel)",

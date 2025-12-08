@@ -2,25 +2,14 @@
 
 import { motion, useInView } from 'framer-motion'
 import { useRef, useState } from 'react'
-import { useRouter } from 'next/navigation'
 import { useI18n } from '@/lib/i18n'
 
 export default function NetworkCTA() {
   const { t } = useI18n()
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-50px' })
-  const router = useRouter()
-  const [email, setEmail] = useState('')
-  const [isHovered, setIsHovered] = useState(false)
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    router.push(`/form?email=${encodeURIComponent(email)}&source=network`)
-  }
-
-  const goToForm = () => {
-    router.push('/form?source=network')
-  }
+  const [isHoveredTalent, setIsHoveredTalent] = useState(false)
+  const [isHoveredFrench, setIsHoveredFrench] = useState(false)
 
   return (
     <section id="network-cta" ref={ref} className="relative py-20 md:py-32 bg-white overflow-hidden">
@@ -58,66 +47,77 @@ export default function NetworkCTA() {
             {t('network.ctaSection.description')}
           </p>
 
-          {/* Quick email capture or direct CTA */}
-          <div className="flex flex-col items-center gap-4">
-            <motion.button
-              onClick={goToForm}
-              onMouseEnter={() => setIsHovered(true)}
-              onMouseLeave={() => setIsHovered(false)}
+          {/* CTA Buttons */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
+            {/* Talent Board Button */}
+            <motion.a
+              href="https://www.talentboardbarcelona.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              onMouseEnter={() => setIsHoveredTalent(true)}
+              onMouseLeave={() => setIsHoveredTalent(false)}
               whileHover={{ scale: 1.03, y: -2 }}
               whileTap={{ scale: 0.98 }}
-              className="group relative px-10 py-5 bg-rusker-network text-white font-bold text-lg rounded-full overflow-hidden shadow-xl shadow-rusker-network/30"
+              className="group relative px-10 py-5 bg-rusker-network text-white font-bold text-lg rounded-full overflow-hidden shadow-xl shadow-rusker-network/30 w-full sm:w-auto"
             >
               {/* Animated background */}
               <motion.div
                 className="absolute inset-0 bg-gradient-to-r from-[#8a1935] via-rusker-network to-[#8a1935]"
                 animate={{
-                  x: isHovered ? ['0%', '100%'] : '0%',
+                  x: isHoveredTalent ? ['0%', '100%'] : '0%',
                 }}
                 transition={{ duration: 0.6 }}
               />
               
-              <span className="relative z-10 flex items-center gap-3">
-                {t('network.ctaSection.button')}
+              <span className="relative z-10 flex items-center justify-center gap-3">
+                Talent Board
                 <motion.svg
                   className="w-5 h-5"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
-                  animate={{ x: isHovered ? 4 : 0 }}
+                  animate={{ x: isHoveredTalent ? 4 : 0 }}
                   transition={{ duration: 0.2 }}
                 >
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </motion.svg>
               </span>
-            </motion.button>
+            </motion.a>
 
-            {/* OR divider */}
-            <div className="flex items-center gap-4 w-full max-w-md">
-              <div className="h-px flex-1 bg-gray-200" />
-              <span className="text-gray-400 text-sm">{t('network.ctaSection.or')}</span>
-              <div className="h-px flex-1 bg-gray-200" />
-            </div>
-
-            {/* Email quick capture */}
-            <form onSubmit={handleSubmit} className="w-full max-w-md">
-              <div className="flex gap-2 p-2 bg-gray-50 rounded-full border border-gray-200 focus-within:border-rusker-network focus-within:ring-2 focus-within:ring-rusker-network/20 transition-all">
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder={t('network.ctaSection.emailPlaceholder')}
-                  className="flex-1 px-4 py-2 bg-transparent text-text-dark placeholder:text-gray-400 focus:outline-none"
-                  required
-                />
-                <button
-                  type="submit"
-                  className="px-5 py-2 bg-rusker-network text-white font-semibold rounded-full hover:bg-[#8a1935] transition-colors flex-shrink-0"
+            {/* French Tech Network Button */}
+            <motion.a
+              href="https://www.frenchtechbarcelona.com/adherer"
+              target="_blank"
+              rel="noopener noreferrer"
+              onMouseEnter={() => setIsHoveredFrench(true)}
+              onMouseLeave={() => setIsHoveredFrench(false)}
+              whileHover={{ scale: 1.03, y: -2 }}
+              whileTap={{ scale: 0.98 }}
+              className="group relative px-10 py-5 bg-rusker-network text-white font-bold text-lg rounded-full overflow-hidden shadow-xl shadow-rusker-network/30 w-full sm:w-auto"
+            >
+              {/* Animated background */}
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-r from-[#8a1935] via-rusker-network to-[#8a1935]"
+                animate={{
+                  x: isHoveredFrench ? ['0%', '100%'] : '0%',
+                }}
+                transition={{ duration: 0.6 }}
+              />
+              
+              <span className="relative z-10 flex items-center justify-center gap-3">
+                French Tech Network
+                <motion.svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  animate={{ x: isHoveredFrench ? 4 : 0 }}
+                  transition={{ duration: 0.2 }}
                 >
-                  {t('network.ctaSection.signup')}
-                </button>
-              </div>
-            </form>
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </motion.svg>
+              </span>
+            </motion.a>
           </div>
 
           {/* Trust indicators */}

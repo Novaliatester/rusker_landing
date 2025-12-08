@@ -5,8 +5,12 @@ import { motion } from 'framer-motion'
 import FormContainer from '@/components/form/FormContainer'
 import { getAssetPath } from '@/lib/utils'
 import { fadeInUp } from '@/lib/animations'
+import { useI18n } from '@/lib/i18n'
+import LanguageSwitcher from '@/components/ui/LanguageSwitcher'
 
 function FormContent() {
+  const { t } = useI18n()
+  
   return (
     <main className="min-h-screen bg-white">
       {/* Header Section with Logo */}
@@ -23,6 +27,16 @@ function FormContent() {
         </div>
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-10 md:pt-12 pb-16 sm:pb-20 md:pb-24">
+          {/* Language Switcher - Top Right */}
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="absolute top-4 right-4 sm:top-6 sm:right-6 md:top-8 md:right-8"
+          >
+            <LanguageSwitcher />
+          </motion.div>
+
           <div className="flex flex-col items-center text-center space-y-4 sm:space-y-5">
             {/* Logo */}
             <motion.div
@@ -45,9 +59,9 @@ function FormContent() {
               className="max-w-3xl w-full"
             >
               <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white leading-tight px-2">
-                Créez votre expérience
+                {t('form.pageHeader.title')}
                 <span className="block mt-1 bg-gradient-to-r from-travel-light via-white to-events-light bg-clip-text text-transparent">
-                  sur mesure à Barcelone
+                  {t('form.pageHeader.titleHighlight')}
                 </span>
               </h1>
             </motion.div>
@@ -59,7 +73,7 @@ function FormContent() {
               transition={{ duration: 0.6, delay: 0.4 }}
               className="text-white/80 text-sm sm:text-base max-w-xl"
             >
-              Voyages, séminaires ou événements : nous créons des expériences uniques adaptées à vos objectifs
+              {t('form.pageHeader.subtitle')}
             </motion.p>
           </div>
         </div>

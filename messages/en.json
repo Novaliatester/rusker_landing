@@ -180,6 +180,11 @@
     }
   },
   "form": {
+    "pageHeader": {
+      "title": "Create your",
+      "titleHighlight": "customized experience in Barcelona",
+      "subtitle": "Travel, seminars or events: we create unique experiences tailored to your goals"
+    },
     "steps": {
       "1": {
         "title": "Project holder identity",
@@ -528,6 +533,8 @@
       "contact": "Your contact details",
       "name": "Full name",
       "email": "Professional email",
+      "establishment": "Establishment",
+      "establishmentPlaceholder": "Name of your school, university or company",
       "role": "Position / Role",
       "rolePlaceholder": "Program Director, HR, etc.",
       "phone": "Phone (optional)",

@@ -35,6 +35,11 @@ export default function Navigation() {
     setIsUniversesOpen(false)
   }, [pathname])
 
+  // Hide navigation on form page
+  if (pathname === '/form') {
+    return null
+  }
+
   const isHomePage = pathname === '/'
   const showBubble = isScrolled || !isHomePage
 

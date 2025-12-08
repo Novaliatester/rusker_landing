@@ -169,6 +169,23 @@ export default function EventsStep5BudgetContact({
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                {t('newForm.budgetContact.establishment')} *
+              </label>
+              <input
+                type="text"
+                value={formData.contact.establishment}
+                onChange={(e) => handleContactChange('establishment', e.target.value)}
+                placeholder={t('newForm.budgetContact.establishmentPlaceholder')}
+                required
+                className={inputClasses}
+                style={{
+                  borderColor: formData.contact.establishment ? accentColor : undefined,
+                }}
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">
                 {t('newForm.budgetContact.role')}
               </label>
               <input

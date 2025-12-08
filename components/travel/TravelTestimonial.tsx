@@ -36,23 +36,6 @@ export default function TravelTestimonial() {
                 alt="ESSEC Learning Expedition"
                 className="w-full h-64 md:h-80 object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-              
-              {/* Stats overlay */}
-              <div className="absolute bottom-4 left-4 right-4 flex justify-between">
-                <div className="text-white">
-                  <div className="text-3xl font-bold">22</div>
-                  <div className="text-sm text-white/80">étudiants</div>
-                </div>
-                <div className="text-white text-right">
-                  <div className="text-3xl font-bold">5</div>
-                  <div className="text-sm text-white/80">entreprises</div>
-                </div>
-                <div className="text-white text-right">
-                  <div className="text-3xl font-bold">5</div>
-                  <div className="text-sm text-white/80">jours</div>
-                </div>
-              </div>
             </div>
 
             {/* Floating badge */}
@@ -82,29 +65,19 @@ export default function TravelTestimonial() {
             
             <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-6 leading-[1.1] px-2">
               ESSEC Business School
-              <span className="block text-white/70 text-xl md:text-2xl mt-2">Learning Expedition 2024</span>
+              <span className="block text-white/70 text-xl md:text-2xl mt-2">Learning Expedition Scale-Up</span>
             </h2>
 
-            <blockquote className="text-lg md:text-xl text-white/90 italic mb-6 leading-relaxed border-l-4 border-cyan-400 pl-4">
+            <blockquote className="text-lg md:text-xl text-white/90 italic mb-8 leading-relaxed border-l-4 border-cyan-400 pl-4">
               "Une immersion concrète dans l'écosystème entrepreneurial catalan. Nos étudiants ont développé des connexions durables et identifié des opportunités de carrière."
             </blockquote>
-
-            <div className="flex items-center gap-4 mb-8">
-              <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center">
-                <span className="text-white font-bold">MC</span>
-              </div>
-              <div>
-                <div className="text-white font-semibold">Marie Chabrier</div>
-                <div className="text-white/60 text-sm">Directrice des programmes, ESSEC</div>
-              </div>
-            </div>
 
             {/* Key results */}
             <div className="grid grid-cols-3 gap-4 mb-8">
               {[
-                { label: 'Satisfaction', value: '98%' },
-                { label: 'Recommandent', value: '100%' },
-                { label: 'Retour prévu', value: '2025' },
+                { label: 'étudiants', value: '22' },
+                { label: 'entreprises', value: '5' },
+                { label: 'jours', value: '3' },
               ].map((stat, index) => (
                 <div key={index} className="text-center p-3 rounded-lg bg-white/10 backdrop-blur-sm">
                   <div className="text-xl md:text-2xl font-bold text-white leading-[1.1]">{stat.value}</div>
