@@ -13,8 +13,8 @@ export default function Home() {
   return (
     <main className="min-h-screen">
       <Hero />
-      <WhyBarcelona />
       <ServicesPreview />
+      <WhyBarcelona />
       <SocialProof />
       <ProjectsShowcase />
       <TransitionToForm />

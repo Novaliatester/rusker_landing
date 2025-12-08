@@ -2,17 +2,19 @@
 
 import { motion } from 'framer-motion'
 import { useInView } from 'framer-motion'
-import { useRef } from 'react'
+import { useRef, useMemo } from 'react'
 import Button from '@/components/ui/Button'
 import { fadeInUp, staggerContainer } from '@/lib/animations'
-
-const stepHighlights = [
-  { title: 'Profil & objectifs', detail: 'Écoles, universités, entreprises' },
-  { title: 'Format idéal', detail: 'Learning expedition, séminaire, events' },
-  { title: 'Logistique premium', detail: 'Groupes, dates, durée, budget' },
-]
+import { useI18n } from '@/lib/i18n'
 
 export default function TransitionToForm() {
+  const { t } = useI18n()
+  
+  const stepHighlights = useMemo(() => [
+    { title: t('transitionToForm.highlights.0.title'), detail: t('transitionToForm.highlights.0.detail') },
+    { title: t('transitionToForm.highlights.1.title'), detail: t('transitionToForm.highlights.1.detail') },
+    { title: t('transitionToForm.highlights.2.title'), detail: t('transitionToForm.highlights.2.detail') },
+  ], [t])
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
 
@@ -24,7 +26,7 @@ export default function TransitionToForm() {
   }
 
   return (
-    <section ref={ref} className="relative overflow-hidden bg-rusker-blue py-16 md:py-20 lg:py-32">
+    <section ref={ref} className="relative overflow-hidden bg-neutral-dark py-16 md:py-20 lg:py-32">
       {/* Animated background with subtle white cloud blobs */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,_rgba(255,255,255,0.1)_0%,_transparent_50%)]" />
@@ -52,7 +54,7 @@ export default function TransitionToForm() {
                 },
               },
             }}
-            className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6 leading-tight px-2"
+            className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6 leading-[1.15]"
           >
             <motion.span
               initial={{ opacity: 0, y: 20 }}
@@ -60,7 +62,7 @@ export default function TransitionToForm() {
               transition={{ delay: 0.1, duration: 0.6 }}
               className="bg-gradient-to-r from-white via-white to-white/80 bg-clip-text text-transparent"
         >
-              PRÊTS À VIVRE{' '}
+              {t('transitionToForm.headline1')}{' '}
             </motion.span>
             <motion.span
               initial={{ opacity: 0, y: 20, scale: 0.9 }}
@@ -68,7 +70,7 @@ export default function TransitionToForm() {
               transition={{ delay: 0.3, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
               className="bg-gradient-to-r from-white via-yellow-200/90 to-white bg-clip-text text-transparent"
             >
-              BARCELONE
+              {t('transitionToForm.headline2')}
             </motion.span>
             <motion.span
               initial={{ opacity: 0, y: 20 }}
@@ -76,16 +78,16 @@ export default function TransitionToForm() {
               transition={{ delay: 0.5, duration: 0.6 }}
               className="bg-gradient-to-r from-white/80 via-white to-white bg-clip-text text-transparent"
             >
-              {' '}AUTREMENT ?
+              {' '}{t('transitionToForm.headline3')}
             </motion.span>
         </motion.h2>
         
         <motion.p
           variants={fadeInUp}
             transition={{ delay: 0.5 }}
-            className="text-base md:text-xl lg:text-2xl mb-6 md:mb-10 text-white/95 px-2"
+            className="text-base md:text-xl lg:text-2xl mb-6 md:mb-10 text-white/95 leading-relaxed"
         >
-          Nos équipes conçoivent des expériences sur mesure pour chaque objectif et chaque groupe.
+          {t('transitionToForm.description')}
         </motion.p>
 
         <motion.div
@@ -128,8 +130,8 @@ export default function TransitionToForm() {
             size="large"
                 className="!bg-white !text-[#1a4d66] hover:!bg-yellow-50 shadow-lg hover:shadow-xl transition-all duration-300 font-semibold !border-2 !border-[#1a4d66]/20 text-base sm:text-lg"
           >
-            <span className="hidden sm:inline">Construire votre expérience</span>
-            <span className="sm:hidden">Créer votre projet</span>
+            <span className="hidden sm:inline">{t('transitionToForm.button')}</span>
+            <span className="sm:hidden">{t('transitionToForm.buttonMobile')}</span>
           </Button>
             </motion.div>
         </motion.div>
@@ -147,10 +149,10 @@ export default function TransitionToForm() {
                 transition={{ type: 'spring', stiffness: 400, damping: 20 }}
                 className="rounded-card border-2 border-white/40 bg-white/95 backdrop-blur-md p-4 md:p-6 text-left shadow-lg hover:shadow-xl hover:bg-white transition-all duration-300 hover:border-white/60"
             >
-                <div className="mb-2 md:mb-3 text-xs md:text-sm font-semibold uppercase tracking-[0.2em] md:tracking-[0.3em] text-rusker-blue">
-                Étape {index + 1}
+                <div className="mb-2 md:mb-3 text-xs md:text-sm font-semibold uppercase tracking-[0.2em] md:tracking-[0.3em] text-neutral-dark">
+                {t('transitionToForm.step')} {index + 1}
               </div>
-              <h3 className="text-lg md:text-xl font-bold text-text-dark">{item.title}</h3>
+              <h3 className="text-lg md:text-xl font-bold text-text-dark leading-[1.2] break-words">{item.title}</h3>
                 <p className="mt-2 text-sm md:text-base text-gray-700">{item.detail}</p>
               </motion.div>
           ))}

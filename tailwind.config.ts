@@ -9,15 +9,30 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        'rusker-blue': '#277396',
-        'rusker-travel': '#287497',
-        'rusker-events': '#0b5d56',
-        'rusker-network': '#a61e3f',
-        'text-dark': '#333333',
-        'bg-light': '#F6F6F6',
+        // Global neutral colors
+        'neutral-light': '#f5f5f5',
+        'neutral-dark': '#2f3433',
+        'neutral-mid': '#cfcfcf',
+        
+        // Travel universe
+        'travel': '#236a89',
+        'travel-light': '#bfeff4',
+        
+        // Events universe
+        'events': '#0d5c4a',
+        'events-light': '#6ee3a8',
+        
+        // Network universe
+        'network': '#a61e40',
+        'network-light': '#ffdfeb',
+        
+        // Legacy (keep for backwards compatibility)
+        'rusker-blue': '#236a89',
+        'text-dark': '#2f3433',
+        'bg-light': '#f5f5f5',
       },
       fontFamily: {
-        sans: ['Inter', 'Space Grotesk', 'system-ui', 'sans-serif'],
+        sans: ['Poppins', 'system-ui', 'sans-serif'],
       },
       borderRadius: {
         'card': '20px',

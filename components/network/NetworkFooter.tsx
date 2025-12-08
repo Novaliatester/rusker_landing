@@ -10,12 +10,10 @@ export default function NetworkFooter() {
           {/* Logo */}
           <div className="flex items-center gap-3">
             <img 
-              src={getAssetPath('/images/logos/Logo 2025 (long) (white).png')} 
-              alt="Rusker" 
+              src={getAssetPath('/images/2026 Rusker/Logos/Rusker NETWORK (white).png')} 
+              alt="Rusker Network" 
               className="h-8 w-auto"
             />
-            <div className="h-5 w-px bg-white/30" />
-            <span className="text-white/80 font-medium tracking-wider text-sm">NETWORK</span>
           </div>
 
           {/* Links */}

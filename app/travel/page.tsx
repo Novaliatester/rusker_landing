@@ -1,5 +1,6 @@
 'use client'
 
+import PageTransition from '@/components/ui/PageTransition'
 import TravelHero from '@/components/travel/TravelHero'
 import TravelTrustBar from '@/components/travel/TravelTrustBar'
 import TravelAudienceSelector from '@/components/travel/TravelAudienceSelector'
@@ -10,6 +11,7 @@ import TravelFooter from '@/components/travel/TravelFooter'
 
 export default function TravelPage() {
   return (
+    <PageTransition color="#236a89">
     <main className="min-h-screen">
       <TravelHero />
       <TravelTrustBar />
@@ -19,6 +21,7 @@ export default function TravelPage() {
       <TravelCTA />
       <TravelFooter />
     </main>
+    </PageTransition>
   )
 }
 

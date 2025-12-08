@@ -2,104 +2,106 @@
 
 import { motion } from 'framer-motion'
 import { useInView } from 'framer-motion'
-import { useRef, useState } from 'react'
+import { useRef, useState, useMemo } from 'react'
 import { fadeInUp, staggerContainer } from '@/lib/animations'
 import { getAssetPath } from '@/lib/utils'
+import { useI18n } from '@/lib/i18n'
 
-const projects = [
+export default function ProjectsShowcase() {
+  const { t } = useI18n()
+  
+  const projects = useMemo(() => [
   {
-    title: 'Learning Expedition',
-    client: 'Essec Business School',
-    description: '22 étudiants, 5 entreprises visitées, 2 soirées networking. Résultat : une immersion concrète dans l\'écosystème entrepreneurial catalan.',
+    title: t('projects.essec.title'),
+    client: t('projects.essec.client'),
+    description: t('projects.essec.description'),
     image: getAssetPath('/images/project-essec.jpg'),
     stats: { students: 22, companies: 5, events: 2 },
     details: {
       highlights: [
-        'Visites d\'entreprises : TravelPerk, Norrsken House, Station F Barcelona',
-        'Rencontres avec des entrepreneurs français et catalans',
-        'Soirées networking dans des lieux emblématiques de Barcelone',
-        'Immersion dans l\'écosystème tech et innovation catalan',
+        t('projects.essec.highlights.0'),
+        t('projects.essec.highlights.1'),
+        t('projects.essec.highlights.2'),
+        t('projects.essec.highlights.3'),
       ],
       companies: [
         {
-          name: 'TravelPerk',
-          description: 'Leader européen de la gestion de voyages d\'affaires. Rencontre avec les fondateurs et découverte de leur modèle de croissance.',
+          name: t('projects.essec.companies.0.name'),
+          description: t('projects.essec.companies.0.description'),
         },
         {
-          name: 'Norrsken House',
-          description: 'Le plus grand hub d\'impact social d\'Europe. Visite guidée et échanges sur l\'entrepreneuriat à impact.',
+          name: t('projects.essec.companies.1.name'),
+          description: t('projects.essec.companies.1.description'),
         },
         {
-          name: 'Station F Barcelona',
-          description: 'Antenne barcelonaise du plus grand campus de startups au monde. Découverte de l\'écosystème et rencontres avec des startups.',
+          name: t('projects.essec.companies.2.name'),
+          description: t('projects.essec.companies.2.description'),
         },
       ],
-      outcomes: 'Les étudiants ont développé une compréhension approfondie de l\'écosystème entrepreneurial barcelonais, créé des connexions durables avec des entrepreneurs locaux, et identifié des opportunités de stage et de carrière dans l\'innovation tech.',
+      outcomes: t('projects.essec.outcomes'),
     },
   },
   {
-    title: 'AI Summit Barcelona',
-    client: 'Évènement Public',
-    description: '1 200 participants, 80 intervenants, 3 jours de conférences et d\'expériences tech. Résultat : Barcelone au cœur de l\'intelligence artificielle européenne.',
+    title: t('projects.aiSummit.title'),
+    client: t('projects.aiSummit.client'),
+    description: t('projects.aiSummit.description'),
     image: getAssetPath('/images/events-hero.jpg'),
     stats: { participants: '1 200', speakers: 80, days: 3 },
     details: {
       highlights: [
-        '80+ speakers internationaux : chercheurs, entrepreneurs, investisseurs',
-        'Keynotes sur l\'IA générative, l\'éthique de l\'IA, et l\'innovation',
-        'Démos interactives et expériences immersives avec l\'IA',
-        'Networking avec les leaders de l\'écosystème tech européen',
+        t('projects.aiSummit.highlights.0'),
+        t('projects.aiSummit.highlights.1'),
+        t('projects.aiSummit.highlights.2'),
+        t('projects.aiSummit.highlights.3'),
       ],
       topics: [
-  {
-          title: 'IA Générative & Innovation',
-          description: 'Sessions sur ChatGPT, Midjourney, et les dernières innovations en IA générative. Impact sur les industries créatives et technologiques.',
+        {
+          title: t('projects.aiSummit.topics.0.title'),
+          description: t('projects.aiSummit.topics.0.description'),
         },
         {
-          title: 'Éthique & Régulation',
-          description: 'Débats sur la régulation européenne de l\'IA, la protection des données, et l\'utilisation responsable de l\'intelligence artificielle.',
+          title: t('projects.aiSummit.topics.1.title'),
+          description: t('projects.aiSummit.topics.1.description'),
         },
         {
-          title: 'IA & Business',
-          description: 'Cas d\'usage concrets : comment les entreprises intègrent l\'IA pour transformer leurs opérations et créer de la valeur.',
+          title: t('projects.aiSummit.topics.2.title'),
+          description: t('projects.aiSummit.topics.2.description'),
         },
       ],
-      outcomes: 'L\'événement a positionné Barcelone comme hub majeur de l\'IA en Europe, facilité des partenariats stratégiques, et inspiré des projets innovants dans le domaine de l\'intelligence artificielle.',
+      outcomes: t('projects.aiSummit.outcomes'),
     },
   },
   {
-    title: 'Event for Shoptalk Europe 2025',
-    client: 'WESHARETRUST',
-    description: '100+ décideurs dans le retail et le retail média. Démos et Panels enrichissants et networking high-level sur un des plus beaux rooftops de Barcelone.',
+    title: t('projects.shoptalk.title'),
+    client: t('projects.shoptalk.client'),
+    description: t('projects.shoptalk.description'),
     image: getAssetPath('/images/travel-hero.jpg'),
     stats: { attendees: '100+', format: 'High-level' },
     details: {
       highlights: [
-        '100+ décideurs : CEOs, CMOs, directeurs innovation du retail',
-        'Panels sur l\'avenir du retail, l\'e-commerce, et le retail média',
-        'Démos de solutions tech innovantes pour le retail',
-        'Networking exclusif sur rooftop avec vue panoramique sur Barcelone',
+        t('projects.shoptalk.highlights.0'),
+        t('projects.shoptalk.highlights.1'),
+        t('projects.shoptalk.highlights.2'),
+        t('projects.shoptalk.highlights.3'),
       ],
       panels: [
         {
-          title: 'L\'Avenir du Retail',
-          description: 'Discussion sur les tendances du retail : phygital, expérience client, et transformation digitale. Perspectives des leaders du secteur.',
+          title: t('projects.shoptalk.panels.0.title'),
+          description: t('projects.shoptalk.panels.0.description'),
         },
         {
-          title: 'Retail Média & Data',
-          description: 'Comment les retailers utilisent leurs données pour créer de nouveaux revenus via le retail média. Cas d\'usage et opportunités.',
+          title: t('projects.shoptalk.panels.1.title'),
+          description: t('projects.shoptalk.panels.1.description'),
         },
         {
-          title: 'Innovation Tech',
-          description: 'Démos de solutions innovantes : AR/VR, IA pour le retail, solutions de paiement, et technologies émergentes qui transforment l\'expérience client.',
+          title: t('projects.shoptalk.panels.2.title'),
+          description: t('projects.shoptalk.panels.2.description'),
         },
       ],
-      outcomes: 'L\'événement a créé des connexions stratégiques entre décideurs français et espagnols, facilité des partenariats business, et inspiré des projets d\'innovation dans le retail.',
+      outcomes: t('projects.shoptalk.outcomes'),
     },
   },
-]
-
-export default function ProjectsShowcase() {
+  ], [t])
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
   const [selectedCard, setSelectedCard] = useState<number | null>(null)
@@ -107,7 +109,7 @@ export default function ProjectsShowcase() {
   return (
     <section id="projects" ref={ref} className="relative overflow-hidden bg-bg-light py-16 md:py-20 lg:py-32">
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(39,115,150,0.08),_transparent_60%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(47,52,51,0.08),_transparent_60%)]" />
       </div>
       <div className="relative mx-auto max-w-7xl px-4 md:px-6">
         <motion.div
@@ -116,29 +118,29 @@ export default function ProjectsShowcase() {
           variants={fadeInUp}
           className="mb-16 text-center"
         >
-          <span className="mb-4 inline-flex items-center gap-2 rounded-full bg-white px-4 py-1 text-sm font-semibold uppercase tracking-widest text-rusker-blue">
-            Projets & Événements
+          <span className="mb-4 inline-flex items-center gap-2 rounded-full bg-white px-4 py-1 text-sm font-semibold uppercase tracking-widest text-neutral-dark">
+            {t('projects.badge')}
           </span>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-text-dark leading-tight">
-            Des expériences qui{' '}
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-text-dark leading-[1.15]">
+            {t('projects.title')}{' '}
             <motion.span
-              className="relative inline-block text-rusker-blue"
+              className="relative inline-block text-neutral-dark"
               whileHover={{ scale: 1.05, rotate: -3 }}
               transition={{ type: 'spring', stiffness: 400 }}
             >
-              transforment
+              {t('projects.transform')}
             </motion.span>{' '}
             et{' '}
             <motion.span
-              className="relative inline-block text-rusker-blue"
+              className="relative inline-block text-neutral-dark"
               whileHover={{ scale: 1.05, rotate: 3 }}
               transition={{ type: 'spring', stiffness: 400 }}
             >
-              inspirent
+              {t('projects.inspire')}
             </motion.span>
           </h2>
-          <p className="mt-4 text-base md:text-lg text-gray-600">
-            Découvrez comment nous avons orchestré des learning expeditions et événements à fort impact.
+          <p className="mt-4 text-base md:text-lg text-gray-600 leading-relaxed">
+            {t('projects.subtitle')}
           </p>
         </motion.div>
 
@@ -176,7 +178,7 @@ export default function ProjectsShowcase() {
                 >
                   {/* Front of card */}
                   <div
-                    className="relative h-full min-h-[360px] md:min-h-[440px] rounded-card bg-white shadow-soft overflow-hidden transition-all duration-300 border-2 border-transparent group-hover:border-rusker-blue flex flex-col"
+                    className="relative h-full min-h-[360px] md:min-h-[440px] rounded-card bg-white shadow-soft overflow-hidden transition-all duration-300 border-2 border-transparent group-hover:border-neutral-dark flex flex-col"
                     style={{
                       backfaceVisibility: 'hidden',
                       WebkitBackfaceVisibility: 'hidden',
@@ -202,7 +204,7 @@ export default function ProjectsShowcase() {
               {/* Content */}
                     <div className="relative p-4 md:p-6 flex-1 flex flex-col">
                       <div className="flex-1 mb-4 md:mb-8">
-                        <h3 className="text-lg md:text-xl font-bold text-text-dark">{project.title}</h3>
+                        <h3 className="text-lg md:text-xl font-bold text-text-dark leading-[1.2] break-words">{project.title}</h3>
                 <p className="mt-2 md:mt-3 text-sm md:text-base text-gray-600">{project.description}</p>
                       </div>
                 
@@ -211,16 +213,16 @@ export default function ProjectsShowcase() {
                         <div className="flex flex-wrap gap-4">
                   {Object.entries(project.stats).map(([key, value]) => (
                     <div key={key} className="text-center">
-                      <div className="text-lg font-bold text-rusker-blue">{value}</div>
+                      <div className="text-lg font-bold text-neutral-dark">{value}</div>
                       <div className="text-xs uppercase tracking-wide text-gray-500">
-                        {key === 'students' && 'Étudiants'}
-                        {key === 'companies' && 'Entreprises'}
-                        {key === 'events' && 'Événements'}
-                        {key === 'participants' && 'Participants'}
-                        {key === 'speakers' && 'Speakers'}
-                        {key === 'days' && 'Jours'}
-                        {key === 'attendees' && 'Décideurs'}
-                        {key === 'format' && 'Format'}
+                        {key === 'students' && t('projects.stats.students')}
+                        {key === 'companies' && t('projects.stats.companies')}
+                        {key === 'events' && t('projects.stats.events')}
+                        {key === 'participants' && t('projects.stats.participants')}
+                        {key === 'speakers' && t('projects.stats.speakers')}
+                        {key === 'days' && t('projects.stats.days')}
+                        {key === 'attendees' && t('projects.stats.attendees')}
+                        {key === 'format' && t('projects.stats.format')}
                       </div>
                     </div>
                   ))}
@@ -230,11 +232,11 @@ export default function ProjectsShowcase() {
                       {/* Arrow hint - bottom right */}
                       <div className="absolute bottom-6 right-6 md:opacity-0 opacity-100 group-hover:opacity-100 transition-opacity duration-300">
                         <div className="flex items-center gap-2">
-                          <span className="text-xs text-rusker-blue font-medium md:hidden">Toucher pour détails</span>
+                          <span className="text-xs text-neutral-dark font-medium md:hidden">{t('projects.touchForDetails')}</span>
                         <motion.span
                           animate={{ x: [0, 4, 0] }}
                           transition={{ repeat: Infinity, duration: 1.5 }}
-                          className="text-2xl text-rusker-blue"
+                          className="text-2xl text-neutral-dark"
                         >
                           →
                         </motion.span>
@@ -245,7 +247,7 @@ export default function ProjectsShowcase() {
 
                   {/* Back of card */}
                   <div
-                    className="absolute inset-0 h-full min-h-[360px] md:min-h-[440px] max-h-[600px] md:max-h-[660px] rounded-card bg-white/95 backdrop-blur-sm shadow-soft border-2 border-rusker-blue transition-all duration-300 flex flex-col overflow-hidden"
+                    className="absolute inset-0 h-full min-h-[360px] md:min-h-[440px] max-h-[600px] md:max-h-[660px] rounded-card bg-white/95 backdrop-blur-sm shadow-soft border-2 border-neutral-dark transition-all duration-300 flex flex-col overflow-hidden"
                     style={{
                       backfaceVisibility: 'hidden',
                       WebkitBackfaceVisibility: 'hidden',
@@ -255,7 +257,7 @@ export default function ProjectsShowcase() {
                   >
                     <div 
                       className="flex flex-col overflow-y-auto h-full overscroll-contain"
-                      style={{ scrollbarWidth: 'thin', scrollbarColor: '#277396 transparent', WebkitOverflowScrolling: 'touch' }}
+                      style={{ scrollbarWidth: 'thin', scrollbarColor: '#2f3433 transparent', WebkitOverflowScrolling: 'touch' }}
                       onWheel={(e) => {
                         if (e.currentTarget.scrollHeight > e.currentTarget.clientHeight) {
                           const { scrollTop, scrollHeight, clientHeight } = e.currentTarget
@@ -298,7 +300,7 @@ export default function ProjectsShowcase() {
 
                       {/* Header */}
                       <div className="p-4 md:p-6 pb-3 md:pb-4 border-b border-gray-200">
-                        <h3 className="text-lg md:text-xl font-bold text-text-dark">
+                        <h3 className="text-lg md:text-xl font-bold text-text-dark leading-[1.2] break-words">
                           {project.title}
                         </h3>
                         <p className="mt-2 text-xs md:text-sm text-gray-600">
@@ -310,7 +312,7 @@ export default function ProjectsShowcase() {
                       <div className="flex-1 p-4 md:p-6">
                         {/* Highlights */}
                         <div className="mb-6">
-                          <h4 className="mb-3 text-sm font-bold text-text-dark">Points clés</h4>
+                          <h4 className="mb-3 text-sm font-bold text-text-dark leading-[1.2]">{t('projects.keyPoints')}</h4>
                           <ul className="space-y-2">
                             {project.details.highlights.map((highlight, idx) => (
                               <motion.li
@@ -320,7 +322,7 @@ export default function ProjectsShowcase() {
                                 transition={{ delay: idx * 0.05 + 0.3 }}
                                 className="flex items-start gap-2"
                               >
-                                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-rusker-blue" />
+                                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-neutral-dark" />
                                 <span className="text-sm text-gray-700 leading-relaxed">{highlight}</span>
                               </motion.li>
                             ))}
@@ -338,7 +340,7 @@ export default function ProjectsShowcase() {
                                 transition={{ delay: idx * 0.1 + 0.5 }}
                                 className="rounded-lg border border-gray-200 bg-gray-50/50 p-4"
                               >
-                                <h5 className="mb-2 text-sm font-bold text-rusker-blue">
+                                <h5 className="mb-2 text-sm font-bold text-neutral-dark">
                                   {'name' in item ? item.name : item.title}
                                 </h5>
                                 <p className="text-xs text-gray-600 leading-relaxed">
@@ -350,8 +352,8 @@ export default function ProjectsShowcase() {
                         )}
 
                         {/* Outcomes */}
-                        <div className="rounded-lg bg-rusker-blue/5 p-4 border border-rusker-blue/10">
-                          <h4 className="mb-2 text-sm font-bold text-rusker-blue">Résultats & Impact</h4>
+                        <div className="rounded-lg bg-neutral-dark/5 p-4 border border-neutral-dark/10">
+                          <h4 className="mb-2 text-sm font-bold text-neutral-dark">{t('projects.results')}</h4>
                           <p className="text-xs text-gray-700 leading-relaxed">
                             {project.details.outcomes}
                           </p>

@@ -1,5 +1,6 @@
 'use client'
 
+import PageTransition from '@/components/ui/PageTransition'
 import EventsHero from '@/components/events/EventsHero'
 import EventsTrustBar from '@/components/events/EventsTrustBar'
 import EventsTypes from '@/components/events/EventsTypes'
@@ -10,6 +11,7 @@ import EventsFooter from '@/components/events/EventsFooter'
 
 export default function EventsPage() {
   return (
+    <PageTransition color="#0d5c4a">
     <main className="min-h-screen">
       <EventsHero />
       <EventsTrustBar />
@@ -19,6 +21,7 @@ export default function EventsPage() {
       <EventsCTA />
       <EventsFooter />
     </main>
+    </PageTransition>
   )
 }
 

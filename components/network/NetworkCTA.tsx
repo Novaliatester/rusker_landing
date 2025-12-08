@@ -3,8 +3,10 @@
 import { motion, useInView } from 'framer-motion'
 import { useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { useI18n } from '@/lib/i18n'
 
 export default function NetworkCTA() {
+  const { t } = useI18n()
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-50px' })
   const router = useRouter()
@@ -42,18 +44,18 @@ export default function NetworkCTA() {
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-rusker-network/10 text-rusker-network text-sm font-semibold mb-6"
           >
             <span className="w-2 h-2 rounded-full bg-rusker-network animate-pulse" />
-            Accès gratuit
+            {t('network.ctaSection.badge')}
           </motion.div>
 
           {/* Headline */}
-          <h2 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-text-dark mb-6 leading-tight">
-            Prêt à rejoindre
-            <span className="block text-rusker-network">la communauté ?</span>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-text-dark mb-6 leading-[1.1] px-2">
+            {t('network.ctaSection.headline1')}
+            <span className="block text-rusker-network">{t('network.ctaSection.headline2')}</span>
           </h2>
 
           {/* Subheadline */}
           <p className="text-lg md:text-xl text-gray-600 mb-10 max-w-2xl mx-auto leading-relaxed">
-            Inscrivez-vous gratuitement et accédez à notre réseau de talents, startups et grandes entreprises à Barcelone.
+            {t('network.ctaSection.description')}
           </p>
 
           {/* Quick email capture or direct CTA */}
@@ -76,7 +78,7 @@ export default function NetworkCTA() {
               />
               
               <span className="relative z-10 flex items-center gap-3">
-                Rejoindre le réseau
+                {t('network.ctaSection.button')}
                 <motion.svg
                   className="w-5 h-5"
                   fill="none"
@@ -93,7 +95,7 @@ export default function NetworkCTA() {
             {/* OR divider */}
             <div className="flex items-center gap-4 w-full max-w-md">
               <div className="h-px flex-1 bg-gray-200" />
-              <span className="text-gray-400 text-sm">ou</span>
+              <span className="text-gray-400 text-sm">{t('network.ctaSection.or')}</span>
               <div className="h-px flex-1 bg-gray-200" />
             </div>
 
@@ -104,7 +106,7 @@ export default function NetworkCTA() {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="votre@email.com"
+                  placeholder={t('network.ctaSection.emailPlaceholder')}
                   className="flex-1 px-4 py-2 bg-transparent text-text-dark placeholder:text-gray-400 focus:outline-none"
                   required
                 />
@@ -112,7 +114,7 @@ export default function NetworkCTA() {
                   type="submit"
                   className="px-5 py-2 bg-rusker-network text-white font-semibold rounded-full hover:bg-[#8a1935] transition-colors flex-shrink-0"
                 >
-                  S'inscrire
+                  {t('network.ctaSection.signup')}
                 </button>
               </div>
             </form>
@@ -129,19 +131,19 @@ export default function NetworkCTA() {
               <svg className="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
-              100% gratuit
+              {t('network.ctaSection.trustIndicators.free')}
             </div>
             <div className="flex items-center gap-2">
               <svg className="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
-              Accès immédiat
+              {t('network.ctaSection.trustIndicators.immediate')}
             </div>
             <div className="flex items-center gap-2">
               <svg className="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
-              French Tech officiel
+              {t('network.ctaSection.trustIndicators.official')}
             </div>
           </motion.div>
         </motion.div>

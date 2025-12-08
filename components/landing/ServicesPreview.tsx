@@ -1,205 +1,149 @@
 'use client'
 
-import { motion } from 'framer-motion'
-import { useInView } from 'framer-motion'
+import { motion, AnimatePresence, useInView } from 'framer-motion'
 import { useRef, useState } from 'react'
-import { fadeInUp, staggerContainer, cardHover } from '@/lib/animations'
-import UniverseModal from '@/components/ui/UniverseModal'
-import { TravelIcon, EventsIcon, NetworkIconAlt } from '@/components/ui/Icons'
+import { useRouter } from 'next/navigation'
+import { fadeInUp, staggerContainer } from '@/lib/animations'
 import { getAssetPath } from '@/lib/utils'
-
-const services = [
-  {
-    icon: TravelIcon,
-    title: 'RUSKER TRAVEL',
-    description: 'Séjours étudiants et séminaires d\'entreprise à Barcelone. Entre culture, apprentissage et rencontres inspirantes.',
-    image: getAssetPath('/images/service-travel.jpg'),
-    content: {
-      about: {
-        title: 'À PROPOS DE RUSKER TRAVEL',
-        description: `De simples voyages à de vraies expériences de transformation.
-
-Chez Rusker Travel, nous concevons des séjours qui allient apprentissage, découverte et émotions.
-
-Née à Barcelone, notre agence réinvente la manière dont les étudiants et les entreprises explorent le monde : en les connectant à un écosystème local vivant, créatif et inspirant.
-
-Nous organisons des Learning Expeditions pour écoles et universités, ainsi que des séminaires d'entreprise à fort contenu humain et professionnel.
-
-Chaque séjour est une rencontre : entre une ville, des acteurs, et une ambition collective.`,
-      },
-      process: [
-        {
-          title: 'Analyse de vos besoins',
-          description: 'Nous échangeons avec vous pour comprendre vos objectifs pédagogiques, vos contraintes et votre public.',
-        },
-        {
-          title: 'Conception du programme',
-          description: 'Nous construisons un parcours cohérent mêlant visites, rencontres, conférences et moments de partage.',
-        },
-        {
-          title: 'Sélection des partenaires',
-          description: 'Entreprises, incubateurs, speakers, lieux d\'exception : tout est choisi pour créer de la valeur.',
-        },
-        {
-          title: 'Gestion logistique complète',
-          description: 'Transport, hébergement, restauration, coordination : nos équipes s\'occupent de tout, sur place, à Barcelone.',
-        },
-        {
-          title: 'Suivi & accompagnement',
-          description: 'Un chef de projet Rusker vous accompagne avant, pendant et après le séjour, pour garantir fluidité et impact.',
-        },
-      ],
-      services: [
-        {
-          title: 'Visites & accompagnement local',
-          description: 'Découvrez l\'écosystème barcelonais aux côtés de nos guides et coordinateurs experts.',
-        },
-        {
-          title: 'Hébergement',
-          description: 'Sélection d\'hôtels, résidences étudiantes ou appartements adaptés à vos besoins.',
-        },
-        {
-          title: 'Transport',
-          description: 'Transferts privés, autocars ou trains : nous gérons toute la mobilité du groupe.',
-        },
-        {
-          title: 'Restauration & expériences culinaires',
-          description: 'Dîners catalans, tapas authentiques, restaurants de sélection. La convivialité au cœur du séjour.',
-        },
-        {
-          title: 'Soirées & networking',
-          description: 'Moments informels et rencontres avec des entrepreneurs et acteurs locaux.',
-        },
-        {
-          title: 'Keynotes, workshops & conférences',
-          description: 'L\'expérience complète : apprentissage, inspiration et échanges avec les leaders de l\'écosystème.',
-        },
-      ],
-    },
-  },
-  {
-    icon: EventsIcon,
-    title: 'RUSKER EVENTS',
-    description: 'Événements sur mesure pour les entreprises. De la salle à la scène, nous concevons des expériences à impact.',
-    image: getAssetPath('/images/events-hero.jpg'),
-    content: {
-      about: {
-        title: 'À PROPOS DE RUSKER EVENTS',
-        description: `Faire de Barcelone votre scène.
-
-Rusker Events est la division événementielle de Rusker, née pour transformer vos idées en expériences à fort impact.
-
-Nous concevons et produisons des événements sur mesure pour les entreprises, qu'ils soient internes, externes ou publics. De la stratégie à la scénographie, de la logistique à la communication, nous vous accompagnons à chaque étape pour créer un moment inspirant, fluide et mémorable.
-
-Notre mission : faire rayonner vos projets au cœur de Barcelone, capitale européenne de la créativité et de l'innovation.`,
-      },
-      process: [
-        {
-          title: 'Comprendre votre vision.',
-          description: 'Chaque événement a une histoire, nous la faisons émerger avec vous.',
-        },
-        {
-          title: 'Concevoir une expérience cohérente.',
-          description: 'Lieu, ton, intervenants, rythme, ambiance : tout est pensé pour créer une émotion collective.',
-        },
-        {
-          title: 'Orchestrer la logistique avec précision.',
-          description: 'Nous coordonnons chaque détail : signalétique, accueil, timing, production technique, sécurité.',
-        },
-        {
-          title: 'Amplifier votre impact.',
-          description: 'Nos équipes communication et média s\'assurent que votre événement rayonne — sur place et en ligne.',
-        },
-        {
-          title: 'Faire vivre une émotion partagée.',
-          description: 'Nous créons des moments forts qui rassemblent : une atmosphère, une énergie, un détail inattendu. C\'est ce qui transforme un événement en expérience mémorable.',
-        },
-      ],
-      features: [
-        {
-          title: 'Anniversaires d\'entreprise & inaugurations',
-          description: 'Célébrez vos réussites dans des lieux d\'exception, au cœur de Barcelone.',
-        },
-        {
-          title: 'Lancements de produit',
-          description: 'Mettez vos innovations en scène avec créativité et impact.',
-        },
-        {
-          title: 'Conférences & tables rondes',
-          description: 'Rassemblez les leaders, créez du contenu inspirant et fédérateur.',
-        },
-        {
-          title: 'Workshops & ateliers internes',
-          description: 'Stimulez la collaboration et l\'innovation au sein de vos équipes.',
-        },
-        {
-          title: 'Soirées & teambuildings',
-          description: 'Partagez des moments de cohésion, dans des cadres authentiques et festifs.',
-        },
-        {
-          title: 'Événements publics à impact',
-          description: 'AI Summit Barcelona, French Tech Nights, Retail Tech Talks… Des événements qui font rayonner les communautés et les idées.',
-        },
-      ],
-    },
-  },
-  {
-    icon: NetworkIconAlt,
-    title: 'RUSKER NETWORK',
-    description: 'Un réseau vivant de talents et d\'entreprises innovantes à Barcelone connectés à la French Tech. Rencontrez, collaborez, évoluez.',
-    image: getAssetPath('/images/barcelona-feature.jpg'),
-    content: {
-      about: {
-        title: 'À PROPOS DE RUSKER NETWORK',
-        description: `Une communauté francophone au cœur de l'écosystème tech barcelonais.
-
-Rusker Network, c'est la passerelle entre la French Tech Barcelona et les talents venus de France et d'Europe.
-
-Notre mission : connecter, faire circuler et inspirer les étudiants, entrepreneurs et entreprises qui choisissent Barcelone pour grandir.
-
-Nous collaborons avec la French Tech Barcelona, les grandes écoles et les entreprises locales pour créer des moments de rencontre concrets : soirées, panels, recrutements, et learning expeditions professionnelles. Parce qu'à Barcelone, les connexions créent les opportunités.`,
-      },
-      features: [
-        {
-          title: 'LE TALENTBOARD BARCELONA',
-          description: `L'outil qui connecte les talents aux entreprises innovantes de Barcelone.
-
-Développé avec la French Tech Barcelona, le Talentboard est une plateforme simple et intelligente qui met en relation : les étudiants et jeunes diplômés à la recherche d'un stage, VIE ou premier emploi, et les entreprises locales à la recherche de profils francophones et internationaux.`,
-        },
-        {
-          title: 'LA FRENCH TECH BARCELONA',
-          description: `Nos prochains rendez-vous à Barcelone.
-
-Chaque mois, nous organisons des événements de networking et d'inspiration avec nos partenaires. Conférences, afterworks, French Tech Nights, AI Summit, Retail Tech Talks… Des moments pensés pour connecter les talents, provoquer des rencontres, partager des idées et faire découvrir les dynamiques qui animent l'écosystème barcelonais.`,
-        },
-      ],
-    },
-  },
-]
+import { useI18n } from '@/lib/i18n'
 
 export default function ServicesPreview() {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: '-100px' })
-  const [selectedUniverse, setSelectedUniverse] = useState<typeof services[0] | null>(null)
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const { t } = useI18n()
+  const router = useRouter()
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
+  const [bubblePosition, setBubblePosition] = useState({ x: 0, y: 0 })
+  const [isTransitioning, setIsTransitioning] = useState(false)
+  const [transitionColor, setTransitionColor] = useState<string | null>(null)
+  const [transitionOrigin, setTransitionOrigin] = useState({ x: '50%', y: '50%' })
+  
+  const services = [
+    {
+      iconPath: getAssetPath('/images/2026 Rusker/Icons/Travel.png'),
+      title: t('services.travel.title'),
+      description: t('services.travel.description'),
+      image: getAssetPath('/images/service-travel.jpg'),
+      href: '/travel',
+      color: '#236a89',
+      colorLight: '#bfeff4',
+    },
+    {
+      iconPath: getAssetPath('/images/2026 Rusker/Icons/Events.png'),
+      title: t('services.events.title'),
+      description: t('services.events.description'),
+      image: getAssetPath('/images/events-hero.jpg'),
+      href: '/events',
+      color: '#0d5c4a',
+      colorLight: '#6ee3a8',
+    },
+    {
+      iconPath: getAssetPath('/images/2026 Rusker/Icons/Network.png'),
+      title: t('services.network.title'),
+      description: t('services.network.description'),
+      image: getAssetPath('/images/barcelona-feature.jpg'),
+      href: '/network',
+      color: '#a61e40',
+      colorLight: '#ffdfeb',
+    },
+  ]
+  const sectionRef = useRef<HTMLElement>(null)
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([])
+  const isInView = useInView(sectionRef, { once: true, margin: '-100px' })
+
+  // Calculate bubble position relative to section from the actual card element
+  const handleMouseEnter = (index: number) => {
+    const card = cardRefs.current[index]
+    const section = sectionRef.current
+    
+    if (card && section) {
+      const cardRect = card.getBoundingClientRect()
+      const sectionRect = section.getBoundingClientRect()
+      
+      // Calculate center of card relative to section
+      const x = cardRect.left - sectionRect.left + cardRect.width / 2
+      const y = cardRect.top - sectionRect.top + cardRect.height / 2
+      
+      setBubblePosition({ x, y })
+    }
+    
+    setHoveredIndex(index)
+  }
+
+  const hoveredService = hoveredIndex !== null ? services[hoveredIndex] : null
 
   return (
-    <section ref={ref} className="relative bg-gradient-to-br from-rusker-blue via-[#1f5a75] via-rusker-blue to-[#1a4d66] py-16 md:py-28 lg:py-36 overflow-hidden">
-      {/* Animated background patterns */}
-      <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,_rgba(255,255,255,0.08),_transparent_50%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_70%,_rgba(255,255,255,0.06),_transparent_50%)]" />
-        <div className="absolute inset-0 bg-[linear-gradient(135deg,_rgba(255,255,255,0.03)_0%,_transparent_50%)]" />
-      </div>
-      
-      {/* Decorative grid pattern */}
+    <section ref={sectionRef} className="relative bg-neutral-light py-16 md:py-28 lg:py-36 overflow-hidden">
+      {/* Subtle decorative pattern for beige background */}
       <div className="absolute inset-0 opacity-[0.03]" style={{
-        backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
-                          linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
-        backgroundSize: '50px 50px'
+        backgroundImage: `radial-gradient(circle, #2f3433 1px, transparent 1px)`,
+        backgroundSize: '40px 40px'
       }} />
       
-      <div className="relative mx-auto max-w-7xl px-4 md:px-6">
+      {/* Animated bubble background on hover */}
+      <AnimatePresence>
+        {hoveredService && !isTransitioning && (
+          <motion.div
+            key={hoveredIndex}
+            initial={{ 
+              scale: 0,
+              opacity: 0,
+            }}
+            animate={{ 
+              scale: 3,
+              opacity: 1,
+            }}
+            exit={{ 
+              scale: 0,
+              opacity: 0,
+            }}
+            transition={{ 
+              duration: 0.8,
+              ease: [0.25, 0.1, 0.25, 1]
+            }}
+            className="absolute rounded-full pointer-events-none"
+            style={{
+              width: '100vw',
+              height: '100vw',
+              left: bubblePosition.x,
+              top: bubblePosition.y,
+              transform: 'translate(-50%, -50%)',
+              background: `radial-gradient(circle, ${hoveredService.colorLight} 0%, ${hoveredService.colorLight}90 40%, ${hoveredService.colorLight}50 70%, transparent 100%)`,
+              zIndex: 0,
+            }}
+          />
+        )}
+      </AnimatePresence>
+      
+      {/* Page transition overlay */}
+      <AnimatePresence>
+        {isTransitioning && transitionColor && (
+          <motion.div
+            initial={{ 
+              scale: 0,
+              opacity: 0,
+            }}
+            animate={{ 
+              scale: 8,
+              opacity: 1,
+            }}
+            transition={{ 
+              duration: 0.7,
+              ease: [0.4, 0, 0.2, 1]
+            }}
+            className="fixed rounded-full pointer-events-none"
+            style={{
+              width: '100vw',
+              height: '100vw',
+              left: transitionOrigin.x,
+              top: transitionOrigin.y,
+              transform: 'translate(-50%, -50%)',
+              backgroundColor: transitionColor,
+              zIndex: 9999,
+            }}
+          />
+        )}
+      </AnimatePresence>
+      
+      <div className="relative mx-auto max-w-7xl px-4 md:px-6 z-10">
         <motion.div
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
@@ -210,17 +154,17 @@ export default function ServicesPreview() {
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ delay: 0.1 }}
-            className="mb-5 text-sm uppercase tracking-[0.4em] text-white/70 font-semibold"
+            className="mb-5 text-sm uppercase tracking-[0.4em] text-text-dark/60 font-semibold"
           >
-            Nos univers
+            {t('services.title')}
           </motion.p>
           <motion.h2 
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ delay: 0.2 }}
-            className="text-3xl md:text-4xl lg:text-6xl font-bold text-white mb-4 md:mb-6 leading-tight px-2"
+            className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-text-dark mb-4 md:mb-6 leading-[1.15]"
           >
-            Trois expertises pour designer votre{' '}
+            {t('services.headline')}{' '}
             <motion.span 
               className="relative inline-block cursor-pointer group/emphasis"
               whileHover={{ 
@@ -230,47 +174,23 @@ export default function ServicesPreview() {
             >
               <motion.span 
                 className="relative z-10 inline-block"
-                whileHover={{
-                  textShadow: [
-                    '0 0 20px rgba(255,255,255,0.5)',
-                    '0 0 30px rgba(255,255,255,0.7)',
-                    '0 0 20px rgba(255,255,255,0.5)',
-                  ],
-                  transition: { duration: 1, repeat: Infinity, ease: 'easeInOut' }
-                }}
+                style={{ color: hoveredService?.color || 'inherit' }}
               >
-                expérience sur mesure
+                {t('services.headlineEmphasis')}
               </motion.span>
               <motion.span
                 initial={{ scaleX: 0 }}
                 animate={isInView ? { scaleX: 1 } : { scaleX: 0 }}
                 transition={{ delay: 0.6, duration: 0.6, ease: 'easeOut' }}
-                className="absolute bottom-2 left-0 right-0 h-3 bg-white/20 -z-0 origin-left"
-              />
-              <motion.span
-                className="absolute bottom-2 left-0 right-0 h-3 bg-white/40 -z-0 origin-left opacity-0 group-hover/emphasis:opacity-100"
-                initial={{ scaleX: 0 }}
-                whileHover={{ 
-                  scaleX: 1,
-                  transition: { duration: 0.4, ease: 'easeOut' }
-                }}
-              />
-              {/* Glow effect on hover */}
-              <motion.div
-                className="absolute inset-0 -z-10 rounded-lg opacity-0 group-hover/emphasis:opacity-100 blur-xl"
-                initial={false}
-                whileHover={{
-                  background: 'radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%)',
-                  scale: 1.2,
-                  transition: { duration: 0.3 }
-                }}
+                className="absolute bottom-2 left-0 right-0 h-3 bg-text-dark/15 -z-0 origin-left"
+                style={{ backgroundColor: hoveredService ? `${hoveredService.color}30` : undefined }}
               />
               {/* Pulsing dot indicators */}
               <motion.div
-                className="absolute -left-2 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-white/60 opacity-0 group-hover/emphasis:opacity-100"
+                className="absolute -left-2 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-text-dark/40 opacity-0 group-hover/emphasis:opacity-100"
                 animate={{
                   scale: [1, 1.5, 1],
-                  opacity: [0.6, 1, 0.6],
+                  opacity: [0.4, 0.8, 0.4],
                 }}
                 transition={{
                   duration: 2,
@@ -279,10 +199,10 @@ export default function ServicesPreview() {
                 }}
               />
               <motion.div
-                className="absolute -right-2 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-white/60 opacity-0 group-hover/emphasis:opacity-100"
+                className="absolute -right-2 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-text-dark/40 opacity-0 group-hover/emphasis:opacity-100"
                 animate={{
                   scale: [1, 1.5, 1],
-                  opacity: [0.6, 1, 0.6],
+                  opacity: [0.4, 0.8, 0.4],
                 }}
                 transition={{
                   duration: 2,
@@ -297,9 +217,9 @@ export default function ServicesPreview() {
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ delay: 0.3 }}
-            className="mt-4 md:mt-6 text-base md:text-lg lg:text-xl text-white/85 max-w-3xl mx-auto leading-relaxed px-2"
+            className="mt-4 md:mt-6 text-base md:text-lg lg:text-xl text-text-dark/70 max-w-3xl mx-auto leading-relaxed"
           >
-            Travel, Events, Network : combinez les formats pour créer une learning expedition unique.
+            {t('services.subtitle')}
           </motion.p>
         </motion.div>
 
@@ -310,36 +230,62 @@ export default function ServicesPreview() {
           className="grid grid-cols-1 gap-6 md:gap-10 md:grid-cols-3"
         >
           {services.map((service, index) => {
-            const IconComponent = service.icon
+            const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+              e.preventDefault()
+              
+              // Get click position for transition origin
+              const rect = e.currentTarget.getBoundingClientRect()
+              const x = rect.left + rect.width / 2
+              const y = rect.top + rect.height / 2
+              
+              setTransitionOrigin({ x: `${x}px`, y: `${y}px` })
+              setTransitionColor(service.color)
+              setIsTransitioning(true)
+              
+              // Navigate after animation
+              setTimeout(() => {
+                router.push(service.href)
+              }, 500)
+            }
+            
             return (
-              <motion.div
+              <a
                 key={index}
+                href={service.href}
+                onClick={handleClick}
+                onMouseEnter={() => handleMouseEnter(index)}
+                onMouseLeave={() => setHoveredIndex(null)}
+              >
+                <motion.div
+                  ref={(el) => { cardRefs.current[index] = el }}
                 variants={fadeInUp}
                 whileHover={{ 
                   y: -8,
                   scale: 1.02,
                   transition: { duration: 0.3, ease: 'easeOut' }
                 }}
-                onClick={() => {
-                  setSelectedUniverse(service)
-                  setIsModalOpen(true)
-                }}
-                className="group relative overflow-hidden rounded-[20px] md:rounded-[24px] border border-white/30 bg-white/95 backdrop-blur-sm p-6 md:p-8 lg:p-10 shadow-[0_8px_32px_rgba(0,0,0,0.12)] hover:shadow-[0_20px_60px_rgba(0,0,0,0.2)] hover:border-white/40 transition-all duration-500 cursor-pointer"
+                  className="group relative overflow-hidden rounded-[20px] md:rounded-[24px] border border-gray-200/60 bg-white p-6 md:p-8 lg:p-10 shadow-[0_4px_20px_rgba(0,0,0,0.06)] hover:shadow-[0_20px_60px_rgba(0,0,0,0.15)] transition-all duration-500 cursor-pointer h-full"
+                  style={{
+                    ['--service-color' as string]: service.color,
+                    ['--service-color-light' as string]: service.colorLight,
+                  }}
               >
-                {/* Animated gradient overlay */}
-                <motion.div 
-                  className="absolute inset-0 bg-gradient-to-br from-rusker-blue/0 via-rusker-blue/0 to-rusker-blue/0 group-hover:from-rusker-blue/5 group-hover:via-rusker-blue/3 group-hover:to-rusker-blue/8"
-                  transition={{ duration: 0.5 }}
+                  {/* Animated gradient overlay on hover */}
+                  <div 
+                    className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                    style={{
+                      background: `linear-gradient(135deg, ${service.colorLight}50 0%, transparent 60%)`,
+                    }}
                 />
                 
                 {/* Subtle shine effect */}
                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent transform -skew-x-12 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent transform -skew-x-12 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
                 </div>
                 
                 {/* Background Image with elegant overlay */}
                 <div 
-                  className="absolute inset-0 opacity-[0.05] group-hover:opacity-[0.1] transition-opacity duration-700"
+                    className="absolute inset-0 opacity-[0.02] group-hover:opacity-[0.06] transition-opacity duration-700"
                   style={{
                     backgroundImage: `url(${service.image})`,
                     backgroundSize: 'cover',
@@ -348,22 +294,22 @@ export default function ServicesPreview() {
                   }}
                 />
               
-                {/* Animated border glow */}
-                <motion.div 
-                  className="absolute inset-0 rounded-[24px] border-2 border-transparent group-hover:border-rusker-blue/40"
-                  transition={{ duration: 0.5 }}
+                {/* Animated border glow on hover */}
+                  <div 
+                    className="absolute inset-0 rounded-[20px] md:rounded-[24px] border-2 opacity-0 group-hover:opacity-100 transition-all duration-500"
                   style={{
-                    boxShadow: '0 0 0 0 rgba(39, 115, 150, 0)',
-                  }}
-                  whileHover={{
-                    boxShadow: '0 0 0 4px rgba(39, 115, 150, 0.1)',
+                      borderColor: service.color,
                   }}
                 />
 
                 <div className="relative flex flex-col gap-7 h-full z-10">
                   {/* Enhanced Icon Container */}
                   <motion.div 
-                    className="flex items-center justify-center w-16 h-16 md:w-20 md:h-20 rounded-xl md:rounded-2xl bg-gradient-to-br from-rusker-blue/20 via-rusker-blue/15 to-rusker-blue/10 group-hover:from-rusker-blue/30 group-hover:via-rusker-blue/20 group-hover:to-rusker-blue/15 transition-all duration-500 text-rusker-blue relative overflow-hidden"
+                      className="flex items-center justify-center w-16 h-16 md:w-20 md:h-20 rounded-xl md:rounded-2xl transition-all duration-500 relative overflow-hidden"
+                      style={{
+                        backgroundColor: `${service.colorLight}`,
+                        color: service.color,
+                      }}
                     whileHover={{ 
                       scale: 1.1,
                       rotate: [0, -5, 5, -5, 0],
@@ -371,38 +317,39 @@ export default function ServicesPreview() {
                     transition={{ duration: 0.5 }}
                   >
                     {/* Icon background pattern */}
-                    <div className="absolute inset-0 opacity-10" style={{
-                      backgroundImage: `radial-gradient(circle, rgba(39,115,150,0.3) 1px, transparent 1px)`,
+                      <div className="absolute inset-0 opacity-20" style={{
+                        backgroundImage: `radial-gradient(circle, ${service.color}40 1px, transparent 1px)`,
                       backgroundSize: '8px 8px',
                     }} />
-                    <div className="relative z-10">
-                      <IconComponent />
+                      <div className="relative z-10 flex items-center justify-center">
+                        <img 
+                          src={service.iconPath} 
+                          alt={service.title}
+                          className="w-10 h-10 md:w-12 md:h-12 object-contain"
+                        />
                     </div>
                   </motion.div>
                   
                   <div className="flex-1 space-y-3 md:space-y-4">
-                    <h3 className="text-xl md:text-2xl font-bold text-text-dark mb-2 group-hover:text-rusker-blue transition-colors duration-500 leading-tight">
+                      <h3 
+                        className="text-xl md:text-2xl font-bold text-text-dark mb-2 transition-colors duration-500 leading-[1.2] group-hover:text-[var(--service-color)]"
+                      >
                       {service.title}
                     </h3>
-                    <p className="text-sm md:text-base text-gray-700 leading-relaxed group-hover:text-gray-800 transition-colors duration-300">
+                      <p className="text-sm md:text-base text-gray-600 leading-relaxed group-hover:text-gray-700 transition-colors duration-300">
                       {service.description}
                     </p>
                   </div>
                   
                   {/* Enhanced CTA */}
                   <motion.div 
-                    className="mt-auto flex items-center gap-2 text-xs sm:text-sm font-semibold text-rusker-blue group-hover:gap-3 transition-all duration-500"
+                      className="mt-auto flex items-center gap-2 text-xs sm:text-sm font-semibold group-hover:gap-3 transition-all duration-500"
+                      style={{ color: service.color }}
                     whileHover={{ x: 4 }}
                   >
                     <span className="relative">
-                      <span className="hidden sm:inline">Explorer</span>
-                      <span className="sm:hidden">En savoir plus</span>
-                      <motion.span
-                        className="absolute bottom-0 left-0 right-0 h-[2px] bg-rusker-blue origin-left"
-                        initial={{ scaleX: 0 }}
-                        whileHover={{ scaleX: 1 }}
-                        transition={{ duration: 0.3 }}
-                      />
+                      <span className="hidden sm:inline">{t('common.explore')}</span>
+                      <span className="sm:hidden">{t('common.learnMore')}</span>
                     </span>
                     <motion.svg
                       className="h-4 w-4"
@@ -418,22 +365,11 @@ export default function ServicesPreview() {
                   </motion.div>
                 </div>
               </motion.div>
+              </a>
             )
           })}
         </motion.div>
       </div>
-
-      {/* Modal */}
-      {selectedUniverse && (
-        <UniverseModal
-          isOpen={isModalOpen}
-          onClose={() => {
-            setIsModalOpen(false)
-            setTimeout(() => setSelectedUniverse(null), 300)
-          }}
-          universe={selectedUniverse}
-        />
-      )}
     </section>
   )
 }

@@ -1,11 +1,13 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import { useMemo } from 'react'
 import Block from '@/components/ui/Block'
 import { FormData } from '@/lib/formUtils'
 import { EXPERIENCE_TYPES } from '@/lib/constants'
 import { fadeInUp, staggerContainer } from '@/lib/animations'
 import { LearningIcon, SeminarIcon, NetworkingIcon, CustomEventIcon, ConferenceIcon } from '@/components/ui/Icons'
+import { useI18n } from '@/lib/i18n'
 
 // Map icon names to actual components
 const iconMap = {
@@ -29,6 +31,15 @@ export default function Step2ExperienceType({
   onNext,
   onPrev,
 }: Step2ExperienceTypeProps) {
+  const { t } = useI18n()
+  
+  const translatedExperienceTypes = useMemo(() => {
+    return EXPERIENCE_TYPES.map(exp => ({
+      ...exp,
+      title: t(`experienceTypes.${exp.id}.title`),
+      description: t(`experienceTypes.${exp.id}.description`),
+    }))
+  }, [t])
   const toggleExperienceType = (id: string) => {
     const current = formData.experienceTypes
     if (current.includes(id)) {
@@ -47,11 +58,11 @@ export default function Step2ExperienceType({
       variants={fadeInUp}
       className="w-full"
     >
-      <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-2 text-center text-text-dark px-2">
-        Type d&apos;expérience
+      <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-2 text-center text-text-dark px-2 leading-[1.2] break-words">
+        {t('formSteps.step2.title')}
       </h2>
       <p className="text-sm md:text-base text-gray-600 text-center mb-4 md:mb-6 px-2">
-        Sélectionnez jusqu&apos;à 2 types d&apos;expérience
+        {t('formSteps.step2.subtitle')}
       </p>
 
       <motion.div
@@ -60,7 +71,7 @@ export default function Step2ExperienceType({
         animate="visible"
         className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4"
       >
-        {EXPERIENCE_TYPES.map((experience) => {
+        {translatedExperienceTypes.map((experience) => {
           const IconComponent = iconMap[experience.iconName as keyof typeof iconMap]
           const isSelected = formData.experienceTypes.includes(experience.id)
           const isDisabled = !isSelected && formData.experienceTypes.length >= 2
@@ -73,15 +84,15 @@ export default function Step2ExperienceType({
                 className={`h-full ${isDisabled ? 'opacity-60 cursor-not-allowed' : ''}`}
               >
               <div className="flex items-start justify-between mb-1">
-                <h3 className={`text-base md:text-lg font-bold ${formData.experienceTypes.includes(experience.id) ? 'text-white' : 'text-text-dark'}`}>{experience.title}</h3>
+                <h3 className={`text-base md:text-lg font-bold leading-[1.2] break-words ${formData.experienceTypes.includes(experience.id) ? 'text-white' : 'text-text-dark'}`}>{experience.title}</h3>
                 {experience.recommended === 'schools' && formData.identity === 'school' && (
                   <span className={`text-xs px-2 py-1 rounded-full ${formData.experienceTypes.includes(experience.id) ? 'bg-white/20 text-white' : 'bg-rusker-blue/20 text-rusker-blue'}`}>
-                    Recommandé
+                    {t('formSteps.step2.recommended')}
                   </span>
                 )}
                 {experience.recommended === 'companies' && formData.identity === 'company' && (
                   <span className={`text-xs px-2 py-1 rounded-full ${formData.experienceTypes.includes(experience.id) ? 'bg-white/20 text-white' : 'bg-rusker-blue/20 text-rusker-blue'}`}>
-                    Recommandé
+                    {t('formSteps.step2.recommended')}
                   </span>
                 )}
               </div>

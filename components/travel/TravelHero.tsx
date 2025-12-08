@@ -3,8 +3,10 @@
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
 import { getAssetPath } from '@/lib/utils'
+import { useI18n } from '@/lib/i18n'
 
 export default function TravelHero() {
+  const { t } = useI18n()
   const [isLoaded, setIsLoaded] = useState(false)
   const [videoLoaded, setVideoLoaded] = useState(false)
   const [useVideo, setUseVideo] = useState(true)
@@ -68,7 +70,7 @@ export default function TravelHero() {
   return (
     <section
       ref={heroRef}
-      className="relative h-screen w-full overflow-hidden bg-[#0a3a4a]"
+      className="relative h-screen w-full overflow-hidden bg-travel"
     >
       {/* Background */}
       <div className="absolute inset-0 z-0">
@@ -85,7 +87,7 @@ export default function TravelHero() {
             >
               <source src={getAssetPath('/images/hero-video.mp4')} type="video/mp4" />
             </video>
-            <div className={`absolute inset-0 bg-[#0a3a4a] transition-opacity duration-500 ${videoLoaded ? 'opacity-0' : 'opacity-100'}`} />
+            <div className={`absolute inset-0 bg-travel transition-opacity duration-500 ${videoLoaded ? 'opacity-0' : 'opacity-100'}`} />
           </motion.div>
         ) : (
           <motion.div
@@ -99,26 +101,9 @@ export default function TravelHero() {
       </div>
 
       {/* Gradient Overlays - Travel themed */}
-      <div className="absolute inset-0 z-[1] bg-gradient-to-r from-[#287497]/95 via-[#287497]/60 to-transparent" />
-      <div className="absolute inset-0 z-[1] bg-gradient-to-t from-[#0a3a4a]/90 via-transparent to-[#287497]/20" />
+      <div className="absolute inset-0 z-[1] bg-gradient-to-r from-travel/95 via-travel/60 to-transparent" />
+      <div className="absolute inset-0 z-[1] bg-gradient-to-t from-travel/90 via-transparent to-travel/20" />
 
-      {/* Logo */}
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={isLoaded ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.8, delay: 0.1 }}
-        className="absolute top-6 left-6 md:top-10 md:left-10 z-20"
-      >
-        <div className="flex items-center gap-3">
-          <img 
-            src={getAssetPath('/images/logos/Logo 2025 (long) (white).png')} 
-            alt="Rusker" 
-            className="h-8 md:h-10 w-auto"
-          />
-          <div className="h-6 w-px bg-white/40" />
-          <span className="text-white/90 font-semibold text-sm md:text-base tracking-wider">TRAVEL</span>
-        </div>
-      </motion.div>
 
       {/* Main Content */}
       <motion.div 
@@ -134,9 +119,9 @@ export default function TravelHero() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="mb-6 inline-flex items-center gap-2 rounded-full bg-white/10 backdrop-blur-sm px-4 py-2 border border-white/20"
             >
-              <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="h-2 w-2 rounded-full bg-travel-light animate-pulse" />
               <span className="text-xs md:text-sm font-medium tracking-wide text-white/90">
-                Séjours sur mesure à Barcelone
+                {t('travel.badge')}
               </span>
             </motion.div>
 
@@ -145,15 +130,15 @@ export default function TravelHero() {
               initial={{ opacity: 0, y: 40 }}
               animate={isLoaded ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-[1.05] tracking-tight mb-6"
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-[1.1] tracking-tight mb-6 px-2"
             >
-              Transformez vos
+              {t('travel.headline1')}
               <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-cyan-200 to-white">
-                équipes
+              <span className="text-travel-light">
+                {t('travel.headline2')}
               </span>
               <br />
-              <span className="text-white/80">à Barcelone</span>
+              <span className="text-white/80">{t('travel.headline3')}</span>
             </motion.h1>
 
             {/* Subheadline */}
@@ -161,9 +146,9 @@ export default function TravelHero() {
               initial={{ opacity: 0, y: 30 }}
               animate={isLoaded ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, delay: 0.5 }}
-              className="text-lg md:text-xl lg:text-2xl text-white/85 max-w-xl mb-10 leading-relaxed"
+              className="text-lg md:text-xl lg:text-2xl text-white/85 max-w-xl mb-10 leading-relaxed px-2"
             >
-              Learning expeditions & séminaires immersifs dans l'écosystème le plus inspirant d'Europe.
+              {t('travel.description')}
             </motion.p>
 
             {/* CTA */}
@@ -177,10 +162,10 @@ export default function TravelHero() {
                 onClick={scrollToForm}
                 whileHover={{ scale: 1.03, y: -2 }}
                 whileTap={{ scale: 0.98 }}
-                className="group relative px-8 py-4 bg-white text-[#287497] font-bold text-lg rounded-full overflow-hidden shadow-2xl shadow-black/20"
+                className="group relative px-8 py-4 bg-travel-light text-travel font-bold text-lg rounded-full overflow-hidden shadow-2xl shadow-black/20"
               >
                 <span className="relative z-10 flex items-center gap-3">
-                  Créer mon séjour
+                  {t('travel.cta')}
                   <motion.svg 
                     className="w-5 h-5" 
                     fill="none" 
@@ -192,7 +177,7 @@ export default function TravelHero() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                   </motion.svg>
                 </span>
-                <div className="absolute inset-0 bg-gradient-to-r from-cyan-50 to-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </motion.button>
 
               {/* Quick stat */}
@@ -202,7 +187,7 @@ export default function TravelHero() {
                     <div key={i} className="w-8 h-8 rounded-full bg-white/20 border-2 border-white/30 backdrop-blur-sm" />
                   ))}
                 </div>
-                <span>+500 participants cette année</span>
+                <span>{t('travel.stat')}</span>
               </div>
             </motion.div>
           </div>
@@ -221,7 +206,7 @@ export default function TravelHero() {
           transition={{ duration: 2, repeat: Infinity }}
           className="flex flex-col items-center gap-2 text-white/50"
         >
-          <span className="text-xs tracking-widest uppercase">Découvrir</span>
+          <span className="text-xs tracking-widest uppercase">{t('travel.discover')}</span>
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
           </svg>

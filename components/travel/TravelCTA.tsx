@@ -3,8 +3,10 @@
 import { motion, useInView } from 'framer-motion'
 import { useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { useI18n } from '@/lib/i18n'
 
 export default function TravelCTA() {
+  const { t } = useI18n()
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-50px' })
   const router = useRouter()
@@ -43,18 +45,18 @@ export default function TravelCTA() {
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-rusker-travel/10 text-rusker-travel text-sm font-semibold mb-6"
           >
             <span className="w-2 h-2 rounded-full bg-rusker-travel animate-pulse" />
-            Réponse sous 24h
+            {t('travel.ctaSection.badge')}
           </motion.div>
 
           {/* Headline */}
-          <h2 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-text-dark mb-6 leading-tight">
-            Prêt à créer une
-            <span className="block text-rusker-travel">expérience inoubliable ?</span>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-text-dark mb-6 leading-[1.1] px-2">
+            {t('travel.ctaSection.headline1')}
+            <span className="block text-rusker-travel">{t('travel.ctaSection.headline2')}</span>
           </h2>
 
           {/* Subheadline */}
           <p className="text-lg md:text-xl text-gray-600 mb-10 max-w-2xl mx-auto leading-relaxed">
-            Décrivez votre projet en 2 minutes. Notre équipe vous contacte pour concevoir votre séjour sur mesure.
+            {t('travel.ctaSection.description')}
           </p>
 
           {/* Quick email capture or direct CTA */}
@@ -77,7 +79,7 @@ export default function TravelCTA() {
               />
               
               <span className="relative z-10 flex items-center gap-3">
-                Construire mon séjour
+                {t('travel.ctaSection.button')}
                 <motion.svg
                   className="w-5 h-5"
                   fill="none"
@@ -94,7 +96,7 @@ export default function TravelCTA() {
             {/* OR divider */}
             <div className="flex items-center gap-4 w-full max-w-md">
               <div className="h-px flex-1 bg-gray-200" />
-              <span className="text-gray-400 text-sm">ou</span>
+              <span className="text-gray-400 text-sm">{t('travel.ctaSection.or')}</span>
               <div className="h-px flex-1 bg-gray-200" />
             </div>
 
@@ -105,7 +107,7 @@ export default function TravelCTA() {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="votre@email.com"
+                  placeholder={t('travel.ctaSection.emailPlaceholder')}
                   className="flex-1 px-4 py-2 bg-transparent text-text-dark placeholder:text-gray-400 focus:outline-none"
                   required
                 />
@@ -113,7 +115,7 @@ export default function TravelCTA() {
                   type="submit"
                   className="px-5 py-2 bg-rusker-travel text-white font-semibold rounded-full hover:bg-[#1f6580] transition-colors flex-shrink-0"
                 >
-                  Démarrer
+                  {t('travel.ctaSection.start')}
                 </button>
               </div>
             </form>
@@ -130,19 +132,19 @@ export default function TravelCTA() {
               <svg className="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
-              Gratuit, sans engagement
+              {t('cta.trustIndicators.free')}
             </div>
             <div className="flex items-center gap-2">
               <svg className="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
-              Réponse personnalisée
+              {t('cta.trustIndicators.personalized')}
             </div>
             <div className="flex items-center gap-2">
               <svg className="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
-              Devis sous 48h
+              {t('cta.trustIndicators.quote48h')}
             </div>
           </motion.div>
         </motion.div>

@@ -5,8 +5,10 @@ import { useEffect, useState } from 'react'
 import Button from '@/components/ui/Button'
 import Confetti from '@/components/ui/Confetti'
 import { scaleIn } from '@/lib/animations'
+import { useI18n } from '@/lib/i18n'
 
 export default function ConfirmationScreen() {
+  const { t } = useI18n()
   const [showContent, setShowContent] = useState(false)
 
   useEffect(() => {
@@ -127,7 +129,7 @@ export default function ConfirmationScreen() {
             }}
             className="bg-gradient-to-r from-rusker-blue via-[#2a8bb0] to-rusker-blue bg-clip-text text-transparent bg-[length:200%_auto]"
           >
-            Merci !
+            {t('form.confirmation.title')}
           </motion.span>
         </motion.h1>
         
@@ -138,7 +140,7 @@ export default function ConfirmationScreen() {
           transition={{ delay: 0.7, duration: 0.6 }}
           className="text-2xl md:text-3xl text-gray-700 mb-4 font-semibold"
         >
-          Votre projet est bien enregistré.
+          {t('form.confirmation.message1')}
         </motion.p>
         
         <motion.p
@@ -147,8 +149,8 @@ export default function ConfirmationScreen() {
           transition={{ delay: 0.9, duration: 0.6 }}
           className="text-xl text-gray-600 mb-12"
         >
-          Notre équipe va étudier votre demande et vous reviendra{' '}
-          <span className="font-bold text-rusker-blue">très rapidement</span> avec une proposition sur-mesure.
+          {t('form.confirmation.message2')}{' '}
+          <span className="font-bold text-rusker-blue">{t('form.confirmation.message2Emphasis')}</span> {t('form.confirmation.message2End')}
         </motion.p>
 
         {/* Button with hover animation */}
@@ -167,7 +169,7 @@ export default function ConfirmationScreen() {
               size="large"
               className="bg-rusker-blue hover:bg-[#1f5a75] shadow-lg hover:shadow-xl transition-all duration-300"
             >
-              Retour à l&apos;accueil
+              {t('common.home')}
             </Button>
           </motion.div>
         </motion.div>

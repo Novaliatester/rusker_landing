@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useMemo } from 'react'
 import { AnimatePresence, motion, useInView } from 'framer-motion'
 import ProgressBar from '@/components/ui/ProgressBar'
 import Button from '@/components/ui/Button'
@@ -12,31 +12,33 @@ import Step5BudgetContact from './Step5BudgetContact'
 import ConfirmationScreen from './ConfirmationScreen'
 import { FormData, defaultFormData, validateStep, submitForm } from '@/lib/formUtils'
 import { fadeInUp, staggerContainer } from '@/lib/animations'
-
-const stepDescriptions = {
-  1: {
-    title: 'Identité du porteur de projet',
-    detail: 'Écoles, universités, entreprises ou organisations',
-  },
-  2: {
-    title: 'Type d\'expérience',
-    detail: 'Learning expeditions, séminaires, événements, networking',
-  },
-  3: {
-    title: 'Logistique & timing',
-    detail: 'Taille du groupe, dates, durée idéale',
-  },
-  4: {
-    title: 'Thèmes & objectifs',
-    detail: 'Innovation, tech, culture, networking… sélection multiple',
-  },
-  5: {
-    title: 'Budget & contact',
-    detail: 'Fourchette budgétaire et coordonnées pour un suivi rapide',
-  },
-}
+import { useI18n } from '@/lib/i18n'
 
 export default function FormContainer() {
+  const { t } = useI18n()
+  
+  const stepDescriptions = useMemo(() => ({
+    1: {
+      title: t('form.steps.1.title'),
+      detail: t('form.steps.1.detail'),
+    },
+    2: {
+      title: t('form.steps.2.title'),
+      detail: t('form.steps.2.detail'),
+    },
+    3: {
+      title: t('form.steps.3.title'),
+      detail: t('form.steps.3.detail'),
+    },
+    4: {
+      title: t('form.steps.4.title'),
+      detail: t('form.steps.4.detail'),
+    },
+    5: {
+      title: t('form.steps.5.title'),
+      detail: t('form.steps.5.detail'),
+    },
+  }), [t])
   const [currentStep, setCurrentStep] = useState(1)
   const [formData, setFormData] = useState<FormData>(defaultFormData)
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -86,7 +88,7 @@ export default function FormContainer() {
         handleFinalSubmit()
       }
     } else {
-      setError('Veuillez remplir tous les champs requis')
+      setError(t('form.errors.fillAllFields'))
     }
   }
 
@@ -106,7 +108,7 @@ export default function FormContainer() {
     if (success) {
       setIsSubmitted(true)
     } else {
-      setError('Une erreur est survenue. Veuillez réessayer.')
+      setError(t('form.errors.submitError'))
       setIsSubmitting(false)
     }
   }
@@ -115,13 +117,13 @@ export default function FormContainer() {
     return <ConfirmationScreen />
   }
 
-  const encouragementMessages = {
-    1: "C'est parti ! Commençons par vous connaître",
-    2: "Excellent ! Définissons votre expérience idéale",
-    3: "Parfait ! Passons aux détails pratiques",
-    4: "Presque terminé ! Quels sont vos objectifs ?",
-    5: "Dernière étape ! Finalisons votre demande",
-  }
+  const encouragementMessages = useMemo(() => ({
+    1: t('form.steps.1.encouragement'),
+    2: t('form.steps.2.encouragement'),
+    3: t('form.steps.3.encouragement'),
+    4: t('form.steps.4.encouragement'),
+    5: t('form.steps.5.encouragement'),
+  }), [t])
 
   return (
     <section
@@ -328,7 +330,7 @@ export default function FormContainer() {
                   size="large"
                   className="min-h-[44px] text-sm sm:text-base"
                 >
-                  Retour
+                  {t('common.back')}
                 </Button>
                 <Button
                   onClick={nextStep}
@@ -351,7 +353,7 @@ export default function FormContainer() {
                   }
                   className="bg-rusker-blue hover:bg-[#1f5a75] min-h-[44px] text-sm sm:text-base"
                 >
-                  {currentStep === 5 ? (isSubmitting ? 'Envoi...' : 'Envoyer') : 'Continuer'}
+                  {currentStep === 5 ? (isSubmitting ? t('common.sending') : t('common.send')) : t('common.continue')}
                 </Button>
               </div>
             </div>

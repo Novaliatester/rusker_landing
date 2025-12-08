@@ -5,6 +5,7 @@ import Block from '@/components/ui/Block'
 import { FormData } from '@/lib/formUtils'
 import { fadeInUp, staggerContainer } from '@/lib/animations'
 import { SchoolIcon, CompanyIcon } from '@/components/ui/Icons'
+import { useI18n } from '@/lib/i18n'
 
 interface Step1IdentityProps {
   formData: FormData
@@ -13,6 +14,7 @@ interface Step1IdentityProps {
 }
 
 export default function Step1Identity({ formData, updateFormData, onNext }: Step1IdentityProps) {
+  const { t } = useI18n()
   const handleSelect = (identity: 'school' | 'company') => {
     // Update form data
     updateFormData({ identity })
@@ -31,10 +33,10 @@ export default function Step1Identity({ formData, updateFormData, onNext }: Step
       className="w-full"
     >
       <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-2 text-center text-text-dark px-2">
-        Qui êtes-vous ?
+        {t('formSteps.step1.title')}
       </h2>
       <p className="text-sm md:text-base text-gray-600 text-center mb-4 md:mb-6 px-2">
-        Sélectionnez votre profil pour commencer
+        {t('formSteps.step1.subtitle')}
       </p>
 
       <motion.div
@@ -50,7 +52,7 @@ export default function Step1Identity({ formData, updateFormData, onNext }: Step
             icon={<div className="w-16 h-16 md:w-20 md:h-20 lg:w-[88px] lg:h-[88px]"><SchoolIcon /></div>}
             className="text-center p-6 md:p-8 lg:p-10 min-h-[240px] md:min-h-[280px] flex flex-col justify-center"
             role="button"
-            aria-label="Sélectionner École/Université"
+            aria-label={t('formSteps.step1.school.ariaLabel')}
             tabIndex={0}
             onKeyDown={(e) => {
               if (e.key === 'Enter' || e.key === ' ') {
@@ -59,9 +61,9 @@ export default function Step1Identity({ formData, updateFormData, onNext }: Step
               }
             }}
           >
-            <h3 className={`text-xl md:text-2xl lg:text-3xl font-bold mb-3 md:mb-5 ${formData.identity === 'school' ? 'text-white' : 'text-text-dark'}`}>École/Université</h3>
+            <h3 className={`text-xl md:text-2xl lg:text-3xl font-bold mb-3 md:mb-5 ${formData.identity === 'school' ? 'text-white' : 'text-text-dark'}`}>{t('formSteps.step1.school.title')}</h3>
             <p className={`text-sm md:text-base lg:text-lg opacity-90 ${formData.identity === 'school' ? 'text-white' : 'text-gray-600'}`}>
-              Vous organisez un séjour pour vos étudiants
+              {t('formSteps.step1.school.description')}
             </p>
           </Block>
         </motion.div>
@@ -73,7 +75,7 @@ export default function Step1Identity({ formData, updateFormData, onNext }: Step
             icon={<div className="w-16 h-16 md:w-20 md:h-20 lg:w-[88px] lg:h-[88px]"><CompanyIcon /></div>}
             className="text-center p-6 md:p-8 lg:p-10 min-h-[240px] md:min-h-[280px] flex flex-col justify-center"
             role="button"
-            aria-label="Sélectionner Entreprise/Organisation"
+            aria-label={t('formSteps.step1.company.ariaLabel')}
             tabIndex={0}
             onKeyDown={(e) => {
               if (e.key === 'Enter' || e.key === ' ') {
@@ -82,9 +84,9 @@ export default function Step1Identity({ formData, updateFormData, onNext }: Step
               }
             }}
           >
-            <h3 className={`text-xl md:text-2xl lg:text-3xl font-bold mb-3 md:mb-5 ${formData.identity === 'company' ? 'text-white' : 'text-text-dark'}`}>Entreprise/Organisation</h3>
+            <h3 className={`text-xl md:text-2xl lg:text-3xl font-bold mb-3 md:mb-5 ${formData.identity === 'company' ? 'text-white' : 'text-text-dark'}`}>{t('formSteps.step1.company.title')}</h3>
             <p className={`text-sm md:text-base lg:text-lg opacity-90 ${formData.identity === 'company' ? 'text-white' : 'text-gray-600'}`}>
-              Vous planifiez un événement ou un séminaire
+              {t('formSteps.step1.company.description')}
             </p>
           </Block>
         </motion.div>

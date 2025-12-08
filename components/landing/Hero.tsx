@@ -4,15 +4,13 @@ import { motion, useScroll, useTransform } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
 import Button from '@/components/ui/Button'
 import { getAssetPath } from '@/lib/utils'
+import { useI18n } from '@/lib/i18n'
 // Animations are defined inline for specific layout needs
 
 export default function Hero() {
+  const { t } = useI18n()
   const [isLoaded, setIsLoaded] = useState(false)
-  const [videoLoaded, setVideoLoaded] = useState(false)
-  const [useVideo, setUseVideo] = useState(true)
-  const videoRef = useRef<HTMLVideoElement>(null)
   const heroRef = useRef<HTMLDivElement>(null)
-  const playAttempted = useRef(false)
   
   const { scrollYProgress } = useScroll({
     target: heroRef,
@@ -27,70 +25,6 @@ export default function Hero() {
     setIsLoaded(true)
   }, [])
 
-  useEffect(() => {
-    if (!useVideo) return
-    
-    const video = videoRef.current
-    if (!video) return
-
-    // Set video properties immediately
-    video.muted = true
-    video.playsInline = true
-    video.loop = true
-    video.preload = 'auto'
-    video.setAttribute('playsinline', '')
-    video.setAttribute('webkit-playsinline', '')
-
-    const attemptPlay = async () => {
-      if (playAttempted.current) return
-      try {
-        if (video.paused) {
-          playAttempted.current = true
-          await video.play()
-          setVideoLoaded(true)
-        }
-      } catch (error) {
-        playAttempted.current = false
-        console.log('Video play failed:', error)
-      }
-    }
-
-    const handlePlay = () => {
-      setVideoLoaded(true)
-      playAttempted.current = true
-    }
-
-    const handleError = () => {
-      console.log('Video error, falling back to image')
-      setUseVideo(false)
-    }
-
-    video.addEventListener('play', handlePlay)
-    video.addEventListener('playing', handlePlay)
-    video.addEventListener('error', handleError)
-
-    // Aggressive immediate play attempts
-    const playImmediately = async () => {
-      try {
-        // Try playing immediately without waiting
-        await video.play()
-        setVideoLoaded(true)
-      } catch (err) {
-        // If immediate play fails, wait for events
-        video.addEventListener('loadeddata', attemptPlay, { once: true })
-        video.addEventListener('canplay', attemptPlay, { once: true })
-      }
-    }
-
-    playImmediately()
-
-    return () => {
-      video.removeEventListener('play', handlePlay)
-      video.removeEventListener('playing', handlePlay)
-      video.removeEventListener('error', handleError)
-    }
-  }, [useVideo])
-
   const scrollToForm = () => {
     const formSection = document.getElementById('form-section')
     if (formSection) formSection.scrollIntoView({ behavior: 'smooth' })
@@ -103,63 +37,29 @@ export default function Hero() {
     >
       {/* Background Layer */}
       <div className="absolute inset-0 z-0">
-        {useVideo ? (
           <motion.div style={{ scale: backgroundScale }} className="relative h-full w-full">
             <video
-              ref={videoRef}
+            src={getAssetPath('/images/Hero Barcelona Video 1 4K (1).mp4')}
               autoPlay
               loop
               muted
               playsInline
-              preload="auto"
               className="h-full w-full object-cover opacity-100"
-            >
-              <source src={getAssetPath('/images/hero-video.mp4')} type="video/mp4" />
-            </video>
-            {/* Simple dark fallback while loading */}
-            <div
-              className={`absolute inset-0 bg-black transition-opacity duration-200 ${
-                videoLoaded ? 'opacity-0' : 'opacity-100'
-              }`}
+            style={{ objectFit: 'cover' }}
             />
           </motion.div>
-        ) : (
-          <motion.div
-            style={{ 
-              scale: backgroundScale,
-              backgroundImage: `url(${getAssetPath('/images/hero-barcelona.jpg')})`
-            }}
-            className="h-full w-full bg-cover bg-center"
-          />
-        )}
       </div>
 
       {/* Modern Gradient Overlays */}
       {/* Left gradient for text readability */}
-      <div className="absolute inset-0 z-[1] bg-gradient-to-r from-black/80 via-black/40 to-transparent md:from-black/90 md:via-black/20" />
+      <div className="absolute inset-0 z-[1] bg-gradient-to-r from-black/40 via-black/20 to-transparent md:from-black/50 md:via-black/10" />
       {/* Bottom gradient for depth */}
-      <div className="absolute inset-0 z-[1] bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+      <div className="absolute inset-0 z-[1] bg-gradient-to-t from-black/50 via-black/20 to-transparent" />
       
       {/* Decorative "Grain" Overlay for texture (optional, subtle modern touch) */}
       <div className="absolute inset-0 z-[1] opacity-[0.03] pointer-events-none mix-blend-overlay" 
            style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }} 
       />
-
-      {/* Rusker Logo - Top Left */}
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={isLoaded ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.8, delay: 0.1 }}
-        className="absolute top-6 left-6 md:top-10 md:left-10 lg:top-12 lg:left-16 z-20"
-      >
-        <img 
-          src={getAssetPath('/images/logos/Logo 2025 (long) (white).png')} 
-          alt="Rusker Travel" 
-          className="h-8 md:h-10 lg:h-12 w-auto opacity-90"
-          fetchPriority="high"
-          loading="eager"
-        />
-      </motion.div>
 
       {/* Main Content - Editorial Layout (Bottom Left) */}
       <div className="absolute inset-0 z-10 flex flex-col justify-end pb-24 md:pb-32 px-6 md:px-16 lg:px-24">
@@ -174,9 +74,9 @@ export default function Hero() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="mb-5 flex items-center gap-3"
           >
-            <span className="h-[1px] w-8 bg-rusker-blue/70"></span>
-            <span className="text-xs md:text-sm font-medium tracking-[0.25em] text-rusker-blue/90 uppercase">
-              Travel • Events • Network
+            <span className="h-[1px] w-8 bg-white/50"></span>
+            <span className="text-xs md:text-sm font-medium tracking-[0.25em] text-white/70 uppercase">
+              {t('hero.badge')}
             </span>
           </motion.div>
 
@@ -186,13 +86,9 @@ export default function Hero() {
               initial={{ y: '100%' }}
               animate={isLoaded ? { y: 0 } : {}}
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
-              className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-bold text-white leading-[0.95] tracking-tighter"
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white leading-[1.1] tracking-tight"
             >
-              BARCELONE
-              <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-white/80 to-white/60">
-                AUTREMENT
-              </span>
+              {t('hero.headline')}
             </motion.h1>
           </div>
 
@@ -201,9 +97,9 @@ export default function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={isLoaded ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.5 }}
-            className="text-base sm:text-lg md:text-xl text-white/85 max-w-2xl mb-8 leading-snug"
+            className="text-base sm:text-lg md:text-xl text-white/85 max-w-2xl mb-8 leading-relaxed"
           >
-            Immersions sur mesure pour entreprises et grandes écoles dans l'écosystème le plus inspirant d'Europe
+            {t('hero.description')}
           </motion.p>
 
           {/* Thematic Pills - Compact */}
@@ -214,7 +110,7 @@ export default function Hero() {
             className="mb-8"
           >
             <div className="flex flex-wrap gap-2">
-              {['Learning Expeditions', 'Séminaires', 'Événements'].map((tag) => (
+              {[t('hero.tags.learningExpeditions'), t('hero.tags.seminars'), t('hero.tags.events')].map((tag) => (
                 <span
                   key={tag}
                   className="text-xs uppercase tracking-wider text-white/60 border border-white/20 rounded-full px-3 py-1.5 backdrop-blur-sm bg-white/5"
@@ -235,11 +131,11 @@ export default function Hero() {
             <Button
               onClick={scrollToForm}
               variant="custom"
-              className="group relative px-6 sm:px-8 py-3 sm:py-4 bg-white text-black hover:bg-rusker-blue hover:text-white transition-all duration-500 text-base sm:text-lg font-bold tracking-wide overflow-hidden rounded-full w-full sm:w-auto"
+              className="group relative px-6 sm:px-8 py-3 sm:py-4 bg-white text-neutral-dark hover:bg-neutral-dark hover:text-white transition-all duration-500 text-base sm:text-lg font-bold tracking-wide overflow-hidden rounded-full w-full sm:w-auto"
             >
               <span className="relative z-10 flex items-center justify-center gap-2">
-                <span className="hidden sm:inline">CONSTRUIRE MON IMMERSION</span>
-                <span className="sm:hidden">CRÉER MON PROJET</span>
+                <span className="hidden sm:inline">{t('common.buildImmersion')}</span>
+                <span className="sm:hidden">{t('common.createProject')}</span>
                 <svg className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
@@ -252,13 +148,13 @@ export default function Hero() {
                   <img src={getAssetPath('/images/logos/essec-new.png')} alt="ESSEC" className="w-full h-full object-contain" loading="lazy" />
                 </div>
                 <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white border-2 border-black/20 backdrop-blur-sm overflow-hidden flex items-center justify-center p-0.5">
-                  <img src={getAssetPath('/images/logos/norrsken.png')} alt="Norrsken" className="w-full h-full object-contain" loading="lazy" />
+                  <img src={getAssetPath('/images/Next-U-Education-fede-federation-europeenne-des-ecoles.webp')} alt="Next-U Education" className="w-full h-full object-contain" loading="lazy" />
                 </div>
                 <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white border-2 border-black/20 backdrop-blur-sm overflow-hidden flex items-center justify-center p-0.5">
                   <img src={getAssetPath('/images/logos/papernest-new.png')} alt="Papernest" className="w-full h-full object-contain" loading="lazy" />
                 </div>
               </div>
-              <p className="leading-tight">Partenaire de +80 écoles & entreprises</p>
+              <p className="leading-tight">{t('hero.partnerText')}</p>
             </div>
           </motion.div>
         </motion.div>
@@ -271,7 +167,7 @@ export default function Hero() {
         transition={{ delay: 1.2, duration: 1 }}
         className="absolute bottom-12 right-12 z-20 hidden md:flex flex-col items-end gap-2 text-white/50 text-xs font-mono tracking-widest uppercase"
       >
-        <span>Découvrir</span>
+        <span>{t('common.discover')}</span>
         <div className="h-16 w-[1px] bg-white/30 mt-2 relative overflow-hidden">
           <motion.div 
             animate={{ y: ['-100%', '100%'] }}

@@ -1,0 +1,701 @@
+{
+  "common": {
+    "travel": "Travel",
+    "events": "Events",
+    "network": "Network",
+    "home": "Home",
+    "blog": "Blog",
+    "ourUniverses": "Our Universes",
+    "contactUs": "Contact Us",
+    "back": "Back",
+    "continue": "Continue",
+    "send": "Send",
+    "sending": "Sending...",
+    "explore": "Explore",
+    "learnMore": "Learn More",
+    "createProject": "CREATE MY PROJECT",
+    "buildImmersion": "BUILD MY IMMERSION",
+    "discover": "Discover",
+    "clickToLearnMore": "Click to learn more",
+    "touchToLearnMore": "Tap to learn more",
+    "close": "Close",
+    "responseUnder24h": "Response within 24h",
+    "quickResponse": "Quick response",
+    "allRightsReserved": "All rights reserved",
+    "termsOfUse": "Terms of Use",
+    "privacy": "Privacy",
+    "accessibility": "Accessibility"
+  },
+  "hero": {
+    "badge": "Travel • Events • Network",
+    "headline": "Explore. Connect. Transform.",
+    "description": "Customized immersions for companies and business schools in Europe's most inspiring ecosystem",
+    "tags": {
+      "learningExpeditions": "Learning Expeditions",
+      "seminars": "Seminars",
+      "events": "Events"
+    },
+    "partnerText": "Partner of +80 schools & companies"
+  },
+  "services": {
+    "title": "Our universes",
+    "headline": "Three areas of expertise to design your",
+    "headlineEmphasis": "customized experience",
+    "subtitle": "Travel, Events, Network: combine formats to create a unique learning expedition.",
+    "travel": {
+      "title": "RUSKER TRAVEL",
+      "description": "Student stays and corporate seminars in Barcelona. Between culture, learning and inspiring encounters."
+    },
+    "events": {
+      "title": "RUSKER EVENTS",
+      "description": "Customized events for companies. From the room to the stage, we design impactful experiences."
+    },
+    "network": {
+      "title": "RUSKER NETWORK",
+      "description": "A living network of talents and innovative companies in Barcelona connected to French Tech. Meet, collaborate, grow."
+    },
+    "universes": {
+      "travel": {
+        "description": "Student stays & seminars"
+      },
+      "events": {
+        "description": "Customized events"
+      },
+      "network": {
+        "description": "Community & networking"
+      }
+    }
+  },
+  "whyBarcelona": {
+    "badge": "Why Barcelona?",
+    "headline": "The European capital of experiences blending",
+    "innovation": "innovation",
+    "creativity": "creativity",
+    "internationalCommunities": "international communities",
+    "subtitle": "Each immersion is designed as a 360° exploration: strategic meetings, iconic places, innovation hubs and an engaged francophone ecosystem.",
+    "features": {
+      "creative": {
+        "title": "A unique creative energy",
+        "description": "Architecture, gastronomy, design: Barcelona inspires and connects.",
+        "highlights": [
+          "Modernist architecture by Gaudí and contemporary",
+          "Starred gastronomy and authentic local markets",
+          "Design and fashion: European design capital",
+          "Art and culture: museums, galleries and festivals"
+        ],
+        "experience": "Guided tours of workshops, meetings with local creators, immersive culinary experiences.",
+        "extendedContent": [
+          {
+            "title": "Iconic architecture",
+            "description": "Discover Gaudí's masterpieces, modernist buildings on Passeig de Gràcia, and contemporary architecture shaping the city. Private tours of UNESCO sites and meetings with local architects."
+          },
+          {
+            "title": "Excellence in gastronomy",
+            "description": "Culinary experiences in starred restaurants, discovery of local markets like La Boqueria, cooking workshops with renowned chefs, and tastings of Catalan wines."
+          },
+          {
+            "title": "Design and innovation",
+            "description": "Visits to design studios, showrooms of international brands, meetings with award-winning designers, and exploration of creative neighborhoods like El Born and Poblenou."
+          }
+        ]
+      },
+      "innovation": {
+        "title": "A future-oriented ecosystem",
+        "description": "More than 1,500 startups, 300,000 m² dedicated to innovation, hubs like 22@, Norrsken, Pier 01.",
+        "stats": ["1,500+ startups", "300,000 m² innovation"],
+        "highlights": [
+          "22@ Barcelona: innovation district",
+          "Norrsken House: social impact hub",
+          "Pier 01: tech and startup ecosystem",
+          "Mobile World Capital: technological leadership"
+        ],
+        "experience": "Visits to innovation hubs, meetings with entrepreneurs, strategic networking sessions.",
+        "extendedContent": [
+          {
+            "title": "22@ Barcelona Innovation District",
+            "description": "Europe's largest innovation district with 200 hectares dedicated to technology, research and innovation. Guided tours of flagship companies, meetings with successful startup founders, and exchange sessions on tech trends."
+          },
+          {
+            "title": "Impact and technology hubs",
+            "description": "Exploration of Norrsken House, one of the world's largest social impact hubs, and Pier 01, Barcelona's tech ecosystem. Meetings with investors, accelerators, and serial entrepreneurs."
+          },
+          {
+            "title": "Mobile World Capital",
+            "description": "Barcelona is the world capital of mobile. Privileged access to tech events, meetings with industry leaders, and discovery of the latest innovations in artificial intelligence, IoT, and 5G."
+          }
+        ]
+      },
+      "network": {
+        "title": "An engaged francophone community",
+        "description": "French Tech Barcelona, chambers of commerce, entrepreneurs and talents: a strong network that opens its doors to you.",
+        "highlights": [
+          "French Tech Barcelona: network of 200+ startups",
+          "Franco-Spanish Chamber of Commerce",
+          "Community of entrepreneurs and talents",
+          "Regular events and meetups"
+        ],
+        "experience": "Exclusive meetings with the francophone community, networking events, privileged access to local networks.",
+        "extendedContent": [
+          {
+            "title": "French Tech Barcelona",
+            "description": "The official network of French startups in Barcelona. Access to more than 200 member companies, exclusive networking events, and meetings with French entrepreneurs who have successfully established themselves in Catalonia."
+          },
+          {
+            "title": "Franco-Spanish Chamber of Commerce",
+            "description": "Strategic connections with major economic players. Mentoring sessions, access to business opportunities, and meetings with decision-makers from both countries to facilitate your cross-border projects."
+          },
+          {
+            "title": "Entrepreneurial ecosystem",
+            "description": "Integration into a dynamic community of entrepreneurs, talents and investors. Access to private events, masterclasses, and collaboration opportunities with local and international companies."
+          }
+        ]
+      },
+      "lifestyle": {
+        "title": "A stimulating living environment",
+        "description": "Urban beaches, Mediterranean climate, green spaces: Barcelona offers an inspiring environment that promotes learning and cohesion.",
+        "highlights": [
+          "Urban beaches accessible year-round",
+          "Mediterranean climate: 300 days of sunshine",
+          "Green spaces: iconic parks and gardens",
+          "Dynamic nightlife and culture"
+        ],
+        "experience": "Outdoor activities, neighborhood discovery, wellness and team cohesion experiences.",
+        "extendedContent": [
+          {
+            "title": "Beaches and water activities",
+            "description": "7 km of urban beaches accessible by metro. Beach team building activities, water sports, and relaxation moments that promote team cohesion. Mediterranean climate with 300 days of sunshine per year."
+          },
+          {
+            "title": "Parks and green spaces",
+            "description": "Discovery of Park Güell, Montjuïc gardens, and the many green spaces that punctuate the city. Outdoor wellness activities, yoga, and moments of reflection in an inspiring setting."
+          },
+          {
+            "title": "Cultural and nightlife",
+            "description": "A vibrant cultural scene with world-renowned museums, festivals year-round, and dynamic nightlife. Culinary experiences, shows, and discovery of authentic Catalan culture."
+          }
+        ]
+      },
+      "keyPoints": "Key points",
+      "proposedExperience": "Proposed experience"
+    }
+  },
+  "form": {
+    "steps": {
+      "1": {
+        "title": "Project holder identity",
+        "detail": "Schools, universities, companies or organizations",
+        "encouragement": "Let's go! Let's start by getting to know you"
+      },
+      "2": {
+        "title": "Experience type",
+        "detail": "Learning expeditions, seminars, events, networking",
+        "encouragement": "Excellent! Let's define your ideal experience"
+      },
+      "3": {
+        "title": "Logistics & timing",
+        "detail": "Group size, dates, ideal duration",
+        "encouragement": "Perfect! Let's move on to practical details"
+      },
+      "4": {
+        "title": "Themes & objectives",
+        "detail": "Innovation, tech, culture, networking… multiple selection",
+        "encouragement": "Almost done! What are your objectives?"
+      },
+      "5": {
+        "title": "Budget & contact",
+        "detail": "Budget range and contact details for quick follow-up",
+        "encouragement": "Last step! Let's finalize your request"
+      }
+    },
+    "errors": {
+      "fillAllFields": "Please fill in all required fields",
+      "submitError": "An error occurred. Please try again."
+    },
+    "confirmation": {
+      "title": "Thank you!",
+      "message1": "Your project has been registered.",
+      "message2": "Our team will review your request and get back to you",
+      "message2Emphasis": "very quickly",
+      "message2End": "with a customized proposal."
+    }
+  },
+  "footer": {
+    "brand": "Rusker Travel",
+    "description": "Customized immersive experiences in Barcelona for schools, universities and companies.",
+    "location": "Barcelona, Spain",
+    "contact": "Contact",
+    "services": "Services",
+    "createExperience": "Create your experience",
+    "whyBarcelona": "Why Barcelona",
+    "ourProjects": "Our projects",
+    "copyright": "© {year} Rusker Travel. All rights reserved."
+  },
+  "cta": {
+    "readyToCreate": "Ready to create an",
+    "unforgettableExperience": "unforgettable experience?",
+    "describeProject": "Describe your project in 2 minutes. Our team will contact you to design your customized stay.",
+    "trustIndicators": {
+      "free": "Free, no commitment",
+      "creative": "Creative proposal",
+      "quote": "Quote within 72h",
+      "personalized": "Personalized response",
+      "quote48h": "Quote within 48h"
+    }
+  },
+  "transitionToForm": {
+    "headline1": "READY TO EXPERIENCE",
+    "headline2": "BARCELONA",
+    "headline3": "DIFFERENTLY?",
+    "description": "Our teams design customized experiences for every objective and every group.",
+    "button": "Build your experience",
+    "buttonMobile": "Create your project",
+    "step": "Step",
+    "highlights": {
+      "0": {
+        "title": "Profile & objectives",
+        "detail": "Schools, universities, companies"
+      },
+      "1": {
+        "title": "Ideal format",
+        "detail": "Learning expedition, seminar, events"
+      },
+      "2": {
+        "title": "Premium logistics",
+        "detail": "Groups, dates, duration, budget"
+      }
+    }
+  },
+  "formSteps": {
+    "step1": {
+      "title": "Who are you?",
+      "subtitle": "Select your profile to get started",
+      "school": {
+        "title": "School/University",
+        "description": "You're organizing a stay for your students",
+        "ariaLabel": "Select School/University"
+      },
+      "company": {
+        "title": "Company/Organization",
+        "description": "You're planning an event or seminar",
+        "ariaLabel": "Select Company/Organization"
+      }
+    },
+    "step2": {
+      "title": "Experience type",
+      "subtitle": "Select up to 2 experience types",
+      "recommended": "Recommended"
+    },
+    "step3": {
+      "title": "Group details",
+      "subtitle": "Provide information about your group",
+      "groupSize": "Group size: {size} people",
+      "groupSize200Plus": "200+",
+      "startDate": "Start date",
+      "duration": "Stay duration",
+      "days": "day",
+      "daysPlural": "days",
+      "clear": "Clear"
+    },
+    "step4": {
+      "themes": "Themes",
+      "objectives": "Objectives",
+      "selectMultiple": "Multiple selection possible"
+    },
+    "step5": {
+      "budget": "Estimated budget",
+      "contact": "Your contact details",
+      "name": "Full name",
+      "email": "Email",
+      "phone": "Phone (optional)",
+      "company": "Company/School (optional)",
+      "message": "Message (optional)",
+      "messagePlaceholder": "Tell us more about your project..."
+    }
+  },
+  "experienceTypes": {
+    "learning-expedition": {
+      "title": "Learning Expedition",
+      "description": "Immersive student stays with company visits and professional meetings"
+    },
+    "corporate-seminar": {
+      "title": "Corporate Seminar",
+      "description": "Customized seminars for teams and executives"
+    },
+    "networking-event": {
+      "title": "Networking Event",
+      "description": "Professional meetings and connections in the Barcelona ecosystem"
+    },
+    "custom-event": {
+      "title": "Custom Event",
+      "description": "Creation of unique events according to your objectives"
+    },
+    "conference": {
+      "title": "Conference & Summit",
+      "description": "Organization of conferences and professional summits"
+    }
+  },
+  "themes": {
+    "innovation": "Innovation & Tech",
+    "sustainability": "Sustainability",
+    "entrepreneurship": "Entrepreneurship",
+    "smart-city": "Smart City",
+    "culture": "Culture & Design",
+    "gastronomy": "Gastronomy",
+    "mobility": "Mobility",
+    "tourism": "Tourism"
+  },
+  "objectives": {
+    "learning": "Learning",
+    "networking": "Networking",
+    "team-building": "Team Building",
+    "inspiration": "Inspiration",
+    "partnerships": "Partnerships",
+    "discovery": "Discovery"
+  },
+  "budgetRanges": {
+    "under-10k": "Less than €10,000",
+    "10k-25k": "€10,000 - €25,000",
+    "25k-50k": "€25,000 - €50,000",
+    "50k-100k": "€50,000 - €100,000",
+    "over-100k": "More than €100,000"
+  },
+  "socialProof": {
+    "badge": "They trust us",
+    "title": "French and European schools, startups and large companies",
+    "metrics": {
+      "schools": "schools and universities supported",
+      "companies": "Partner Companies",
+      "students": "Students moved this year",
+      "speakers": "Speakers from the tech, innovation and sustainability ecosystem"
+    },
+    "partners": "Partners and Sponsors"
+  },
+  "projects": {
+    "badge": "Projects & Events",
+    "title": "Experiences that",
+    "transform": "transform",
+    "inspire": "inspire",
+    "subtitle": "Discover how we orchestrated high-impact learning expeditions and events.",
+    "touchForDetails": "Tap for details",
+    "keyPoints": "Key points",
+    "results": "Results & Impact",
+    "stats": {
+      "students": "Students",
+      "companies": "Companies",
+      "events": "Events",
+      "participants": "Participants",
+      "speakers": "Speakers",
+      "days": "Days",
+      "attendees": "Decision Makers",
+      "format": "Format"
+    },
+    "essec": {
+      "title": "Learning Expedition",
+      "client": "Essec Business School",
+      "description": "22 students, 5 companies visited, 2 networking evenings. Result: a concrete immersion in the Catalan entrepreneurial ecosystem.",
+      "highlights": [
+        "Company visits: TravelPerk, Norrsken House, Station F Barcelona",
+        "Meetings with French and Catalan entrepreneurs",
+        "Networking evenings in iconic Barcelona venues",
+        "Immersion in the Catalan tech and innovation ecosystem"
+      ],
+      "companies": [
+        {
+          "name": "TravelPerk",
+          "description": "European leader in business travel management. Meeting with founders and discovery of their growth model."
+        },
+        {
+          "name": "Norrsken House",
+          "description": "Europe's largest social impact hub. Guided tour and exchanges on impact entrepreneurship."
+        },
+        {
+          "name": "Station F Barcelona",
+          "description": "Barcelona branch of the world's largest startup campus. Discovery of the ecosystem and meetings with startups."
+        }
+      ],
+      "outcomes": "Students developed a deep understanding of the Barcelona entrepreneurial ecosystem, created lasting connections with local entrepreneurs, and identified internship and career opportunities in tech innovation."
+    },
+    "aiSummit": {
+      "title": "AI Summit Barcelona",
+      "client": "Public Event",
+      "description": "1,200 participants, 80 speakers, 3 days of conferences and tech experiences. Result: Barcelona at the heart of European artificial intelligence.",
+      "highlights": [
+        "80+ international speakers: researchers, entrepreneurs, investors",
+        "Keynotes on generative AI, AI ethics, and innovation",
+        "Interactive demos and immersive AI experiences",
+        "Networking with European tech ecosystem leaders"
+      ],
+      "topics": [
+        {
+          "title": "Generative AI & Innovation",
+          "description": "Sessions on ChatGPT, Midjourney, and the latest innovations in generative AI. Impact on creative and technology industries."
+        },
+        {
+          "title": "Ethics & Regulation",
+          "description": "Debates on European AI regulation, data protection, and responsible use of artificial intelligence."
+        },
+        {
+          "title": "AI & Business",
+          "description": "Concrete use cases: how companies integrate AI to transform their operations and create value."
+        }
+      ],
+      "outcomes": "The event positioned Barcelona as a major AI hub in Europe, facilitated strategic partnerships, and inspired innovative projects in artificial intelligence."
+    },
+    "shoptalk": {
+      "title": "Event for Shoptalk Europe 2025",
+      "client": "WESHARETRUST",
+      "description": "100+ decision makers in retail and retail media. Enriching demos and panels and high-level networking on one of Barcelona's most beautiful rooftops.",
+      "highlights": [
+        "100+ decision makers: CEOs, CMOs, retail innovation directors",
+        "Panels on the future of retail, e-commerce, and retail media",
+        "Demos of innovative tech solutions for retail",
+        "Exclusive rooftop networking with panoramic views of Barcelona"
+      ],
+      "panels": [
+        {
+          "title": "The Future of Retail",
+          "description": "Discussion on retail trends: phygital, customer experience, and digital transformation. Perspectives from industry leaders."
+        },
+        {
+          "title": "Retail Media & Data",
+          "description": "How retailers use their data to create new revenue through retail media. Use cases and opportunities."
+        },
+        {
+          "title": "Tech Innovation",
+          "description": "Demos of innovative solutions: AR/VR, AI for retail, payment solutions, and emerging technologies that transform the customer experience."
+        }
+      ],
+      "outcomes": "The event created strategic connections between French and Spanish decision makers, facilitated business partnerships, and inspired innovation projects in retail."
+    }
+  },
+  "events": {
+    "badge": "Customized events in Barcelona",
+    "headline1": "Create",
+    "headline2": "memorable",
+    "headline3": "events",
+    "description": "Conferences, launches, networking evenings: make Barcelona your stage.",
+    "cta": "Organize my event",
+    "stat": "1200+ participants at the last AI Summit",
+    "discover": "Discover",
+    "ctaSection": {
+      "badge": "Response within 24h",
+      "headline1": "Ready to create an",
+      "headline2": "unforgettable event?",
+      "description": "Describe your project in 2 minutes. Our team will contact you to design your customized event.",
+      "button": "Organize my event",
+      "or": "or",
+      "start": "Start",
+      "emailPlaceholder": "your@email.com"
+    },
+    "services": {
+      "badge": "Full service",
+      "headline1": "From idea to",
+      "headline2": " impact",
+      "description": "We orchestrate every detail so you can focus on your guests.",
+      "items": {
+        "0": {
+          "title": "Exceptional venues",
+          "description": "Rooftops, museums, industrial spaces: Barcelona is full of unique places."
+        },
+        "1": {
+          "title": "Concept & scenography",
+          "description": "Customized artistic direction for a coherent experience."
+        },
+        "2": {
+          "title": "Speakers & program",
+          "description": "Access to our network of +100 experts and entrepreneurs."
+        },
+        "3": {
+          "title": "Technical production",
+          "description": "Sound, lighting, video, streaming: professional production."
+        },
+        "4": {
+          "title": "Communication & PR",
+          "description": "Amplification before, during and after your event."
+        },
+        "5": {
+          "title": "Facilitated networking",
+          "description": "Formats and tools to maximize meetings."
+        }
+      }
+    }
+  },
+  "travel": {
+    "badge": "Customized stays in Barcelona",
+    "headline1": "Transform your",
+    "headline2": "teams",
+    "headline3": "in Barcelona",
+    "description": "Learning expeditions & immersive seminars in Europe's most inspiring ecosystem.",
+    "cta": "Create my stay",
+    "stat": "+500 participants this year",
+    "discover": "Discover",
+    "ctaSection": {
+      "badge": "Response within 24h",
+      "headline1": "Ready to create an",
+      "headline2": "unforgettable experience?",
+      "description": "Describe your project in 2 minutes. Our team will contact you to design your customized stay.",
+      "button": "Build my stay",
+      "or": "or",
+      "start": "Start",
+      "emailPlaceholder": "your@email.com"
+    },
+    "services": {
+      "badge": "All inclusive",
+      "headline1": "We take care of",
+      "headline2": " everything",
+      "description": "From logistics organization to strategic meetings, your only mission: live the experience.",
+      "items": {
+        "0": {
+          "title": "Company visits",
+          "description": "Startups, scale-ups, large groups: access the Barcelona ecosystem."
+        },
+        "1": {
+          "title": "Networking",
+          "description": "Meetings with entrepreneurs, investors and French Tech experts."
+        },
+        "2": {
+          "title": "Accommodation",
+          "description": "Hotels, student residences or selected apartments."
+        },
+        "3": {
+          "title": "Transportation",
+          "description": "Transfers, coaches, coordination of all movements."
+        },
+        "4": {
+          "title": "Catering",
+          "description": "Catalan culinary experiences, tapas, selected restaurants."
+        },
+        "5": {
+          "title": "Keynotes & Workshops",
+          "description": "Inspiring conferences and practical workshops with experts."
+        }
+      }
+    }
+  },
+  "network": {
+    "badge": "French Tech Barcelona & tech ecosystem",
+    "headline1": "Connect to",
+    "headline2": "the Barcelona",
+    "headline3": "ecosystem",
+    "description": "Talents, startups, companies: join the most dynamic francophone community in Southern Europe.",
+    "cta": "Join the network",
+    "stat": "200+ startups in the French Tech network",
+    "discover": "Discover",
+    "ctaSection": {
+      "badge": "Free access",
+      "headline1": "Ready to join",
+      "headline2": "the community?",
+      "description": "Sign up for free and access our network of talents, startups and large companies in Barcelona.",
+      "button": "Join the network",
+      "or": "or",
+      "start": "Start",
+      "signup": "Sign up",
+      "emailPlaceholder": "your@email.com",
+      "trustIndicators": {
+        "free": "100% free",
+        "immediate": "Immediate access",
+        "official": "Official French Tech"
+      }
+    },
+    "services": {
+      "badge": "Your benefits",
+      "headline1": "More than a network,",
+      "headline2": " a community",
+      "description": "Joining Rusker Network means accessing a complete ecosystem to succeed in Barcelona.",
+      "items": {
+        "0": {
+          "title": "Talent-company matching",
+          "description": "Our platform connects the best francophone profiles to local opportunities."
+        },
+        "1": {
+          "title": "Monthly events",
+          "description": "Afterworks, conferences, French Tech Nights: a calendar rich in meetings."
+        },
+        "2": {
+          "title": "French Tech community",
+          "description": "Access to the official network of French startups in Barcelona."
+        },
+        "3": {
+          "title": "Hub access",
+          "description": "Norrsken, Pier 01, 22@: open doors to innovation venues."
+        },
+        "4": {
+          "title": "Mentoring & advice",
+          "description": "Sessions with experienced entrepreneurs from the network."
+        },
+        "5": {
+          "title": "International network",
+          "description": "Connections with other French Tech communities around the world."
+        }
+      }
+    }
+  },
+  "blog": {
+    "badge": "Blog",
+    "title": "News & Insights",
+    "description": "Discover our latest articles on the Barcelona ecosystem, tech trends and our experience feedback.",
+    "comingSoon": "Coming soon",
+    "comingSoonDescription": "Our blog is being prepared. Come back soon to discover our articles on the Barcelona ecosystem.",
+    "backToHome": "Back to home",
+    "categories": {
+      "all": "All",
+      "insight": "Insights",
+      "case-study": "Case Studies",
+      "ecosystem": "Ecosystem",
+      "event": "Events"
+    },
+    "readMore": "Read more",
+    "readTime": "{time} min read",
+    "shareArticle": "Share article",
+    "relatedArticles": "Related articles",
+    "backToBlog": "Back to blog",
+    "posts": {
+      "learning-expedition-definition": {
+        "title": "Learning Expedition: Definition, Objectives and Real Impact for Schools and Companies",
+        "excerpt": "Learning Expeditions have become a key format in schools and organizations. Discover what distinguishes this immersive format from other pedagogical approaches.",
+        "content": "Learning Expeditions have become a key format in schools and organizations. We also talk about learning trips, learning excursions, learning journeys or even corporate travel. All these expressions refer to a central idea: moving to a new environment to learn. Unlike a classic seminar, a Learning Expedition does not aim to entertain or simply 'show' companies. It's a structured immersion, designed to trigger real change in how we think about organizations and offer encounters that no internal course or workshop can reproduce."
+      },
+      "ai-summit-barcelona-story": {
+        "title": "AI Summit Barcelona: How an Embryonic Project Became One of Spain and Europe's Biggest AI Events",
+        "excerpt": "The story of AI Summit Barcelona's transformation, from a simple intuition in March 2025 to a major event gathering over a thousand participants.",
+        "content": "AI Summit Barcelona did not start as a grand international conference. It had no dedicated team, few resources, almost no structured program, and just a few dozen tickets sold. Yet, in just a few months, this still-vague project became a major event bringing together over a thousand participants, nearly a hundred international speakers, and positioned itself as one of the must-attend events in the European AI ecosystem."
+      },
+      "lexintown-rusker-transformation": {
+        "title": "The Lexintown Transformation: How an Event Brand Revealed Rusker's New Identity",
+        "excerpt": "Brands don't transform overnight. Discover how Rusker and Lexintown evolved and merged to create a unified identity.",
+        "content": "Brands don't transform overnight. They evolve with their market, their audience, their mission, and sometimes through events that reveal things. This is exactly what happened between Rusker and Lexintown. Originally, these two brands had been designed to meet two different needs. Rusker for student formats and Learning Expedition programs. Lexintown for corporate formats and companies seeking professional immersion in Barcelona."
+      },
+      "rusker-360-agency": {
+        "title": "Rusker: Travel, Events, Network. A 360° Agency Rooted in Barcelona's Ecosystem",
+        "excerpt": "Barcelona attracts thousands of students, talents, companies and leadership teams every year. Discover how Rusker structures its 360° approach.",
+        "content": "Barcelona attracts thousands of students, talents, companies and leadership teams every year seeking inspiration, training, innovation and professional encounters. To meet this multifaceted demand, Rusker has gradually structured its offering around a clear vision: to become an agency built around three complementary expertises that transform the city into a true laboratory of experiences, exploration and connections."
+      },
+      "french-tech-barcelona-ecosystem": {
+        "title": "French Tech Barcelona, TalentBoard & Rusker Network: Building the Bridges the Ecosystem Was Missing",
+        "excerpt": "Barcelona's tech ecosystem has exploded in visibility in recent years. But an ecosystem is more than just companies. It requires connections.",
+        "content": "Barcelona's tech ecosystem has exploded in visibility in recent years. Startups, scale-ups, innovation hubs, investors, international schools... everything converges in a city that attracts talent, projects and capital from around the world. But an ecosystem is not just about companies. It needs connections. It needs the ability to link: schools and companies, talent and opportunities, local organizations and international visitors."
+      },
+      "case-study-essec": {
+        "title": "CASE STUDY — ESSEC Leading a Scale-Up Chair",
+        "excerpt": "Diving into Barcelona's scale-ups to understand the true leadership of scaling in April 2025.",
+        "content": "In April 2025, students from ESSEC's Leading a Scale-Up Chair experienced something unique: four days at the heart of Barcelona's tech ecosystem. The objective? To go beyond theoretical models and understand how European scale-ups grow, organize, finance themselves and structure their leadership during hypergrowth."
+      },
+      "case-study-escen": {
+        "title": "CASE STUDY - ESCEN x Rusker",
+        "excerpt": "Digital marketing & e-commerce immersion in Barcelona: understand, observe, inspire.",
+        "content": "In 2025, ESCEN — the Nextep group's business school — approached Rusker to design a one-month Learning Expedition in Barcelona. The students, from Lyon and elsewhere, were enrolled at Pompeu Fabra University campus for academic courses... but the objective was also to confront them with the reality of the field, in one of Europe's most dynamic marketing ecosystems."
+      },
+      "case-study-wesharetrust-shoptalk": {
+        "title": "CASE STUDY - WeshareTrust x Shoptalk Europe 2025",
+        "excerpt": "Creating a premium side event for retail & retail media leaders in Barcelona.",
+        "content": "In early June 2025, Shoptalk Europe — one of the world's largest events dedicated to the future of retail — was held in Barcelona. The city welcomed thousands of international decision-makers exploring new trends: AI, unified commerce, retail media, customer experience, new business models, and technological innovations."
+      },
+      "barcelona-tech-ecosystem": {
+        "title": "Barcelona: One of Europe's Most Dynamic Tech Ecosystems",
+        "excerpt": "When thinking about Barcelona from Paris, one often imagines the beach, Gaudí, gastronomy. But behind this image lies one of Europe's most powerful tech ecosystems.",
+        "content": "When thinking about Barcelona from Paris, one often imagines the beach, Gaudí, gastronomy, a certain enviable quality of life. But behind this postcard image lies one of Europe's most powerful and cohesive tech ecosystems — and above all, one of the most open."
+      }
+    }
+  }
+}
+

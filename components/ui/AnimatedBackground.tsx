@@ -206,13 +206,13 @@ export default function AnimatedBackground({
             point.radius
           )
 
-          // Softer, more gradual fade for trail
-          gradient.addColorStop(0, `rgba(39, 115, 150, ${trailOpacity * 0.5})`)
-          gradient.addColorStop(0.2, `rgba(39, 115, 150, ${trailOpacity * 0.35})`)
-          gradient.addColorStop(0.4, `rgba(39, 115, 150, ${trailOpacity * 0.2})`)
-          gradient.addColorStop(0.6, `rgba(39, 115, 150, ${trailOpacity * 0.1})`)
-          gradient.addColorStop(0.8, `rgba(39, 115, 150, ${trailOpacity * 0.04})`)
-          gradient.addColorStop(1, 'rgba(39, 115, 150, 0)')
+          // Softer, more gradual fade for trail - using neutral dark color
+          gradient.addColorStop(0, `rgba(47, 52, 51, ${trailOpacity * 0.5})`)
+          gradient.addColorStop(0.2, `rgba(47, 52, 51, ${trailOpacity * 0.35})`)
+          gradient.addColorStop(0.4, `rgba(47, 52, 51, ${trailOpacity * 0.2})`)
+          gradient.addColorStop(0.6, `rgba(47, 52, 51, ${trailOpacity * 0.1})`)
+          gradient.addColorStop(0.8, `rgba(47, 52, 51, ${trailOpacity * 0.04})`)
+          gradient.addColorStop(1, 'rgba(47, 52, 51, 0)')
 
           ctx.fillStyle = gradient
           ctx.beginPath()
@@ -280,15 +280,15 @@ export default function AnimatedBackground({
           blob.radius
         )
 
-        // Rusker Blue (#277396) with smoother, softer gradient transitions
+        // Neutral dark (#2f3433) with smoother, softer gradient transitions
         // More color stops for gradual, eye-friendly blending
-        gradient.addColorStop(0, `rgba(39, 115, 150, ${blob.opacity * 0.85})`) // Slightly softer center
-        gradient.addColorStop(0.15, `rgba(39, 115, 150, ${blob.opacity * 0.7})`)
-        gradient.addColorStop(0.3, `rgba(39, 115, 150, ${blob.opacity * 0.5})`)
-        gradient.addColorStop(0.5, `rgba(39, 115, 150, ${blob.opacity * 0.3})`)
-        gradient.addColorStop(0.7, `rgba(39, 115, 150, ${blob.opacity * 0.15})`)
-        gradient.addColorStop(0.85, `rgba(39, 115, 150, ${blob.opacity * 0.06})`)
-        gradient.addColorStop(1, 'rgba(39, 115, 150, 0)')
+        gradient.addColorStop(0, `rgba(47, 52, 51, ${blob.opacity * 0.85})`) // Slightly softer center
+        gradient.addColorStop(0.15, `rgba(47, 52, 51, ${blob.opacity * 0.7})`)
+        gradient.addColorStop(0.3, `rgba(47, 52, 51, ${blob.opacity * 0.5})`)
+        gradient.addColorStop(0.5, `rgba(47, 52, 51, ${blob.opacity * 0.3})`)
+        gradient.addColorStop(0.7, `rgba(47, 52, 51, ${blob.opacity * 0.15})`)
+        gradient.addColorStop(0.85, `rgba(47, 52, 51, ${blob.opacity * 0.06})`)
+        gradient.addColorStop(1, 'rgba(47, 52, 51, 0)')
 
         // Draw blob
         ctx.fillStyle = gradient

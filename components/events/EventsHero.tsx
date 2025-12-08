@@ -3,8 +3,10 @@
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
 import { getAssetPath } from '@/lib/utils'
+import { useI18n } from '@/lib/i18n'
 
 export default function EventsHero() {
+  const { t } = useI18n()
   const [isLoaded, setIsLoaded] = useState(false)
   const heroRef = useRef<HTMLDivElement>(null)
 
@@ -29,7 +31,7 @@ export default function EventsHero() {
   return (
     <section
       ref={heroRef}
-      className="relative h-screen w-full overflow-hidden bg-[#042a27]"
+      className="relative h-screen w-full overflow-hidden bg-events"
     >
       {/* Background */}
       <div className="absolute inset-0 z-0">
@@ -42,27 +44,10 @@ export default function EventsHero() {
         />
       </div>
 
-      {/* Gradient Overlays - Events themed (deep teal/emerald) */}
-      <div className="absolute inset-0 z-[1] bg-gradient-to-r from-[#0b5d56]/95 via-[#0b5d56]/70 to-transparent" />
-      <div className="absolute inset-0 z-[1] bg-gradient-to-t from-[#042a27]/95 via-transparent to-[#0b5d56]/30" />
+      {/* Gradient Overlays - Events themed */}
+      <div className="absolute inset-0 z-[1] bg-gradient-to-r from-events/95 via-events/70 to-transparent" />
+      <div className="absolute inset-0 z-[1] bg-gradient-to-t from-events/95 via-transparent to-events/30" />
 
-      {/* Logo */}
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={isLoaded ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.8, delay: 0.1 }}
-        className="absolute top-6 left-6 md:top-10 md:left-10 z-20"
-      >
-        <div className="flex items-center gap-3">
-          <img 
-            src={getAssetPath('/images/logos/Logo 2025 (long) (white).png')} 
-            alt="Rusker" 
-            className="h-8 md:h-10 w-auto"
-          />
-          <div className="h-6 w-px bg-white/40" />
-          <span className="text-white/90 font-semibold text-sm md:text-base tracking-wider">EVENTS</span>
-        </div>
-      </motion.div>
 
       {/* Main Content */}
       <motion.div 
@@ -78,9 +63,9 @@ export default function EventsHero() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="mb-6 inline-flex items-center gap-2 rounded-full bg-white/10 backdrop-blur-sm px-4 py-2 border border-white/20"
             >
-              <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="h-2 w-2 rounded-full bg-events-light animate-pulse" />
               <span className="text-xs md:text-sm font-medium tracking-wide text-white/90">
-                Événements sur mesure à Barcelone
+                {t('events.badge')}
               </span>
             </motion.div>
 
@@ -89,15 +74,15 @@ export default function EventsHero() {
               initial={{ opacity: 0, y: 40 }}
               animate={isLoaded ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-[1.05] tracking-tight mb-6"
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-[1.1] tracking-tight mb-6 px-2"
             >
-              Créez des
+              {t('events.headline1')}
               <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-emerald-200 to-white">
-                événements
+              <span className="text-events-light">
+                {t('events.headline2')}
               </span>
               <br />
-              <span className="text-white/80">mémorables</span>
+              <span className="text-white/80">{t('events.headline3')}</span>
             </motion.h1>
 
             {/* Subheadline */}
@@ -105,9 +90,9 @@ export default function EventsHero() {
               initial={{ opacity: 0, y: 30 }}
               animate={isLoaded ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, delay: 0.5 }}
-              className="text-lg md:text-xl lg:text-2xl text-white/85 max-w-xl mb-10 leading-relaxed"
+              className="text-lg md:text-xl lg:text-2xl text-white/85 max-w-xl mb-10 leading-relaxed px-2"
             >
-              Conférences, lancements, soirées networking : faites de Barcelone votre scène.
+              {t('events.description')}
             </motion.p>
 
             {/* CTA */}
@@ -121,10 +106,10 @@ export default function EventsHero() {
                 onClick={scrollToForm}
                 whileHover={{ scale: 1.03, y: -2 }}
                 whileTap={{ scale: 0.98 }}
-                className="group relative px-8 py-4 bg-white text-[#0b5d56] font-bold text-lg rounded-full overflow-hidden shadow-2xl shadow-black/20"
+                className="group relative px-8 py-4 bg-events-light text-events font-bold text-lg rounded-full overflow-hidden shadow-2xl shadow-black/20"
               >
                 <span className="relative z-10 flex items-center gap-3">
-                  Organiser mon événement
+                  {t('events.cta')}
                   <motion.svg 
                     className="w-5 h-5" 
                     fill="none" 
@@ -136,7 +121,7 @@ export default function EventsHero() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                   </motion.svg>
                 </span>
-                <div className="absolute inset-0 bg-gradient-to-r from-emerald-50 to-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </motion.button>
 
               {/* Quick stat */}
@@ -146,7 +131,7 @@ export default function EventsHero() {
                     <div key={i} className="w-8 h-8 rounded-full bg-white/20 border-2 border-white/30 backdrop-blur-sm" />
                   ))}
                 </div>
-                <span>1200+ participants au dernier AI Summit</span>
+                <span>{t('events.stat')}</span>
               </div>
             </motion.div>
           </div>
@@ -165,7 +150,7 @@ export default function EventsHero() {
           transition={{ duration: 2, repeat: Infinity }}
           className="flex flex-col items-center gap-2 text-white/50"
         >
-          <span className="text-xs tracking-widest uppercase">Découvrir</span>
+          <span className="text-xs tracking-widest uppercase">{t('events.discover')}</span>
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
           </svg>

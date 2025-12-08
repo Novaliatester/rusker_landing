@@ -6,8 +6,10 @@ import { useRef, useState } from 'react'
 import { fadeInUp } from '@/lib/animations'
 import LegalModal from '@/components/ui/LegalModal'
 import { TermsContent, PrivacyContent, AccessibilityContent } from '@/components/landing/LegalContent'
+import { useI18n } from '@/lib/i18n'
 
 export default function Footer() {
+  const { t } = useI18n()
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-50px' })
   const [openModal, setOpenModal] = useState<'terms' | 'privacy' | 'accessibility' | null>(null)
@@ -23,16 +25,16 @@ export default function Footer() {
             variants={fadeInUp}
             className="space-y-4"
           >
-            <h3 className="text-xl md:text-2xl font-bold text-rusker-blue">Rusker Travel</h3>
+            <h3 className="text-xl md:text-2xl font-bold text-neutral-dark leading-[1.2]">{t('footer.brand')}</h3>
             <p className="text-gray-600 text-xs md:text-sm leading-relaxed">
-              Expériences immersives sur mesure à Barcelone pour écoles, universités et entreprises.
+              {t('footer.description')}
             </p>
             <div className="flex items-center gap-2 text-sm text-gray-500">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
                 <circle cx="12" cy="10" r="3" />
               </svg>
-              <span>Barcelone, Espagne</span>
+              <span>{t('footer.location')}</span>
             </div>
           </motion.div>
 
@@ -44,11 +46,11 @@ export default function Footer() {
             transition={{ delay: 0.1 }}
             className="space-y-4"
           >
-            <h4 className="text-base md:text-lg font-semibold text-text-dark">Contact</h4>
+            <h4 className="text-base md:text-lg font-semibold text-text-dark">{t('footer.contact')}</h4>
             <div className="space-y-3 text-sm">
               <a
                 href="mailto:info@rusker-travel.com"
-                className="flex items-center gap-2 text-gray-600 hover:text-rusker-blue transition-colors"
+                className="flex items-center gap-2 text-gray-600 hover:text-neutral-dark transition-colors"
               >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
@@ -61,7 +63,7 @@ export default function Footer() {
                   <circle cx="12" cy="12" r="10" />
                   <polyline points="12 6 12 12 16 14" />
                 </svg>
-                <span>Réponse rapide</span>
+                <span>{t('common.quickResponse')}</span>
               </div>
             </div>
           </motion.div>
@@ -74,7 +76,7 @@ export default function Footer() {
             transition={{ delay: 0.2 }}
             className="space-y-4"
           >
-            <h4 className="text-base md:text-lg font-semibold text-text-dark">Services</h4>
+            <h4 className="text-base md:text-lg font-semibold text-text-dark">{t('footer.services')}</h4>
             <ul className="space-y-2 text-sm">
               <li>
                 <a 
@@ -83,9 +85,9 @@ export default function Footer() {
                     e.preventDefault()
                     document.getElementById('form-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
                   }}
-                  className="text-gray-600 hover:text-rusker-blue transition-colors"
+                  className="text-gray-600 hover:text-neutral-dark transition-colors"
                 >
-                  Créer votre expérience
+                  {t('footer.createExperience')}
                 </a>
               </li>
               <li>
@@ -95,9 +97,9 @@ export default function Footer() {
                     e.preventDefault()
                     document.getElementById('why-barcelona')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
                   }}
-                  className="text-gray-600 hover:text-rusker-blue transition-colors"
+                  className="text-gray-600 hover:text-neutral-dark transition-colors"
                 >
-                  Pourquoi Barcelone
+                  {t('footer.whyBarcelona')}
                 </a>
               </li>
               <li>
@@ -107,9 +109,9 @@ export default function Footer() {
                     e.preventDefault()
                     document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
                   }}
-                  className="text-gray-600 hover:text-rusker-blue transition-colors"
+                  className="text-gray-600 hover:text-neutral-dark transition-colors"
                 >
-                  Nos projets
+                  {t('footer.ourProjects')}
                 </a>
               </li>
             </ul>
@@ -126,29 +128,29 @@ export default function Footer() {
         >
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-sm text-gray-500">
-              © {new Date().getFullYear()} Rusker Travel. Tous droits réservés.
+              {t('footer.copyright', { year: new Date().getFullYear() })}
             </p>
             <div className="flex flex-wrap items-center gap-4 md:gap-6">
               <button
                 onClick={() => setOpenModal('terms')}
-                className="text-sm text-gray-500 hover:text-rusker-blue transition-colors"
-                aria-label="Conditions d'utilisation"
+                className="text-sm text-gray-500 hover:text-neutral-dark transition-colors"
+                aria-label={t('common.termsOfUse')}
               >
-                Conditions d&apos;utilisation
+                {t('common.termsOfUse')}
               </button>
               <button
                 onClick={() => setOpenModal('privacy')}
-                className="text-sm text-gray-500 hover:text-rusker-blue transition-colors"
-                aria-label="Politique de confidentialité"
+                className="text-sm text-gray-500 hover:text-neutral-dark transition-colors"
+                aria-label={t('common.privacy')}
               >
-                Confidentialité
+                {t('common.privacy')}
               </button>
               <button
                 onClick={() => setOpenModal('accessibility')}
-                className="text-sm text-gray-500 hover:text-rusker-blue transition-colors"
-                aria-label="Accessibilité"
+                className="text-sm text-gray-500 hover:text-neutral-dark transition-colors"
+                aria-label={t('common.accessibility')}
               >
-                Accessibilité
+                {t('common.accessibility')}
               </button>
             </div>
           </div>
@@ -159,19 +161,19 @@ export default function Footer() {
       <LegalModal
         isOpen={openModal === 'terms'}
         onClose={() => setOpenModal(null)}
-        title="Conditions d'utilisation"
+        title={t('common.termsOfUse')}
         content={<TermsContent />}
       />
       <LegalModal
         isOpen={openModal === 'privacy'}
         onClose={() => setOpenModal(null)}
-        title="Politique de confidentialité"
+        title={t('common.privacy')}
         content={<PrivacyContent />}
       />
       <LegalModal
         isOpen={openModal === 'accessibility'}
         onClose={() => setOpenModal(null)}
-        title="Accessibilité"
+        title={t('common.accessibility')}
         content={<AccessibilityContent />}
       />
     </footer>

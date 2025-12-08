@@ -10,12 +10,10 @@ export default function EventsFooter() {
           {/* Logo */}
           <div className="flex items-center gap-3">
             <img 
-              src={getAssetPath('/images/logos/Logo 2025 (long) (white).png')} 
-              alt="Rusker" 
+              src={getAssetPath('/images/2026 Rusker/Logos/Rusker EVENTS (white).png')} 
+              alt="Rusker Events" 
               className="h-8 w-auto"
             />
-            <div className="h-5 w-px bg-white/30" />
-            <span className="text-white/80 font-medium tracking-wider text-sm">EVENTS</span>
           </div>
 
           {/* Links */}

@@ -80,7 +80,7 @@ export default function EventsTestimonial() {
               Événement signature
             </span>
             
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-6 leading-tight">
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-6 leading-[1.1] px-2">
               AI Summit Barcelona
               <span className="block text-white/70 text-xl md:text-2xl mt-2">L'événement IA de référence en Europe du Sud</span>
             </h2>
@@ -107,7 +107,7 @@ export default function EventsTestimonial() {
                 { label: 'Partenariats créés', value: '200+' },
               ].map((stat, index) => (
                 <div key={index} className="text-center p-3 rounded-lg bg-white/10 backdrop-blur-sm">
-                  <div className="text-xl md:text-2xl font-bold text-white">{stat.value}</div>
+                  <div className="text-xl md:text-2xl font-bold text-white leading-[1.1]">{stat.value}</div>
                   <div className="text-xs text-white/60">{stat.label}</div>
                 </div>
               ))}

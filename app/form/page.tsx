@@ -30,7 +30,7 @@ export default function FormPage() {
               transition={{ duration: 0.6, delay: 0.2 }}
             >
               <img 
-                src={getAssetPath('/images/logos/Logo 2025 (long) (white).png')} 
+                src={getAssetPath('/images/2026 Rusker/Logos/Rusker (white).png')} 
                 alt="Rusker Travel" 
                 className="h-8 sm:h-10 md:h-12 w-auto mx-auto"
               />
@@ -43,7 +43,7 @@ export default function FormPage() {
               transition={{ duration: 0.6, delay: 0.3 }}
               className="max-w-2xl w-full"
             >
-              <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-white leading-tight px-2">
+              <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-white leading-[1.2] px-2 break-words">
                 Créez votre expérience sur mesure à Barcelone
               </h1>
             </motion.div>
