@@ -179,7 +179,7 @@ function FormContainerInner({ initialUniverse = null }: FormContainerProps) {
   }
 
   return (
-    <section className="relative min-h-screen bg-gradient-to-b from-white via-gray-50/50 to-white">
+    <section id="form-section" className="relative min-h-screen bg-gradient-to-b from-white via-gray-50/50 to-white">
       {/* Animated background elements */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <motion.div
