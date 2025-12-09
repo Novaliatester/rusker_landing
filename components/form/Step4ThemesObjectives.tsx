@@ -1,13 +1,13 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { FormData } from '@/lib/formUtils'
+import { TravelFormData } from '@/lib/formUtils'
 import { THEMES, OBJECTIVES } from '@/lib/constants'
 import { fadeInUp } from '@/lib/animations'
 
 interface Step4ThemesObjectivesProps {
-  formData: FormData
-  updateFormData: (updates: Partial<FormData>) => void
+  formData: TravelFormData
+  updateFormData: (updates: Partial<TravelFormData>) => void
   onNext: () => void
   onPrev: () => void
 }

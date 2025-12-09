@@ -2,13 +2,13 @@
 
 import { motion } from 'framer-motion'
 import Block from '@/components/ui/Block'
-import { FormData } from '@/lib/formUtils'
+import { TravelFormData } from '@/lib/formUtils'
 import { fadeInUp, staggerContainer } from '@/lib/animations'
 import { SchoolIcon, CompanyIcon } from '@/components/ui/Icons'
 
 interface Step1IdentityProps {
-  formData: FormData
-  updateFormData: (updates: Partial<FormData>) => void
+  formData: TravelFormData
+  updateFormData: (updates: Partial<TravelFormData>) => void
   onNext: (skipValidation?: boolean) => void
 }
 

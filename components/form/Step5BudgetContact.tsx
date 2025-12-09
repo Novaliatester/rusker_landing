@@ -4,13 +4,13 @@ import { motion } from 'framer-motion'
 import Block from '@/components/ui/Block'
 import Input from '@/components/ui/Input'
 import Textarea from '@/components/ui/Textarea'
-import { FormData } from '@/lib/formUtils'
+import { TravelFormData } from '@/lib/formUtils'
 import { BUDGET_RANGES } from '@/lib/constants'
 import { fadeInUp, staggerContainer } from '@/lib/animations'
 
 interface Step5BudgetContactProps {
-  formData: FormData
-  updateFormData: (updates: Partial<FormData>) => void
+  formData: TravelFormData
+  updateFormData: (updates: Partial<TravelFormData>) => void
   onNext: () => void
   onPrev: () => void
   isSubmitting: boolean
@@ -23,7 +23,7 @@ export default function Step5BudgetContact({
   onPrev,
   isSubmitting,
 }: Step5BudgetContactProps) {
-  const handleContactChange = (field: keyof FormData['contact'], value: string) => {
+  const handleContactChange = (field: keyof TravelFormData['contact'], value: string) => {
     updateFormData({
       contact: {
         ...formData.contact,
@@ -83,11 +83,11 @@ export default function Step5BudgetContact({
                 placeholder="Votre nom"
               />
               <Input
-                label="Nom de l'entreprise"
+                label="Nom de l'établissement"
                 type="text"
-                value={formData.contact.companyName}
-                onChange={(e) => handleContactChange('companyName', e.target.value)}
-                placeholder="Nom de votre entreprise"
+                value={formData.contact.establishment}
+                onChange={(e) => handleContactChange('establishment', e.target.value)}
+                placeholder="Nom de votre établissement"
               />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

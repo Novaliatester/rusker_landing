@@ -3,12 +3,12 @@
 import { motion } from 'framer-motion'
 import Block from '@/components/ui/Block'
 import Input from '@/components/ui/Input'
-import { FormData } from '@/lib/formUtils'
+import { TravelFormData } from '@/lib/formUtils'
 import { fadeInUp } from '@/lib/animations'
 
 interface Step3GroupDetailsProps {
-  formData: FormData
-  updateFormData: (updates: Partial<FormData>) => void
+  formData: TravelFormData
+  updateFormData: (updates: Partial<TravelFormData>) => void
   onNext: () => void
   onPrev: () => void
 }
@@ -35,30 +35,21 @@ export default function Step3GroupDetails({
   }
 
   const clearDuration = () => {
-    updateFormData({ duration: 0 })
+    updateFormData({ duration: null })
   }
 
   const handleDurationSelect = (days: number) => {
-    // If start date exists, calculate end date for backend
-    if (formData.dates.start) {
-      const startDate = new Date(formData.dates.start)
-      const endDate = new Date(startDate)
-      endDate.setDate(endDate.getDate() + days)
-      
-      const endDateString = endDate.toISOString().split('T')[0]
-      updateFormData({
-        duration: days,
-        dates: {
-          ...formData.dates,
-          end: endDateString,
-        },
-      })
-    } else {
-      updateFormData({ duration: days })
-    }
+    // Map days to TravelDuration type
+    let duration: TravelFormData['duration'] = null
+    if (days === 2 || days === 3) duration = '2-3'
+    else if (days === 4) duration = '4'
+    else if (days === 7) duration = '1-week'
+    else duration = 'other'
+    
+    updateFormData({ duration })
   }
 
-  const isDurationSet = formData.duration > 0
+  const isDurationSet = formData.duration !== null
 
   return (
     <motion.div
@@ -119,7 +110,10 @@ export default function Step3GroupDetails({
                 className={`
                   px-3 py-2 text-sm rounded-lg font-semibold transition-all duration-200
                   ${
-                    formData.duration === days
+                    (days === 2 || days === 3) && formData.duration === '2-3' ||
+                    days === 4 && formData.duration === '4' ||
+                    days === 7 && formData.duration === '1-week' ||
+                    (days === 1 || days === 5 || days === 10 || days === 14) && formData.duration === 'other'
                       ? 'bg-rusker-blue text-white shadow-soft'
                       : 'bg-white text-text-dark border-2 border-gray-200 hover:border-rusker-blue'
                   }
