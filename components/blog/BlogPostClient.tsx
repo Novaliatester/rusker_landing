@@ -113,15 +113,56 @@ export default function BlogPostClient({ slug }: BlogPostClientProps) {
     .filter(p => p.category === post.category && p.id !== post.id)
     .slice(0, 3)
 
+  // Article structured data (JSON-LD)
+  const baseUrl = 'https://rusker-travel.com'
+  const postTitle = t(`blog.posts.${post.id}.title`)
+  const postExcerpt = t(`blog.posts.${post.id}.excerpt`)
+  const imagePath = post.image ? getAssetPath(post.image) : '/images/hero-barcelona-hd.jpg'
+  const imageUrl = `${baseUrl}${imagePath.startsWith('/') ? imagePath : `/${imagePath}`}`
+
+  const articleJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: postTitle,
+    description: postExcerpt,
+    image: imageUrl,
+    datePublished: post.date,
+    dateModified: post.date,
+    author: {
+      '@type': 'Organization',
+      name: 'Rusker',
+      url: baseUrl,
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'Rusker',
+      logo: {
+        '@type': 'ImageObject',
+        url: `${baseUrl}/images/2026 Rusker/Logos/Rusker.png`,
+      },
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': `${baseUrl}/blog/${post.slug}`,
+    },
+    articleSection: t(`blog.categories.${post.category}`),
+  }
+
   return (
     <main className="min-h-screen pt-20">
+      {/* Article Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
+
       {/* Hero Section with Image */}
       <section className="relative py-20 bg-gradient-to-br from-neutral-dark via-neutral-dark/90 to-neutral-dark/80">
         {post.image && (
           <div className="absolute inset-0 opacity-10">
             <Image
               src={getAssetPath(post.image)}
-              alt=""
+              alt={postTitle}
               fill
               sizes="100vw"
               className={`object-cover transition-opacity duration-500 ${

@@ -26,6 +26,13 @@
     "privacy": "Confidentialité",
     "accessibility": "Accessibilité"
   },
+  "cookieConsent": {
+    "title": "Nous utilisons des cookies",
+    "description": "Nous utilisons des cookies pour analyser le trafic et améliorer votre expérience. Vous pouvez accepter ou refuser les cookies analytiques.",
+    "accept": "Accepter",
+    "reject": "Refuser",
+    "learnMore": "En savoir plus"
+  },
   "hero": {
     "badge": "Travel • Events • Network",
     "headline": "Explorez. Connectez. Transformez.",

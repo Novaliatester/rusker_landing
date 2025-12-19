@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from 'next'
 import './globals.css'
 import Navigation from '@/components/ui/Navigation'
 import Providers from '@/components/ui/Providers'
+import CookieConsent from '@/components/ui/CookieConsent'
+import ConditionalAnalytics from '@/components/ui/ConditionalAnalytics'
 
 const baseUrl = 'https://rusker-travel.com'
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH || ''
@@ -133,6 +135,14 @@ export default function RootLayout({
         <link rel="icon" type="image/png" sizes="192x192" href={`${basePath}/favicon-192x192.png`} />
         <link rel="apple-touch-icon" sizes="180x180" href={`${basePath}/apple-touch-icon.png`} />
         <link rel="manifest" href={`${basePath}/manifest.json`} />
+        {/* hreflang tags for multilingual content */}
+        <link rel="alternate" hrefLang="fr" href={baseUrl} />
+        <link rel="alternate" hrefLang="fr-FR" href={baseUrl} />
+        <link rel="alternate" hrefLang="en" href={`${baseUrl}?lang=en`} />
+        <link rel="alternate" hrefLang="en-US" href={`${baseUrl}?lang=en`} />
+        <link rel="alternate" hrefLang="es" href={`${baseUrl}?lang=es`} />
+        <link rel="alternate" hrefLang="es-ES" href={`${baseUrl}?lang=es`} />
+        <link rel="alternate" hrefLang="x-default" href={baseUrl} />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -142,6 +152,8 @@ export default function RootLayout({
         <Providers>
           <Navigation />
           {children}
+          <CookieConsent />
+          <ConditionalAnalytics />
         </Providers>
       </body>
     </html>
