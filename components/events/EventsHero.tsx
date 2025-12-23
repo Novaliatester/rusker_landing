@@ -4,11 +4,14 @@ import { motion, useScroll, useTransform } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
 import { getAssetPath } from '@/lib/utils'
 import { useI18n } from '@/lib/i18n'
+import { VIDEO_CONFIG } from '@/lib/videoConfig'
 
 export default function EventsHero() {
   const { t } = useI18n()
   const [isLoaded, setIsLoaded] = useState(false)
+  const [shouldLoadVideo, setShouldLoadVideo] = useState(false)
   const heroRef = useRef<HTMLDivElement>(null)
+  const videoRef = useRef<HTMLVideoElement>(null)
 
   const { scrollYProgress } = useScroll({
     target: heroRef,
@@ -23,6 +26,94 @@ export default function EventsHero() {
     setIsLoaded(true)
   }, [])
 
+  // Charger la vidéo seulement quand la section est visible ou presque visible
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !shouldLoadVideo) {
+            setShouldLoadVideo(true)
+            observer.disconnect()
+          }
+        })
+      },
+      { 
+        threshold: 0.1,
+        rootMargin: '100px' // Commencer à charger 100px avant que la section soit visible
+      }
+    )
+
+    if (heroRef.current) {
+      observer.observe(heroRef.current)
+    }
+
+    // Fallback : charger après 500ms si toujours pas visible (pour les pages directes)
+    const timeout = setTimeout(() => {
+      if (!shouldLoadVideo) {
+        setShouldLoadVideo(true)
+        observer.disconnect()
+      }
+    }, 500)
+
+    return () => {
+      observer.disconnect()
+      clearTimeout(timeout)
+    }
+  }, [shouldLoadVideo])
+
+  // Gestion des erreurs vidéo (simplifiée pour éviter les boucles)
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video || !shouldLoadVideo) return
+
+    let hasErrored = false
+    let retryAttempts = 0
+    const MAX_RETRIES = 2
+
+    const handleError = () => {
+      if (hasErrored || retryAttempts >= MAX_RETRIES) {
+        return
+      }
+      hasErrored = true
+      retryAttempts++
+      
+      if (video.src.includes('cloudinary.com')) {
+        setTimeout(() => {
+          if (videoRef.current) {
+            videoRef.current.src = VIDEO_CONFIG.events.url
+            videoRef.current.load()
+            videoRef.current.play().catch(() => {
+              hasErrored = false
+            })
+          }
+        }, 2000)
+      }
+    }
+
+    const handleStalled = () => {
+      if (retryAttempts < MAX_RETRIES && video.paused) {
+        video.play().catch(() => {})
+      }
+    }
+
+    const handleEnded = () => {
+      if (video.loop && !video.paused) {
+        video.currentTime = 0
+        video.play().catch(() => {})
+      }
+    }
+
+    video.addEventListener('error', handleError)
+    video.addEventListener('stalled', handleStalled)
+    video.addEventListener('ended', handleEnded)
+
+    return () => {
+      video.removeEventListener('error', handleError)
+      video.removeEventListener('stalled', handleStalled)
+      video.removeEventListener('ended', handleEnded)
+    }
+  }, [shouldLoadVideo])
+
   const scrollToForm = () => {
     const formSection = document.getElementById('events-cta')
     if (formSection) formSection.scrollIntoView({ behavior: 'smooth' })
@@ -36,16 +127,37 @@ export default function EventsHero() {
       {/* Background Video */}
       <div className="absolute inset-0 z-0">
         <motion.div style={{ scale: backgroundScale }} className="relative h-full w-full">
-          <video
-            src={getAssetPath('/images/events-hero-video.mp4')}
-            poster={getAssetPath('/images/ai-summit-0201.jpg')}
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="h-full w-full object-cover"
-            style={{ objectFit: 'cover' }}
-          />
+          {/* Charger la vidéo seulement quand nécessaire */}
+          {shouldLoadVideo && (
+            <video
+              ref={videoRef}
+              src={VIDEO_CONFIG.events.url}
+              autoPlay
+              loop
+              muted
+              playsInline
+              preload="metadata"
+              className="absolute inset-0 h-full w-full object-cover"
+              style={{ 
+                objectFit: 'cover',
+                opacity: 0,
+                transition: 'opacity 0.5s ease-in-out'
+              }}
+              onLoadedData={() => {
+                // Fade in la vidéo une fois chargée
+                if (videoRef.current) {
+                  videoRef.current.style.opacity = '1'
+                  videoRef.current.play().catch(() => {})
+                }
+              }}
+              onCanPlay={() => {
+                // S'assurer que la vidéo joue quand elle peut
+                if (videoRef.current && videoRef.current.paused) {
+                  videoRef.current.play().catch(() => {})
+                }
+              }}
+            />
+          )}
         </motion.div>
       </div>
 

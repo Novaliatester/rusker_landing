@@ -4,15 +4,14 @@ import { motion, useScroll, useTransform } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
 import { getAssetPath } from '@/lib/utils'
 import { useI18n } from '@/lib/i18n'
+import { VIDEO_CONFIG } from '@/lib/videoConfig'
 
 export default function TravelHero() {
   const { t } = useI18n()
   const [isLoaded, setIsLoaded] = useState(false)
-  const [videoLoaded, setVideoLoaded] = useState(false)
-  const [useVideo, setUseVideo] = useState(true)
-  const videoRef = useRef<HTMLVideoElement>(null)
+  const [shouldLoadVideo, setShouldLoadVideo] = useState(false)
   const heroRef = useRef<HTMLDivElement>(null)
-  const playAttempted = useRef(false)
+  const videoRef = useRef<HTMLVideoElement>(null)
 
   const { scrollYProgress } = useScroll({
     target: heroRef,
@@ -27,40 +26,93 @@ export default function TravelHero() {
     setIsLoaded(true)
   }, [])
 
+  // Charger la vidéo seulement quand la section est visible ou presque visible
   useEffect(() => {
-    if (!useVideo) return
-    
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !shouldLoadVideo) {
+            setShouldLoadVideo(true)
+            observer.disconnect()
+          }
+        })
+      },
+      { 
+        threshold: 0.1,
+        rootMargin: '100px' // Commencer à charger 100px avant que la section soit visible
+      }
+    )
+
+    if (heroRef.current) {
+      observer.observe(heroRef.current)
+    }
+
+    // Fallback : charger après 500ms si toujours pas visible (pour les pages directes)
+    const timeout = setTimeout(() => {
+      if (!shouldLoadVideo) {
+        setShouldLoadVideo(true)
+        observer.disconnect()
+      }
+    }, 500)
+
+    return () => {
+      observer.disconnect()
+      clearTimeout(timeout)
+    }
+  }, [shouldLoadVideo])
+
+  // Gestion des erreurs vidéo (simplifiée pour éviter les boucles)
+  useEffect(() => {
     const video = videoRef.current
-    if (!video) return
+    if (!video || !shouldLoadVideo) return
 
-    video.muted = true
-    video.playsInline = true
-    video.loop = true
-    video.preload = 'auto'
+    let hasErrored = false
+    let retryAttempts = 0
+    const MAX_RETRIES = 2
 
-    const attemptPlay = async () => {
-      if (playAttempted.current) return
-      try {
-        if (video.paused) {
-          playAttempted.current = true
-          await video.play()
-          setVideoLoaded(true)
-        }
-      } catch (error) {
-        console.log('Video play failed:', error)
-        setUseVideo(false)
+    const handleError = () => {
+      if (hasErrored || retryAttempts >= MAX_RETRIES) {
+        return
+      }
+      hasErrored = true
+      retryAttempts++
+      
+      if (video.src.includes('cloudinary.com')) {
+        setTimeout(() => {
+          if (videoRef.current) {
+            videoRef.current.src = VIDEO_CONFIG.travel.url
+            videoRef.current.load()
+            videoRef.current.play().catch(() => {
+              hasErrored = false
+            })
+          }
+        }, 2000)
       }
     }
 
-    video.addEventListener('loadeddata', attemptPlay, { once: true })
-    video.addEventListener('canplay', attemptPlay, { once: true })
-    attemptPlay()
+    const handleStalled = () => {
+      if (retryAttempts < MAX_RETRIES && video.paused) {
+        video.play().catch(() => {})
+      }
+    }
+
+    const handleEnded = () => {
+      if (video.loop && !video.paused) {
+        video.currentTime = 0
+        video.play().catch(() => {})
+      }
+    }
+
+    video.addEventListener('error', handleError)
+    video.addEventListener('stalled', handleStalled)
+    video.addEventListener('ended', handleEnded)
 
     return () => {
-      video.removeEventListener('loadeddata', attemptPlay)
-      video.removeEventListener('canplay', attemptPlay)
+      video.removeEventListener('error', handleError)
+      video.removeEventListener('stalled', handleStalled)
+      video.removeEventListener('ended', handleEnded)
     }
-  }, [useVideo])
+  }, [shouldLoadVideo])
 
   const scrollToForm = () => {
     const formSection = document.getElementById('travel-cta')
@@ -72,33 +124,41 @@ export default function TravelHero() {
       ref={heroRef}
       className="relative h-screen w-full overflow-hidden bg-travel"
     >
-      {/* Background */}
+      {/* Background Video */}
       <div className="absolute inset-0 z-0">
-        {useVideo ? (
-          <motion.div style={{ scale: backgroundScale }} className="relative h-full w-full">
+        <motion.div style={{ scale: backgroundScale }} className="relative h-full w-full">
+          {/* Charger la vidéo seulement quand nécessaire */}
+          {shouldLoadVideo && (
             <video
               ref={videoRef}
+              src={VIDEO_CONFIG.travel.url}
               autoPlay
               loop
               muted
               playsInline
-              preload="auto"
-              poster={getAssetPath('/images/travel-entreprises-0201.jpg')}
-              className="h-full w-full object-cover"
-            >
-              <source src={getAssetPath('/images/hero-video.mp4')} type="video/mp4" />
-            </video>
-            <div className={`absolute inset-0 bg-travel transition-opacity duration-500 ${videoLoaded ? 'opacity-0' : 'opacity-100'}`} />
-          </motion.div>
-        ) : (
-          <motion.div
-            style={{ 
-              scale: backgroundScale,
-              backgroundImage: `url(${getAssetPath('/images/travel-entreprises-0201.jpg')})`
-            }}
-            className="h-full w-full bg-cover bg-center"
-          />
-        )}
+              preload="metadata"
+              className="absolute inset-0 h-full w-full object-cover"
+              style={{ 
+                objectFit: 'cover',
+                opacity: 0,
+                transition: 'opacity 0.5s ease-in-out'
+              }}
+              onLoadedData={() => {
+                // Fade in la vidéo une fois chargée
+                if (videoRef.current) {
+                  videoRef.current.style.opacity = '1'
+                  videoRef.current.play().catch(() => {})
+                }
+              }}
+              onCanPlay={() => {
+                // S'assurer que la vidéo joue quand elle peut
+                if (videoRef.current && videoRef.current.paused) {
+                  videoRef.current.play().catch(() => {})
+                }
+              }}
+            />
+          )}
+        </motion.div>
       </div>
 
       {/* Gradient Overlays - Travel themed */}

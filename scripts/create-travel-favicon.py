@@ -95,3 +95,4 @@ if __name__ == '__main__':
     
     create_circular_favicon(input_image, output_dir)
 
+
