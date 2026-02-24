@@ -38,6 +38,14 @@ const nextConfig = {
   compress: true,
   // Enable React strict mode for better performance insights
   reactStrictMode: true,
+  // Minify with SWC (faster and better compression)
+  swcMinify: true,
+  // Disable source maps in production to reduce bundle size
+  productionBrowserSourceMaps: false,
+  // Optimize CSS
+  experimental: {
+    optimizeCss: true,
+  },
 }
 
 module.exports = nextConfig

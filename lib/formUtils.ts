@@ -278,26 +278,22 @@ export const validateEventsStep = (step: number, data: EventsFormData): boolean 
   }
 }
 
-// Submit form to webhook
+// Submit form to Supabase via API route
 export const submitForm = async (data: FormData): Promise<boolean> => {
-  const webhookUrl = process.env.NEXT_PUBLIC_WEBHOOK_URL || 'https://rusker.lucasaibot.uk/webhook/f1e97fe9-ce31-4e6f-8d59-6b75c2715480'
-
-  // Format the payload based on universe
-  const payload = data.universe === 'travel' 
+  const payload = data.universe === 'travel'
     ? formatTravelPayload(data as TravelFormData)
     : formatEventsPayload(data as EventsFormData)
 
   try {
-    const response = await fetch(webhookUrl, {
+    const response = await fetch('/api/submit-form', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload, null, 2),
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
     })
 
     if (!response.ok) {
-      console.error('Webhook response not OK:', response.status, response.statusText)
+      const err = await response.json().catch(() => ({}))
+      console.error('Form submission failed:', response.status, err)
       return false
     }
 
@@ -308,53 +304,44 @@ export const submitForm = async (data: FormData): Promise<boolean> => {
   }
 }
 
-// Format Travel form payload
+// Format Travel form payload to match form_submissions table columns
 const formatTravelPayload = (data: TravelFormData) => ({
-  type: 'travel',
-  identity: data.identity === 'school' ? 'École/Université' : 'Entreprise/Organisation',
-  experienceType: data.experienceType,
-  groupSize: data.groupSize,
-  groupSizeDisplay: data.groupSize === 200 ? '200+' : data.groupSize.toString(),
-  startDate: data.dates.start,
-  datesFlexible: data.dates.flexible,
+  form_type: 'travel',
+  identity: data.identity,
+  experience_type: data.experienceType,
+  group_size: data.groupSize,
+  start_date: data.dates.start || null,
+  dates_flexible: data.dates.flexible,
   duration: data.duration,
   themes: data.themes,
   objectives: data.objectives,
   budget: data.budget,
-  contact: {
-    name: data.contact.name,
-    email: data.contact.email,
-    establishment: data.contact.establishment,
-    role: data.contact.role || null,
-    phone: data.contact.phone || null,
-    message: data.contact.message || null,
-  },
-  submittedAt: new Date().toISOString(),
-  timestamp: Date.now(),
+  name: data.contact.name,
+  email: data.contact.email,
+  phone_number: data.contact.phone || null,
+  contact_establishment: data.contact.establishment,
+  contact_role: data.contact.role || null,
+  message: data.contact.message || null,
 })
 
-// Format Events form payload
+// Format Events form payload to match form_submissions table columns
 const formatEventsPayload = (data: EventsFormData) => ({
-  type: 'events',
-  identity: data.identity === 'school' ? 'École/Université' : 'Entreprise/Organisation',
-  eventTypes: data.eventTypes,
-  eventScope: data.eventScope === 'internal' ? 'Événement interne (privé)' : 'Événement externe (public)',
-  date: data.date,
-  duration: data.duration,
-  participants: data.participants,
-  objectiveDescription: data.objectiveDescription,
+  form_type: 'events',
+  identity: data.identity,
+  event_types: data.eventTypes,
+  event_scope: data.eventScope,
+  event_date: data.date || null,
+  event_duration: data.duration,
+  group_size: data.participants,
+  objective_description: data.objectiveDescription,
   budget: data.budget,
-  budgetType: data.budgetType,
-  contact: {
-    name: data.contact.name,
-    email: data.contact.email,
-    establishment: data.contact.establishment,
-    role: data.contact.role || null,
-    phone: data.contact.phone || null,
-    message: data.contact.message || null,
-  },
-  submittedAt: new Date().toISOString(),
-  timestamp: Date.now(),
+  budget_type: data.budgetType,
+  name: data.contact.name,
+  email: data.contact.email,
+  phone_number: data.contact.phone || null,
+  contact_establishment: data.contact.establishment,
+  contact_role: data.contact.role || null,
+  message: data.contact.message || null,
 })
 
 // Legacy exports for backwards compatibility

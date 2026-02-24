@@ -3,6 +3,7 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { useInView } from 'framer-motion'
 import { useRef, useState, useMemo, useEffect, useCallback } from 'react'
+import Image from 'next/image'
 import { fadeInUp, staggerContainer } from '@/lib/animations'
 import { getAssetPath } from '@/lib/utils'
 import { useI18n } from '@/lib/i18n'
@@ -159,10 +160,13 @@ export default function WhyBarcelona() {
                   transition={{ duration: 0.4 }}
                   className="absolute inset-0"
                 >
-                  <img
+                  <Image
                     src={activeFeature.image}
                     alt={activeFeature.title}
-                    className="w-full h-full object-cover"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="object-cover"
+                    loading="lazy"
                   />
                   {/* Gradient overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-neutral-dark/60 via-transparent to-transparent" />

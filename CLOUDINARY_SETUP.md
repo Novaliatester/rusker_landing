@@ -91,3 +91,4 @@ Une fois toutes les vidéos configurées :
 - ✅ Fallback automatique vers les vidéos locales si Cloudinary échoue
 - ✅ Image poster affichée immédiatement pour une expérience fluide
 
+
