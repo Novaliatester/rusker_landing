@@ -7,7 +7,32 @@ import { fadeInUp, staggerContainer } from '@/lib/animations'
 import { getAssetPath } from '@/lib/utils'
 import { useI18n } from '@/lib/i18n'
 
-export default function AISummitSection() {
+function SummitMarquee() {
+  return (
+    <div className="relative overflow-hidden" style={{ backgroundColor: '#0e0e0e' }}>
+      <div className="flex items-center gap-14 whitespace-nowrap py-3 animate-marquee-slow">
+        {Array.from({ length: 16 }).map((_, i) => (
+          <div key={i} className="inline-flex items-center gap-3 flex-shrink-0">
+            <img
+              src={getAssetPath('/images/summit/summit-icon.svg')}
+              alt=""
+              className="h-4 w-4 opacity-60"
+            />
+            <span
+              className="text-xs font-semibold uppercase tracking-[0.25em]"
+              style={{ color: '#E85D3A', opacity: 0.75 }}
+            >
+              AI Summit Barcelona 2026
+            </span>
+            <span className="text-xs" style={{ color: 'rgba(232,93,58,0.25)' }}>—</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function SummitContent() {
   const { t } = useI18n()
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-50px' })
@@ -34,18 +59,14 @@ export default function AISummitSection() {
             backgroundPosition: 'center right',
           }}
         />
-        {/* Overall darkening */}
         <div className="absolute inset-0 bg-[#131313]/55" />
-        {/* Wide fade from the left */}
         <div
           className="absolute inset-0"
           style={{
             background: 'linear-gradient(to right, #131313 10%, rgba(19,19,19,0.95) 25%, rgba(19,19,19,0.75) 45%, rgba(19,19,19,0.35) 65%, transparent 100%)',
           }}
         />
-        {/* Top edge */}
         <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, #131313, transparent 40%)', opacity: 0.6 }} />
-        {/* Bottom edge */}
         <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, #131313, transparent 40%)', opacity: 0.6 }} />
       </div>
 
@@ -68,16 +89,6 @@ export default function AISummitSection() {
         >
           {/* Left — text content */}
           <div className="max-w-lg">
-            {/* Icon */}
-            <motion.div variants={fadeInUp} className="mb-4">
-              <img
-                src={getAssetPath('/images/summit/summit-icon.svg')}
-                alt=""
-                className="h-5 w-5"
-              />
-            </motion.div>
-
-            {/* Title */}
             <motion.h2
               variants={fadeInUp}
               className="text-xl sm:text-2xl md:text-3xl font-bold leading-[1.15] mb-3"
@@ -86,7 +97,6 @@ export default function AISummitSection() {
               {t('aiSummit.title')}
             </motion.h2>
 
-            {/* AI Week context + date */}
             <motion.div variants={fadeInUp} className="flex flex-wrap items-center gap-x-2 gap-y-1 mb-4">
               <span className="text-sm font-semibold" style={{ color: '#0098B5' }}>
                 AI Week Barcelona
@@ -101,7 +111,6 @@ export default function AISummitSection() {
               </span>
             </motion.div>
 
-            {/* Description */}
             <motion.p
               variants={fadeInUp}
               className="text-sm leading-relaxed mb-5"
@@ -110,7 +119,6 @@ export default function AISummitSection() {
               {t('aiSummit.description')}
             </motion.p>
 
-            {/* Stats */}
             <motion.div variants={fadeInUp} className="flex flex-wrap gap-2.5">
               {stats.map((stat, i) => (
                 <div
@@ -125,7 +133,7 @@ export default function AISummitSection() {
             </motion.div>
           </div>
 
-          {/* Right — CTAs, aligned bottom-right */}
+          {/* Right — CTAs */}
           <motion.div
             variants={fadeInUp}
             className="flex flex-col sm:flex-row md:flex-col items-start md:items-end gap-3 flex-shrink-0"
@@ -161,3 +169,6 @@ export default function AISummitSection() {
     </section>
   )
 }
+
+export { SummitMarquee }
+export default SummitContent

@@ -1,7 +1,7 @@
 'use client'
 
 import Hero from '@/components/landing/Hero'
-import AISummitSection from '@/components/landing/AISummitSection'
+import AISummitSection, { SummitMarquee } from '@/components/landing/AISummitSection'
 import WhyBarcelona from '@/components/landing/WhyBarcelona'
 import ServicesPreview from '@/components/landing/ServicesPreview'
 import SocialProof from '@/components/landing/SocialProof'
@@ -15,6 +15,7 @@ export default function Home() {
   return (
     <main className="min-h-screen">
       <Hero />
+      <SummitMarquee />
       <AISummitSection />
       <ServicesPreview />
       <WhyBarcelona />

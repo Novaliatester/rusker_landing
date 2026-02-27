@@ -140,6 +140,11 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
   }
 }
 
+.animate-marquee-slow {
+  display: inline-flex;
+  animation: marquee 60s linear infinite;
+}
+
 /* Custom scrollbar for modal - hidden */
 .custom-scrollbar {
   -ms-overflow-style: none;  /* IE and Edge */
