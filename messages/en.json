@@ -5,6 +5,7 @@
     "network": "Network",
     "home": "Home",
     "blog": "Blog",
+    "form": "Form",
     "ourUniverses": "Our Universes",
     "contactUs": "Contact Us",
     "back": "Back",
@@ -240,7 +241,47 @@
     "createExperience": "Create your experience",
     "whyBarcelona": "Why Barcelona",
     "ourProjects": "Our projects",
-    "copyright": "© {year} Rusker Travel. All rights reserved."
+    "copyright": "© {year} Rusker Travel. All rights reserved.",
+    "simpleCopyright": "© {year} Rusker. All rights reserved."
+  },
+  "testimonials": {
+    "travel": {
+      "caseStudy": "Case Study",
+      "learningExpeditionScaleUp": "Learning Expedition Scale-Up",
+      "quote": "A concrete immersion in the Catalan entrepreneurial ecosystem. Our students developed lasting connections and identified career opportunities.",
+      "students": "students",
+      "companies": "companies",
+      "days": "days",
+      "cta": "Create a similar experience"
+    },
+    "events": {
+      "signatureEvent": "Signature Event",
+      "aiSummitSubtitle": "The leading AI event in Southern Europe",
+      "quote": "An event that positioned Barcelona as a major AI hub in Europe. Exceptional networking and high-quality content.",
+      "participants": "participants",
+      "speakers": "speakers",
+      "days": "days",
+      "authorName": "Jean-Luc Martinez",
+      "authorRole": "CTO, AI Summit 2024 Participant",
+      "npsScore": "NPS Score",
+      "mediaCoverage": "Media coverage",
+      "partnershipsCreated": "Partnerships created",
+      "cta": "Create a similar event"
+    },
+    "network": {
+      "testimonial": "Testimonial",
+      "communitySubtitle": "The community that makes the difference",
+      "quote": "Thanks to the Rusker network and French Tech Barcelona, I found my first job at a scale-up in less than 3 weeks. The networking events were decisive.",
+      "startups": "startups",
+      "talents": "talents",
+      "eventsPerYear": "events/year",
+      "authorName": "Sophie Laurent",
+      "authorRole": "Product Manager, TravelPerk",
+      "avgTime": "Average time",
+      "placementRate": "Placement rate",
+      "satisfaction": "Satisfaction",
+      "cta": "Join the community"
+    }
   },
   "cta": {
     "readyToCreate": "Ready to create an",
@@ -311,6 +352,7 @@
     "step4": {
       "themes": "Themes",
       "objectives": "Objectives",
+      "subtitle": "Select up to 2 themes and 2 objectives",
       "selectMultiple": "Multiple selection possible"
     },
     "step5": {
@@ -504,6 +546,7 @@
         "placeholder": "E.g.: We want to organize an annual conference for 200 employees, combining inspiring presentations and collaborative workshops. The objective is to strengthen company culture and share our strategic vision for 2025...",
         "minChars": "Minimum 30 characters",
         "remaining": "remaining",
+        "pointsToConsider": "Points to consider:",
         "prompts": {
           "context": "What is the context of this event?",
           "goals": "What are your main objectives?",
@@ -539,6 +582,7 @@
       },
       "contact": "Your contact details",
       "name": "Full name",
+      "namePlaceholder": "Your name",
       "email": "Professional email",
       "establishment": "Establishment",
       "establishmentPlaceholder": "Name of your school, university or company",
@@ -703,6 +747,34 @@
     }
   },
   "events": {
+    "eventTypes": {
+      "badge": "Your event",
+      "headline": "What format",
+      "headlineHighlight": "is right for you?",
+      "subtitle": "Corporate or public, we create high-impact experiences.",
+      "corporate": {
+        "title": "Corporate Events",
+        "subtitle": "Seminars & Launches",
+        "description": "Company anniversaries, product launches, inaugurations: create memorable moments for your brand.",
+        "features": ["Exceptional venues in Barcelona", "Custom scenography", "Complete technical production", "Media & photo/video coverage"],
+        "cta": "Create my corporate event",
+        "statsLabel": "events delivered"
+      },
+      "public": {
+        "title": "Public Events",
+        "subtitle": "Conferences & Summits",
+        "description": "AI Summit, French Tech Nights, Retail Tech Talks: events that bring people together and inspire.",
+        "features": ["Conference or summit format", "International speakers", "Facilitated networking", "Digital amplification"],
+        "cta": "Organize a conference",
+        "statsLabel": "participants at last Summit"
+      }
+    },
+    "trustBar": {
+      "aiSummitParticipants": "AI Summit participants",
+      "speakersExperts": "Speakers & experts",
+      "eventsOrganized": "Events organized",
+      "companiesPresent": "Companies present"
+    },
     "badge": "Customized events in Barcelona",
     "headline1": "Create",
     "headline2": "memorable",
@@ -751,10 +823,39 @@
           "title": "Facilitated networking",
           "description": "Formats and tools to maximize meetings."
         }
-      }
+      },
+      "bottomCta": "+ logistics management, catering, and day-of coordination"
     }
   },
   "travel": {
+    "audienceSelector": {
+      "badge": "Your project",
+      "headline": "What type of stay",
+      "headlineHighlight": "is right for you?",
+      "subtitle": "Two formats adapted to your objectives, the same promise of excellence.",
+      "schools": {
+        "title": "Schools & Universities",
+        "subtitle": "Learning Expeditions",
+        "description": "Offer your students a transformative immersion in Barcelona's tech and innovation ecosystem.",
+        "features": ["Company & startup visits", "Meetings with entrepreneurs", "Networking with French Tech", "Conferences & workshops"],
+        "cta": "Organize a Learning Expedition",
+        "statsLabel": "schools supported"
+      },
+      "companies": {
+        "title": "Companies",
+        "subtitle": "Customized seminars",
+        "description": "Inspire and unite your teams with an immersive seminar in the European capital of innovation.",
+        "features": ["Team building & cohesion", "Inspiration visits", "Innovation workshops", "Networking evenings"],
+        "cta": "Create my seminar",
+        "statsLabel": "partner companies"
+      }
+    },
+    "trustBar": {
+      "partnerSchools": "Partner schools",
+      "studentsPerYear": "Students / year",
+      "companiesVisited": "Companies visited",
+      "expertSpeakers": "Expert speakers"
+    },
     "badge": "Customized stays in Barcelona",
     "headline1": "Transform your",
     "headline2": "teams",
@@ -803,10 +904,39 @@
           "title": "Keynotes & Workshops",
           "description": "Inspiring conferences and practical workshops with experts."
         }
-      }
+      },
+      "bottomCta": "+ personalized support from a dedicated project manager"
     }
   },
   "network": {
+    "featuresSection": {
+      "badge": "Our offering",
+      "headline": "Two ways to",
+      "headlineHighlight": "connect",
+      "subtitle": "Whether you're a talent or a company, join the most dynamic francophone ecosystem in Southern Europe.",
+      "talentboard": {
+        "title": "Talentboard Barcelona",
+        "subtitle": "Recruitment platform",
+        "description": "Connect francophone talents and innovative companies in Barcelona. Internships, VIE, permanent positions: find your opportunity.",
+        "highlights": ["Qualified francophone profiles", "Partner startups & scale-ups", "Smart matching", "Personalized support"],
+        "cta": "Access Talentboard",
+        "statsLabel": "registered talents"
+      },
+      "events": {
+        "title": "French Tech Events",
+        "subtitle": "Networking & inspiration",
+        "description": "Afterworks, conferences, French Tech Nights: monthly events to connect and inspire the community.",
+        "highlights": ["Monthly events", "Quality speakers", "Targeted networking", "Engaged community"],
+        "cta": "See upcoming events",
+        "statsLabel": "events / year"
+      }
+    },
+    "trustBar": {
+      "frenchTechStartups": "French Tech startups",
+      "eventsPerYear": "Events / year",
+      "talentsConnected": "Talents connected",
+      "largeCompanies": "Large companies"
+    },
     "badge": "French Tech Barcelona & tech ecosystem",
     "headline1": "Connect to",
     "headline2": "the Barcelona",
@@ -861,7 +991,8 @@
           "title": "International network",
           "description": "Connections with other French Tech communities around the world."
         }
-      }
+      },
+      "bottomCta": "In partnership with French Tech Barcelona"
     }
   },
   "blog": {
@@ -930,6 +1061,29 @@
         "content": "When thinking about Barcelona from Paris, one often imagines the beach, Gaudí, gastronomy, a certain enviable quality of life. But behind this postcard image lies one of Europe's most powerful and cohesive tech ecosystems — and above all, one of the most open."
       }
     }
+  },
+  "aiSummit": {
+    "badge": "Official organizer",
+    "title": "Official organizers of the AI Summit Barcelona 2026",
+    "subtitle": "Europe's biggest AI event returns to Barcelona",
+    "description": "The AI Summit is the main event of the AI Week Barcelona — a full week of conferences, hackathons, workshops and 50+ side events across the city. Rusker organizes this gathering of 10,000+ builders, founders and tech leaders.",
+    "date": "16-23 September 2026",
+    "location": "Barcelona, Spain",
+    "cta": "Discover the Summit",
+    "readStory": "Read the story",
+    "stats": {
+      "attendees": "Attendees",
+      "speakers": "Speakers",
+      "days": "Days",
+      "sideEvents": "Side Events"
+    }
+  },
+  "summitPopup": {
+    "badge": "AI Summit Barcelona 2026",
+    "title": "AI Summit Barcelona 2026",
+    "description": "Rusker organizes Europe's biggest AI event. Join 10,000+ builders, founders, and decision-makers in Barcelona this September.",
+    "cta": "Discover the Summit",
+    "dismiss": "Maybe later"
   }
 }
 

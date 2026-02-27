@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import { TravelFormData } from '@/lib/formUtils'
 import { THEMES, OBJECTIVES } from '@/lib/constants'
 import { fadeInUp } from '@/lib/animations'
+import { useI18n } from '@/lib/i18n'
 
 interface Step4ThemesObjectivesProps {
   formData: TravelFormData
@@ -18,6 +19,7 @@ export default function Step4ThemesObjectives({
   onNext,
   onPrev,
 }: Step4ThemesObjectivesProps) {
+  const { t } = useI18n()
   const toggleTheme = (id: string) => {
     const current = formData.themes
     if (current.includes(id)) {
@@ -48,16 +50,16 @@ export default function Step4ThemesObjectives({
       className="w-full"
     >
       <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-2 text-center text-text-dark">
-        Thèmes & Objectifs
+        {t('newForm.themesObjectives.title')}
       </h2>
       <p className="text-sm md:text-base text-gray-600 text-center mb-4">
-        Sélectionnez jusqu&apos;à 2 thèmes et 2 objectifs
+        {t('formSteps.step4.subtitle')}
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 max-w-5xl mx-auto">
         {/* Themes */}
         <div className="bg-white rounded-card p-4 md:p-5 shadow-soft">
-          <h3 className="text-base md:text-lg font-bold mb-3 text-text-dark">Thèmes</h3>
+          <h3 className="text-base md:text-lg font-bold mb-3 text-text-dark">{t('formSteps.step4.themes')}</h3>
           <div className="flex flex-wrap gap-2">
             {THEMES.map((theme) => {
               const isSelected = formData.themes.includes(theme.id)
@@ -78,7 +80,7 @@ export default function Step4ThemesObjectives({
                     }
                   `}
                 >
-                  {theme.label}
+                  {t(`themes.${theme.id}`)}
                 </button>
               )
             })}
@@ -87,7 +89,7 @@ export default function Step4ThemesObjectives({
 
         {/* Objectives */}
         <div className="bg-white rounded-card p-4 md:p-5 shadow-soft">
-          <h3 className="text-base md:text-lg font-bold mb-3 text-text-dark">Objectifs</h3>
+          <h3 className="text-base md:text-lg font-bold mb-3 text-text-dark">{t('formSteps.step4.objectives')}</h3>
           <div className="flex flex-wrap gap-2">
             {OBJECTIVES.map((objective) => {
               const isSelected = formData.objectives.includes(objective.id)
@@ -108,7 +110,7 @@ export default function Step4ThemesObjectives({
                     }
                   `}
                 >
-                  {objective.label}
+                  {t(`objectives.${objective.id}`)}
                 </button>
               )
             })}

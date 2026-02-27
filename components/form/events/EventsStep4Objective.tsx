@@ -82,7 +82,7 @@ export default function EventsStep4Objective({
 
         {/* Suggestion prompts */}
         <div className="mt-6 space-y-3">
-          <p className="text-sm font-medium text-gray-700">Points à considérer :</p>
+          <p className="text-sm font-medium text-gray-700">{t('newForm.events.objective.pointsToConsider')}</p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
             {[
               t('newForm.events.objective.prompts.context'),

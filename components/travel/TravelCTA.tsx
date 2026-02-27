@@ -1,14 +1,12 @@
 'use client'
 
-import { motion, useInView } from 'framer-motion'
-import { useRef, useState } from 'react'
+import { motion } from 'framer-motion'
+import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useI18n } from '@/lib/i18n'
 
 export default function TravelCTA() {
   const { t } = useI18n()
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: '-50px' })
   const router = useRouter()
   const [email, setEmail] = useState('')
   const [isHovered, setIsHovered] = useState(false)
@@ -24,7 +22,7 @@ export default function TravelCTA() {
   }
 
   return (
-    <section id="travel-cta" ref={ref} className="relative py-20 md:py-32 bg-white overflow-hidden">
+    <section id="travel-cta" className="relative py-20 md:py-32 bg-white overflow-hidden">
       {/* Background decoration */}
       <div className="absolute inset-0">
         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-rusker-travel/20 to-transparent" />
@@ -33,14 +31,18 @@ export default function TravelCTA() {
 
       <div className="relative max-w-4xl mx-auto px-4 md:px-6 text-center">
         <motion.div
+          data-scroll-reveal
           initial={{ opacity: 0, y: 40 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          whileInView={{ opacity: 1, y: 0, visibility: 'visible' }}
+          viewport={{ once: true, margin: '-50px' }}
           transition={{ duration: 0.7 }}
         >
           {/* Badge */}
           <motion.div
+            data-scroll-reveal
             initial={{ opacity: 0, scale: 0.9 }}
-            animate={isInView ? { opacity: 1, scale: 1 } : {}}
+            whileInView={{ opacity: 1, scale: 1, visibility: 'visible' }}
+            viewport={{ once: true, margin: '-50px' }}
             transition={{ duration: 0.5, delay: 0.1 }}
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-rusker-travel/10 text-rusker-travel text-sm font-semibold mb-6"
           >
@@ -123,8 +125,10 @@ export default function TravelCTA() {
 
           {/* Trust indicators */}
           <motion.div
+            data-scroll-reveal
             initial={{ opacity: 0 }}
-            animate={isInView ? { opacity: 1 } : {}}
+            whileInView={{ opacity: 1, visibility: 'visible' }}
+            viewport={{ once: true, margin: '-50px' }}
             transition={{ duration: 0.6, delay: 0.4 }}
             className="mt-12 flex flex-wrap justify-center gap-6 md:gap-8 text-gray-500 text-sm"
           >

@@ -2,8 +2,10 @@
 
 import Link from 'next/link'
 import { getAssetPath } from '@/lib/utils'
+import { useI18n } from '@/lib/i18n'
 
 export default function EventsFooter() {
+  const { t } = useI18n()
   return (
     <footer className="bg-[#042a27] text-white py-12">
       <div className="max-w-7xl mx-auto px-4 md:px-6">
@@ -21,14 +23,14 @@ export default function EventsFooter() {
 
           {/* Links */}
           <div className="flex items-center gap-8 text-sm text-white/60">
-            <Link href="/" className="hover:text-white transition-colors">Accueil</Link>
-            <Link href="/form" className="hover:text-white transition-colors">Formulaire</Link>
-            <a href="mailto:info@rusker-travel.com" className="hover:text-white transition-colors">Contact</a>
+            <Link href="/" className="hover:text-white transition-colors">{t('common.home')}</Link>
+            <Link href="/form" className="hover:text-white transition-colors">{t('common.form')}</Link>
+            <a href="mailto:info@rusker-travel.com" className="hover:text-white transition-colors">{t('footer.contact')}</a>
           </div>
 
           {/* Copyright */}
           <div className="text-sm text-white/40">
-            © {new Date().getFullYear()} Rusker. Tous droits réservés.
+            {t('footer.simpleCopyright', { year: new Date().getFullYear() })}
           </div>
         </div>
       </div>

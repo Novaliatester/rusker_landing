@@ -1,8 +1,10 @@
 'use client'
 
-import { motion, useInView } from 'framer-motion'
-import { useRef, useMemo } from 'react'
+import { motion } from 'framer-motion'
+import { useMemo } from 'react'
 import { useI18n } from '@/lib/i18n'
+
+const viewport = { once: true, margin: '-100px' }
 
 export default function NetworkServices() {
   const { t } = useI18n()
@@ -63,16 +65,16 @@ export default function NetworkServices() {
     description: t('network.services.items.5.description'),
   },
   ], [t])
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: '-100px' })
 
   return (
-    <section ref={ref} className="relative py-16 md:py-24 bg-white overflow-hidden">
+    <section className="relative py-16 md:py-24 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 md:px-6">
         {/* Section header */}
         <motion.div
+          data-scroll-reveal
           initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          whileInView={{ opacity: 1, y: 0, visibility: 'visible' }}
+          viewport={viewport}
           transition={{ duration: 0.6 }}
           className="text-center mb-12 md:mb-16"
         >
@@ -93,8 +95,10 @@ export default function NetworkServices() {
           {services.map((service, index) => (
             <motion.div
               key={index}
+              data-scroll-reveal
               initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              whileInView={{ opacity: 1, y: 0, visibility: 'visible' }}
+              viewport={viewport}
               transition={{ duration: 0.5, delay: index * 0.08 }}
               whileHover={{ y: -4, scale: 1.02 }}
               className="group p-6 md:p-8 rounded-2xl bg-gradient-to-br from-gray-50 to-white border border-gray-100 hover:border-rusker-network/30 hover:shadow-lg transition-all duration-300"
@@ -114,13 +118,15 @@ export default function NetworkServices() {
 
         {/* Bottom note */}
         <motion.div
+          data-scroll-reveal
           initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          whileInView={{ opacity: 1, y: 0, visibility: 'visible' }}
+          viewport={viewport}
           transition={{ duration: 0.6, delay: 0.5 }}
           className="text-center mt-12"
         >
           <p className="text-gray-500 text-sm mb-4">
-            En partenariat avec la French Tech Barcelona
+            {t('network.services.bottomCta')}
           </p>
         </motion.div>
       </div>

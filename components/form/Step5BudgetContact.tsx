@@ -7,6 +7,7 @@ import Textarea from '@/components/ui/Textarea'
 import { TravelFormData } from '@/lib/formUtils'
 import { BUDGET_RANGES } from '@/lib/constants'
 import { fadeInUp, staggerContainer } from '@/lib/animations'
+import { useI18n } from '@/lib/i18n'
 
 interface Step5BudgetContactProps {
   formData: TravelFormData
@@ -23,6 +24,7 @@ export default function Step5BudgetContact({
   onPrev,
   isSubmitting,
 }: Step5BudgetContactProps) {
+  const { t } = useI18n()
   const handleContactChange = (field: keyof TravelFormData['contact'], value: string) => {
     updateFormData({
       contact: {
@@ -40,16 +42,16 @@ export default function Step5BudgetContact({
       className="w-full"
     >
       <h2 className="text-3xl md:text-4xl font-bold mb-2 text-center text-text-dark">
-        Budget & Contact
+        {t('newForm.budgetContact.title')}
       </h2>
       <p className="text-base text-gray-600 text-center mb-4">
-        Dernière étape : votre budget et vos coordonnées
+        {t('newForm.budgetContact.subtitle')}
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-5xl mx-auto">
         {/* Budget Selection */}
         <motion.div variants={staggerContainer} initial="hidden" animate="visible">
-          <h3 className="text-lg font-bold mb-3 text-text-dark">Budget estimé</h3>
+          <h3 className="text-lg font-bold mb-3 text-text-dark">{t('newForm.budgetContact.budgetEstimated')}</h3>
           <div className="space-y-2">
             {BUDGET_RANGES.map((range) => (
               <motion.div key={range.id} variants={fadeInUp}>
@@ -58,7 +60,7 @@ export default function Step5BudgetContact({
                   onClick={() => updateFormData({ budget: range.id })}
                   className="p-4"
                 >
-                  <h4 className={`text-base font-semibold ${formData.budget === range.id ? 'text-white' : 'text-text-dark'}`}>{range.label}</h4>
+                  <h4 className={`text-base font-semibold ${formData.budget === range.id ? 'text-white' : 'text-text-dark'}`}>{t(`budgetRanges.${range.id}`)}</h4>
                 </Block>
               </motion.div>
             ))}
@@ -67,7 +69,7 @@ export default function Step5BudgetContact({
 
         {/* Contact Form */}
         <motion.div variants={fadeInUp} initial="hidden" animate="visible">
-          <h3 className="text-base md:text-lg font-bold mb-3 md:mb-4 text-text-dark">Vos coordonnées</h3>
+          <h3 className="text-base md:text-lg font-bold mb-3 md:mb-4 text-text-dark">{t('newForm.budgetContact.contact')}</h3>
           <motion.div 
             className="bg-white rounded-2xl md:rounded-3xl p-4 md:p-6 shadow-lg border-2 border-gray-200 space-y-3 md:space-y-4"
             whileHover={{ scale: 1.01 }}
@@ -75,24 +77,24 @@ export default function Step5BudgetContact({
           >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Input
-                label="Nom complet *"
+                label={`${t('newForm.budgetContact.name')} *`}
                 type="text"
                 value={formData.contact.name}
                 onChange={(e) => handleContactChange('name', e.target.value)}
                 required
-                placeholder="Votre nom"
+                placeholder={t('newForm.budgetContact.namePlaceholder')}
               />
               <Input
-                label="Nom de l'établissement"
+                label={t('newForm.budgetContact.establishment')}
                 type="text"
                 value={formData.contact.establishment}
                 onChange={(e) => handleContactChange('establishment', e.target.value)}
-                placeholder="Nom de votre établissement"
+                placeholder={t('newForm.budgetContact.establishmentPlaceholder')}
               />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Input
-                label="Email *"
+                label={`${t('newForm.budgetContact.email')} *`}
                 type="email"
                 value={formData.contact.email}
                 onChange={(e) => handleContactChange('email', e.target.value)}
@@ -101,7 +103,7 @@ export default function Step5BudgetContact({
                 pattern="[^\s@]+@[^\s@]+\.[^\s@]+"
               />
               <Input
-                label="Téléphone (optionnel)"
+                label={t('newForm.budgetContact.phone')}
                 type="tel"
                 value={formData.contact.phone}
                 onChange={(e) => handleContactChange('phone', e.target.value)}
@@ -109,10 +111,10 @@ export default function Step5BudgetContact({
               />
             </div>
             <Textarea
-              label="Message (optionnel)"
+              label={t('newForm.budgetContact.message')}
               value={formData.contact.message}
               onChange={(e) => handleContactChange('message', e.target.value)}
-              placeholder="Dites-nous en plus sur votre projet..."
+              placeholder={t('newForm.budgetContact.messagePlaceholder')}
             />
           </motion.div>
         </motion.div>

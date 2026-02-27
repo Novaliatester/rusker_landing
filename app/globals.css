@@ -4,6 +4,12 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Prevent flash: elements with scroll-reveal stay hidden until Framer Motion animates them */
+[data-scroll-reveal] {
+  opacity: 0;
+  visibility: hidden;
+}
+
 :root {
   --rusker-blue: #277396;
   --text-dark: #333333;
