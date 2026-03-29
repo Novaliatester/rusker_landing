@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Analytics } from '@vercel/analytics/react'
+import { Analytics } from '@vercel/analytics/next'
 import { getCookieConsent } from './CookieConsent'
 
 export default function ConditionalAnalytics() {
