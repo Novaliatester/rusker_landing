@@ -38,8 +38,7 @@ const nextConfig = {
   compress: true,
   // Enable React strict mode for better performance insights
   reactStrictMode: true,
-  // Minify with SWC (faster and better compression)
-  swcMinify: true,
+  // (swcMinify removed: SWC minification is the default and no longer a config key in Next 15)
   // Disable source maps in production to reduce bundle size
   productionBrowserSourceMaps: false,
   // Optimize CSS

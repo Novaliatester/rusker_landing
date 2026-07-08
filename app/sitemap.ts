@@ -1,6 +1,9 @@
 import { MetadataRoute } from 'next'
 import { blogPosts } from '@/lib/blogData'
 
+// Required by Next 15 for metadata routes under `output: export`
+export const dynamic = 'force-static'
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://rusker-travel.com'
   
