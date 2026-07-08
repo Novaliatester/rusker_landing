@@ -10,6 +10,7 @@
     "vercel-build": "npm run build"
   },
   "dependencies": {
+    "@rusker/ui": "*",
     "@supabase/supabase-js": "^2.97.0",
     "@vercel/analytics": "^1.6.1",
     "framer-motion": "^11.3.19",
