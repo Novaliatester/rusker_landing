@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { getAssetPath } from '@/lib/utils'
+import { PLATFORM_URL } from '@/lib/constants'
 import { useI18n } from '@/lib/i18n'
 import LanguageSwitcher from './LanguageSwitcher'
 
@@ -159,6 +160,14 @@ export default function Navigation() {
 
               {/* Language Switcher */}
               <LanguageSwitcher />
+
+              {/* Book expedition CTA */}
+              <a
+                href={`${PLATFORM_URL}/expeditions`}
+                className="ml-4 px-5 py-2.5 bg-rusker-blue text-white text-sm font-semibold rounded-full hover:bg-rusker-blue/90 transition-all duration-300 shadow-md hover:shadow-lg"
+              >
+                {t('common.bookExpedition')}
+              </a>
 
               {/* CTA Button */}
               <Link
@@ -315,6 +324,14 @@ export default function Navigation() {
                   {/* Language Switcher */}
                   <LanguageSwitcher variant="compact" />
 
+                  {/* Book expedition CTA */}
+                  <a
+                    href={`${PLATFORM_URL}/expeditions`}
+                    className="ml-4 px-5 py-2.5 bg-rusker-blue text-white text-sm font-semibold rounded-full hover:bg-rusker-blue/90 transition-all duration-300 shadow-md hover:shadow-lg"
+                  >
+                    {t('common.bookExpedition')}
+                  </a>
+
                   {/* CTA Button */}
                   <Link
                     href="/#form-section"
@@ -420,9 +437,16 @@ export default function Navigation() {
                     <LanguageSwitcher variant="compact" />
                   </div>
 
+                  <a
+                    href={`${PLATFORM_URL}/expeditions`}
+                    className="mt-4 px-4 py-3 bg-rusker-blue text-white text-center font-semibold rounded-xl"
+                  >
+                    {t('common.bookExpedition')}
+                  </a>
+
                   <Link
                     href="/#form-section"
-                    className="mt-4 px-4 py-3 bg-neutral-dark text-white text-center font-semibold rounded-xl"
+                    className="mt-2 px-4 py-3 bg-neutral-dark text-white text-center font-semibold rounded-xl"
                   >
                     {t('common.contactUs')}
                   </Link>

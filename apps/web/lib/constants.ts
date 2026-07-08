@@ -113,3 +113,7 @@ export const BUDGET_RANGES = [
   { id: 'over-100k', label: 'Plus de 100 000€', min: 100000, max: null },
 ] as const
 
+
+// Purchase platform (apps/platform — app.rusker-travel.com)
+export const PLATFORM_URL =
+  process.env.NEXT_PUBLIC_PLATFORM_URL || 'https://app.rusker-travel.com'
