@@ -6,6 +6,7 @@ import { getExpeditionBySlug, getSeatsTaken } from '@/lib/expeditions'
 import { parseBookingRequest, EU_VAT_RE, type BookingRequest } from '@/lib/booking'
 import { computeAmounts } from '@/lib/pricing'
 import { regimeMention } from '@/lib/regime'
+import { getOrCreateSellerTaxId } from '@/lib/seller-tax'
 import { issueTransferInvoice, TRANSFER_DUE_DAYS } from '@/lib/invoice'
 import { createOrder, promoteDocuments, discardOrder } from '@/lib/orders-create'
 import { getOrderWithDetails } from '@/lib/orders'
@@ -27,7 +28,13 @@ async function createCustomer(stripe: Stripe, booking: BookingRequest): Promise<
     ...(Object.keys(address).length > 0 ? { address } : {}),
   })
   if (EU_VAT_RE.test(booking.billing.vatNumber)) {
-    await stripe.customers.createTaxId(customer.id, { type: 'eu_vat', value: booking.billing.vatNumber }).catch(() => {})
+    // Buyer's intracommunity VAT → shown on the invoice. Log rejections instead of
+    // silently dropping them, so a bad value is diagnosable rather than invisible.
+    try {
+      await stripe.customers.createTaxId(customer.id, { type: 'eu_vat', value: booking.billing.vatNumber })
+    } catch (err) {
+      console.error(`Stripe rejected buyer VAT "${booking.billing.vatNumber}"`, err)
+    }
   }
   return customer
 }
@@ -100,7 +107,13 @@ async function handleCard(
           },
         },
       ],
-      invoice_creation: { enabled: true, invoice_data: { footer: regimeMention(booking.locale) } },
+      invoice_creation: {
+        enabled: true,
+        invoice_data: {
+          footer: regimeMention(booking.locale),
+          account_tax_ids: [await getOrCreateSellerTaxId(stripe)],
+        },
+      },
       metadata: { order_id: created.orderId, expedition_id: expedition.id, quantity: String(booking.participants.length) },
       expires_at: Math.floor(now / 1000) + 30 * 60,
       success_url: `${origin}/${booking.locale}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,

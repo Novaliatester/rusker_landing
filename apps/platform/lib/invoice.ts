@@ -1,5 +1,6 @@
 import type Stripe from 'stripe'
 import { regimeMention } from '@/lib/regime'
+import { getOrCreateSellerTaxId } from '@/lib/seller-tax'
 
 /** Bank-transfer orders are invoiced with this payment window. */
 export const TRANSFER_DUE_DAYS = 14
@@ -32,6 +33,7 @@ export async function issueTransferInvoice(
     currency: params.currency,
     auto_advance: false,
     footer: regimeMention(params.locale),
+    account_tax_ids: [await getOrCreateSellerTaxId(stripe)],
     metadata: { order_id: params.orderId, expedition_id: params.expeditionId },
   })
   if (!invoice.id) throw new Error('Stripe did not return an invoice id')
