@@ -16,7 +16,12 @@ export async function POST(request: Request) {
   }
 
   const supabase = await getAuthClient()
-  const { error } = await supabase.auth.verifyOtp({ email, token, type: 'email' })
+  // Returning users get an 'email' OTP; a first-ever login is a 'signup' OTP.
+  // Try login first, fall back to signup so both cases work.
+  let { error } = await supabase.auth.verifyOtp({ email, token, type: 'email' })
+  if (error) {
+    ;({ error } = await supabase.auth.verifyOtp({ email, token, type: 'signup' }))
+  }
   if (error) {
     return NextResponse.json({ error: 'Invalid or expired code' }, { status: 401 })
   }
