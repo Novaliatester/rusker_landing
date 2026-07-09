@@ -27,6 +27,7 @@ export type BookingRequest = {
   participants: ParticipantInput[]
   billing: { companyLegalName: string; billingAddress: string; vatNumber: string }
   termsAccepted: true
+  tosAccepted: true
   privacyAccepted: true
 }
 
@@ -74,7 +75,7 @@ export function parseBookingRequest(body: unknown): BookingRequest | null {
   const b = body as Record<string, unknown>
   if (!isNonEmptyString(b.slug)) return null
   if (!LOCALES.includes(b.locale as never)) return null
-  if (b.termsAccepted !== true || b.privacyAccepted !== true) return null
+  if (b.termsAccepted !== true || b.tosAccepted !== true || b.privacyAccepted !== true) return null
   if (!Array.isArray(b.participants) || b.participants.length < 1 || b.participants.length > 20) return null
   const participants: ParticipantInput[] = []
   for (const raw of b.participants) {
@@ -96,6 +97,7 @@ export function parseBookingRequest(body: unknown): BookingRequest | null {
       vatNumber,
     },
     termsAccepted: true,
+    tosAccepted: true,
     privacyAccepted: true,
   }
 }

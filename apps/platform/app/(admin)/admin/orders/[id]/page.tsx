@@ -41,6 +41,29 @@ export default async function AdminOrderPage({ params }: { params: Promise<{ id:
           <div><dt className="inline font-medium">Stripe session: </dt><dd className="inline">{order.stripe_checkout_session_id ?? '—'}</dd></div>
           <div><dt className="inline font-medium">Payment intent: </dt><dd className="inline">{order.stripe_payment_intent_id ?? '—'}</dd></div>
         </dl>
+        {(order.consents ?? []).length > 0 && (
+          <div className="mt-4 border-t border-neutral-mid/30 pt-3">
+            <h3 className="mb-2 text-sm font-semibold">Consent log</h3>
+            <table className="w-full text-left text-xs">
+              <thead>
+                <tr className="text-gray-500">
+                  <th className="py-1">Document</th><th>Version</th><th>Accepted by</th><th>At</th><th>IP</th>
+                </tr>
+              </thead>
+              <tbody>
+                {order.consents.map((c: Record<string, string>) => (
+                  <tr key={c.id} className="border-t border-neutral-mid/20">
+                    <td className="py-1">{c.consent_type}</td>
+                    <td>{c.document_version}</td>
+                    <td>{c.identity_name} &lt;{c.identity_email}&gt;</td>
+                    <td>{c.accepted_at}</td>
+                    <td>{c.ip ?? '—'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </section>
       {participants.map((p, i) => (
         <section key={p.id} className="rounded-card bg-white p-6 shadow-soft">

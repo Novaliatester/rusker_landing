@@ -29,9 +29,12 @@ export async function POST(request: Request) {
   }
 
   const amounts = computeAmounts(expedition.price_per_person_cents, booking.participants.length, expedition.vat_rate)
-  const consentIp = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ?? null
+  const consent = {
+    ip: request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ?? null,
+    userAgent: request.headers.get('user-agent'),
+  }
   const client = getSupabase()
-  const created = await createPendingOrder(client, booking, expedition.id, amounts, consentIp)
+  const created = await createPendingOrder(client, booking, expedition.id, amounts, consent)
 
   try {
     await attachDocuments(client, created, booking)

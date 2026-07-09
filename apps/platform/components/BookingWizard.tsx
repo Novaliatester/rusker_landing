@@ -30,6 +30,7 @@ export default function BookingWizard({ slug, expeditionTitle, unitHtCents, curr
   const [participants, setParticipants] = useState<ParticipantDraft[]>([{ ...EMPTY_PARTICIPANT }])
   const [billing, setBilling] = useState({ companyLegalName: '', billingAddress: '', vatNumber: '' })
   const [terms, setTerms] = useState(false)
+  const [tos, setTos] = useState(false)
   const [privacy, setPrivacy] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -51,7 +52,7 @@ export default function BookingWizard({ slug, expeditionTitle, unitHtCents, curr
       const res = await fetch('/api/bookings', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ slug, locale, participants, billing, termsAccepted: terms, privacyAccepted: privacy }),
+        body: JSON.stringify({ slug, locale, participants, billing, termsAccepted: terms, tosAccepted: tos, privacyAccepted: privacy }),
       })
       const data = await res.json()
       if (!res.ok || !data.url) {
@@ -184,6 +185,16 @@ export default function BookingWizard({ slug, expeditionTitle, unitHtCents, curr
               </span>
             </label>
             <label className="flex items-start gap-2">
+              <input type="checkbox" checked={tos} onChange={(e) => setTos(e.target.checked)} className="mt-1" />
+              <span>
+                {t.rich('acceptTos', {
+                  link: (chunks) => (
+                    <Link href="/terms-of-service" target="_blank" className="text-rusker-blue underline">{chunks}</Link>
+                  ),
+                })}
+              </span>
+            </label>
+            <label className="flex items-start gap-2">
               <input type="checkbox" checked={privacy} onChange={(e) => setPrivacy(e.target.checked)} className="mt-1" />
               <span>
                 {t.rich('acceptPrivacy', {
@@ -201,7 +212,7 @@ export default function BookingWizard({ slug, expeditionTitle, unitHtCents, curr
             </button>
             <button
               type="button"
-              disabled={!terms || !privacy || submitting}
+              disabled={!terms || !tos || !privacy || submitting}
               onClick={submit}
               className="rounded-button bg-rusker-blue px-8 py-3 font-semibold text-white transition-all duration-200 hover:scale-[1.02] hover:shadow-soft-hover active:scale-[0.98] disabled:opacity-40 disabled:hover:scale-100"
             >

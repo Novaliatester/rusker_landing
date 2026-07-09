@@ -27,7 +27,7 @@ export async function getAdminOverview() {
 export async function getAdminOrder(orderId: string) {
   const { data, error } = await getSupabase()
     .from('orders')
-    .select('*, expedition:expeditions (*), participants:expedition_participants (*)')
+    .select('*, expedition:expeditions (*), participants:expedition_participants (*), consents:consent_records (*)')
     .eq('id', orderId)
     .maybeSingle()
   if (error) throw new Error(`admin order load failed: ${error.message}`)

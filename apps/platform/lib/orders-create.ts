@@ -2,6 +2,7 @@ import type { SupabaseClient } from '@supabase/supabase-js'
 import type { BookingRequest } from '@/lib/booking'
 import type { Amounts } from '@/lib/pricing'
 import { ID_DOCUMENTS_BUCKET } from '@/lib/upload'
+import { recordConsents, type ConsentMeta } from '@/lib/consent'
 
 const HOLD_MINUTES = 35 // slightly longer than the 30-minute Stripe session
 
@@ -12,7 +13,7 @@ export async function createPendingOrder(
   booking: BookingRequest,
   expeditionId: string,
   amounts: Amounts,
-  consentIp: string | null
+  consent: ConsentMeta
 ): Promise<CreatedOrder> {
   const now = new Date()
   const { data: order, error: orderError } = await client
@@ -33,7 +34,7 @@ export async function createPendingOrder(
       currency: 'eur',
       terms_accepted_at: now.toISOString(),
       privacy_accepted_at: now.toISOString(),
-      consent_ip: consentIp,
+      consent_ip: consent.ip,
       expires_at: new Date(now.getTime() + HOLD_MINUTES * 60_000).toISOString(),
     })
     .select('id')
@@ -63,6 +64,8 @@ export async function createPendingOrder(
     )
     .select('id')
   if (participantsError || !participants) throw new Error(`participants insert failed: ${participantsError?.message}`)
+
+  await recordConsents(client, order.id, booking, consent, now)
 
   return { orderId: order.id, participantIds: participants.map((row) => row.id) }
 }
