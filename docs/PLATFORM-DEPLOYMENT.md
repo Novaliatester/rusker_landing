@@ -26,6 +26,15 @@ is added to the rusker-platform project).
    "Email finalized invoices to customers" **off** so bank-transfer buyers don't get a duplicate
    of the invoice Rusker already emails them.
 
+### Invoice identity (VAT)
+- Rusker's own VAT (ES B44897510 → `ESB44897510`) is registered as a Stripe **account tax id** and set
+  as `account_tax_ids` on every invoice by `lib/seller-tax.ts` (find-or-create, self-healing). In LIVE
+  mode it auto-creates on the first purchase — no manual step.
+- The buyer's VAT (if entered, EU format) is attached as a **customer tax id** and shows on the invoice.
+- STILL TODO in the Stripe dashboard: Settings → Business — set the business **name and address** so the
+  invoice "from" block shows Rusker's full identity (the VAT alone comes from the account tax id; name +
+  address are dashboard-only and currently empty).
+
 ### Two payment modes
 - **Card** — Stripe Checkout, card only. The order is created `pending` with ID scans held in `tmp/`;
   on payment it flips to `paid` and the scans are promoted to permanent storage. An abandoned session
