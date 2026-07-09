@@ -34,13 +34,14 @@ export default async function LocaleLayout({
     <html lang={locale}>
       <body className={`${poppins.className} bg-bg-light text-text-dark antialiased`}>
         <NextIntlClientProvider>
-        <header className="bg-white shadow-soft">
-          <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-            <a href="https://rusker-travel.com" className="text-xl font-bold tracking-wide text-rusker-blue">
-              RUSKER
+        <header className="sticky top-0 z-40 bg-white/95 shadow-soft backdrop-blur">
+          <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3">
+            <a href="https://rusker-travel.com" className="transition-opacity duration-300 hover:opacity-80">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/images/rusker-travel-logo.png" alt="Rusker Travel" className="h-10 w-auto md:h-12" />
             </a>
             <div className="flex items-center gap-6">
-              <span className="text-sm text-gray-500">{t('tagline')}</span>
+              <span className="hidden text-sm font-medium text-gray-500 sm:inline">{t('tagline')}</span>
               <LocaleSwitcher />
             </div>
           </div>

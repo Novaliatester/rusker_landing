@@ -65,7 +65,7 @@ export default async function ExpeditionPage({
             {remaining !== 0 && (
               <Link
                 href={`/expeditions/${expedition.slug}/book`}
-                className="block w-full rounded-button bg-rusker-blue px-6 py-3 text-center font-semibold text-white hover:opacity-90"
+                className="block w-full rounded-button bg-rusker-blue px-6 py-3 text-center font-semibold text-white shadow-soft transition-all duration-200 hover:scale-[1.02] hover:shadow-soft-hover active:scale-[0.98]"
               >
                 {t('book')}
               </Link>

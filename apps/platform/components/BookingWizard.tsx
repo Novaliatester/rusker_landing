@@ -80,6 +80,7 @@ export default function BookingWizard({ slug, expeditionTitle, unitHtCents, curr
       <h1 className="mb-6 text-3xl font-bold">{t('title', { expedition: expeditionTitle })}</h1>
       <div className="mb-8 flex gap-2">{stepChip(1, t('step1'))}{stepChip(2, t('step2'))}{stepChip(3, t('step3'))}</div>
 
+      <div key={step} className="animate-page-enter">
       {step === 1 && (
         <div className="space-y-6">
           {participants.map((p, i) => (
@@ -106,7 +107,7 @@ export default function BookingWizard({ slug, expeditionTitle, unitHtCents, curr
               type="button"
               disabled={!participantsComplete}
               onClick={() => setStep(2)}
-              className="rounded-button bg-rusker-blue px-6 py-3 font-semibold text-white disabled:opacity-40"
+              className="rounded-button bg-rusker-blue px-6 py-3 font-semibold text-white transition-all duration-200 hover:scale-[1.02] hover:shadow-soft-hover active:scale-[0.98] disabled:opacity-40 disabled:hover:scale-100"
             >
               {t('next')}
             </button>
@@ -148,7 +149,7 @@ export default function BookingWizard({ slug, expeditionTitle, unitHtCents, curr
               type="button"
               disabled={!billingComplete}
               onClick={() => setStep(3)}
-              className="rounded-button bg-rusker-blue px-6 py-3 font-semibold text-white disabled:opacity-40"
+              className="rounded-button bg-rusker-blue px-6 py-3 font-semibold text-white transition-all duration-200 hover:scale-[1.02] hover:shadow-soft-hover active:scale-[0.98] disabled:opacity-40 disabled:hover:scale-100"
             >
               {t('next')}
             </button>
@@ -202,13 +203,14 @@ export default function BookingWizard({ slug, expeditionTitle, unitHtCents, curr
               type="button"
               disabled={!terms || !privacy || submitting}
               onClick={submit}
-              className="rounded-button bg-rusker-blue px-8 py-3 font-semibold text-white disabled:opacity-40"
+              className="rounded-button bg-rusker-blue px-8 py-3 font-semibold text-white transition-all duration-200 hover:scale-[1.02] hover:shadow-soft-hover active:scale-[0.98] disabled:opacity-40 disabled:hover:scale-100"
             >
               {submitting ? t('paying') : t('pay')}
             </button>
           </div>
         </div>
       )}
+      </div>
     </div>
   )
 }
