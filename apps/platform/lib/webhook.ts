@@ -1,23 +1,35 @@
 import type Stripe from 'stripe'
-import { insertOrder as defaultInsertOrder, type NewOrder } from '@/lib/orders'
-import { getExpeditionById } from '@/lib/expeditions'
+import { getStripe } from '@/lib/stripe'
+import {
+  markOrderPaid as defaultMarkOrderPaid,
+  getOrderWithDetails as defaultGetOrderWithDetails,
+  type OrderWithDetails,
+} from '@/lib/orders'
 import {
   sendBuyerConfirmation as defaultSendBuyerConfirmation,
-  sendTeamNotification as defaultSendTeamNotification,
+  sendAdminNotification as defaultSendAdminNotification,
 } from '@/lib/emails'
 
 export type WebhookDeps = {
-  insertOrder: (order: NewOrder) => Promise<boolean>
-  getExpeditionTitle: (id: string) => Promise<string>
-  sendBuyerConfirmation: (order: NewOrder, expeditionTitle: string) => Promise<void>
-  sendTeamNotification: (order: NewOrder, expeditionTitle: string) => Promise<void>
+  markOrderPaid: (sessionId: string, paymentIntentId: string | null) => Promise<string | null>
+  getOrderWithDetails: (orderId: string) => Promise<OrderWithDetails | null>
+  getInvoiceUrl: (invoiceId: string | null) => Promise<string | null>
+  sendBuyerConfirmation: (order: OrderWithDetails, invoiceUrl: string | null) => Promise<void>
+  sendAdminNotification: (order: OrderWithDetails) => Promise<void>
+}
+
+async function defaultGetInvoiceUrl(invoiceId: string | null): Promise<string | null> {
+  if (!invoiceId) return null
+  const invoice = await getStripe().invoices.retrieve(invoiceId)
+  return invoice.hosted_invoice_url ?? null
 }
 
 const defaultDeps: WebhookDeps = {
-  insertOrder: defaultInsertOrder,
-  getExpeditionTitle: async (id) => (await getExpeditionById(id))?.title ?? 'Learning Expedition',
+  markOrderPaid: defaultMarkOrderPaid,
+  getOrderWithDetails: defaultGetOrderWithDetails,
+  getInvoiceUrl: defaultGetInvoiceUrl,
   sendBuyerConfirmation: defaultSendBuyerConfirmation,
-  sendTeamNotification: defaultSendTeamNotification,
+  sendAdminNotification: defaultSendAdminNotification,
 }
 
 export async function handleCheckoutCompleted(
@@ -26,43 +38,28 @@ export async function handleCheckoutCompleted(
 ): Promise<void> {
   if (session.payment_status !== 'paid') return
 
-  const expeditionId = session.metadata?.expedition_id
-  const quantity = Number(session.metadata?.quantity)
-  if (!expeditionId || !Number.isInteger(quantity) || quantity < 1) {
-    throw new Error(
-      `checkout.session.completed is missing expedition metadata (session ${session.id})`
-    )
-  }
+  const paymentIntentId = typeof session.payment_intent === 'string' ? session.payment_intent : null
+  const orderId = await deps.markOrderPaid(session.id, paymentIntentId)
+  if (!orderId) return // duplicate delivery — already handled
 
-  const order: NewOrder = {
-    expedition_id: expeditionId,
-    quantity,
-    buyer_email: session.customer_details?.email ?? '',
-    buyer_name: session.customer_details?.name ?? null,
-    amount_total_cents: session.amount_total ?? 0,
-    currency: session.currency ?? 'eur',
-    stripe_checkout_session_id: session.id,
-    stripe_payment_intent_id:
-      typeof session.payment_intent === 'string' ? session.payment_intent : null,
-  }
-
-  const inserted = await deps.insertOrder(order)
-  if (!inserted) return // duplicate webhook delivery — emails were already sent
-
-  // Best-effort from here: the order is stored; email failures are logged, never thrown.
-  let title = 'Learning Expedition'
+  // Order is safely recorded; everything below is best-effort.
   try {
-    title = await deps.getExpeditionTitle(expeditionId)
-  } catch (err) {
-    console.error('failed to fetch expedition title for emails', err)
-  }
-  const results = await Promise.allSettled([
-    deps.sendBuyerConfirmation(order, title),
-    deps.sendTeamNotification(order, title),
-  ])
-  for (const result of results) {
-    if (result.status === 'rejected') {
-      console.error('post-payment email failed', result.reason)
+    const order = await deps.getOrderWithDetails(orderId)
+    if (!order) throw new Error(`paid order ${orderId} not found for emails`)
+    const invoiceUrl = await deps
+      .getInvoiceUrl(typeof session.invoice === 'string' ? session.invoice : null)
+      .catch((err) => {
+        console.error('invoice url lookup failed', err)
+        return null
+      })
+    const results = await Promise.allSettled([
+      deps.sendBuyerConfirmation(order, invoiceUrl),
+      deps.sendAdminNotification(order),
+    ])
+    for (const result of results) {
+      if (result.status === 'rejected') console.error('post-payment email failed', result.reason)
     }
+  } catch (err) {
+    console.error('post-payment processing failed (order is paid)', err)
   }
 }
