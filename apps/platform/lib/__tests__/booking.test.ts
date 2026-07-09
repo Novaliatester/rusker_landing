@@ -1,5 +1,7 @@
 import { describe, it, expect } from 'vitest'
-import { parseBookingRequest, type BookingRequest } from '@/lib/booking'
+import { parseBookingRequest, normalizePhone, isValidPhone, type BookingRequest } from '@/lib/booking'
+
+const NOW = new Date('2026-07-09T12:00:00Z')
 
 const PARTICIPANT = {
   firstName: 'Jeanne',
@@ -23,27 +25,51 @@ const VALID = {
   slug: 'aura-ai-summit-2026',
   locale: 'fr',
   participants: [PARTICIPANT],
-  billing: { companyLegalName: 'ACME SA', billingAddress: '1 rue de la Paix, 69001 Lyon, France', vatNumber: 'FR12345678901' },
+  billing: {
+    companyLegalName: 'ACME SA',
+    addressLine1: '1 rue de la Paix',
+    postalCode: '69001',
+    city: 'Lyon',
+    country: 'FR',
+    vatNumber: 'FR12345678901',
+  },
   termsAccepted: true,
   tosAccepted: true,
   privacyAccepted: true,
 }
 
+describe('phone helpers', () => {
+  it('normalizes spaces, dots, dashes, parentheses', () => {
+    expect(normalizePhone('+33 6 12.34-56(78)')).toBe('+33612345678')
+  })
+  it('requires international format', () => {
+    expect(isValidPhone('+33612345678')).toBe(true)
+    expect(isValidPhone('0612345678')).toBe(false)
+    expect(isValidPhone('+12')).toBe(false)
+  })
+})
+
 describe('parseBookingRequest', () => {
-  it('accepts a valid single-participant booking', () => {
-    const parsed = parseBookingRequest(VALID) as BookingRequest
+  it('accepts a valid booking and normalizes phones + VAT', () => {
+    const parsed = parseBookingRequest(VALID, NOW) as BookingRequest
     expect(parsed).not.toBeNull()
-    expect(parsed.participants).toHaveLength(1)
-    expect(parsed.locale).toBe('fr')
+    expect(parsed.participants[0].phone).toBe('+33612345678')
+    expect(parsed.billing.vatNumber).toBe('FR12345678901')
+    expect(parsed.billing.country).toBe('FR')
   })
 
-  it('accepts multiple participants and empty optional fields', () => {
-    const parsed = parseBookingRequest({
-      ...VALID,
-      participants: [PARTICIPANT, { ...PARTICIPANT, email: 'other@acme.fr' }],
-      billing: { ...VALID.billing, vatNumber: '' },
-    })
-    expect(parsed?.participants).toHaveLength(2)
+  it('accepts an empty billing address (only company name is required)', () => {
+    const parsed = parseBookingRequest(
+      { ...VALID, billing: { companyLegalName: 'ACME SA', addressLine1: '', postalCode: '', city: '', country: '', vatNumber: '' } },
+      NOW
+    )
+    expect(parsed).not.toBeNull()
+    expect(parsed?.billing.addressLine1).toBe('')
+  })
+
+  it('lowercases-in country codes are normalized to uppercase', () => {
+    const parsed = parseBookingRequest({ ...VALID, billing: { ...VALID.billing, country: 'fr' } }, NOW)
+    expect(parsed?.billing.country).toBe('FR')
   })
 
   it.each([
@@ -55,12 +81,17 @@ describe('parseBookingRequest', () => {
     ['missing consent (privacy)', { ...VALID, privacyAccepted: false }],
     ['missing required participant field', { ...VALID, participants: [{ ...PARTICIPANT, lastName: '' }] }],
     ['bad birthdate format', { ...VALID, participants: [{ ...PARTICIPANT, birthdate: '12/04/1980' }] }],
+    ['future birthdate', { ...VALID, participants: [{ ...PARTICIPANT, birthdate: '2027-01-01' }] }],
+    ['expired ID document', { ...VALID, participants: [{ ...PARTICIPANT, idDocumentExpiry: '2026-07-09' }] }],
     ['bad email', { ...VALID, participants: [{ ...PARTICIPANT, email: 'not-an-email' }] }],
+    ['national-format phone', { ...VALID, participants: [{ ...PARTICIPANT, phone: '0612345678' }] }],
+    ['bad emergency phone', { ...VALID, participants: [{ ...PARTICIPANT, emergencyContactPhone: '12' }] }],
     ['upload key outside tmp/', { ...VALID, participants: [{ ...PARTICIPANT, idDocumentKey: 'orders/x/evil.pdf' }] }],
     ['upload key with traversal', { ...VALID, participants: [{ ...PARTICIPANT, idDocumentKey: 'tmp/../secrets.pdf' }] }],
     ['missing billing name', { ...VALID, billing: { ...VALID.billing, companyLegalName: '' } }],
+    ['bad country code', { ...VALID, billing: { ...VALID.billing, country: 'France' } }],
     ['unknown locale', { ...VALID, locale: 'de' }],
   ])('rejects %s', (_name, body) => {
-    expect(parseBookingRequest(body)).toBeNull()
+    expect(parseBookingRequest(body, NOW)).toBeNull()
   })
 })

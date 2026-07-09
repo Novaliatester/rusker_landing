@@ -5,7 +5,13 @@ import { useLocale, useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
 import { formatPrice } from '@/lib/format'
 import { computeAmounts } from '@/lib/pricing'
-import ParticipantFields, { EMPTY_PARTICIPANT, type ParticipantDraft } from '@/components/ParticipantFields'
+import { EU_VAT_RE } from '@/lib/booking'
+import { BILLING_COUNTRIES, countryLabel } from '@/lib/countries'
+import ParticipantFields, {
+  EMPTY_PARTICIPANT,
+  isParticipantValid,
+  type ParticipantDraft,
+} from '@/components/ParticipantFields'
 
 type Props = {
   slug: string
@@ -17,18 +23,18 @@ type Props = {
   maxSeats: number
 }
 
-const REQUIRED: (keyof ParticipantDraft)[] = [
-  'firstName', 'lastName', 'birthdate', 'nationality', 'email', 'phone', 'companyName',
-  'companyPosition', 'idDocumentNumber', 'idDocumentExpiry', 'departureStation',
-  'emergencyContactName', 'emergencyContactPhone',
-]
+const EMPTY_BILLING = { companyLegalName: '', addressLine1: '', postalCode: '', city: '', country: 'FR', vatNumber: '' }
+
+const PRIMARY_BTN =
+  'rounded-button bg-rusker-blue px-6 py-3 font-semibold text-white transition-all duration-200 hover:scale-[1.02] hover:shadow-soft-hover active:scale-[0.98]'
 
 export default function BookingWizard({ slug, expeditionTitle, unitHtCents, currency, vatRate, stations, maxSeats }: Props) {
   const t = useTranslations('wizard')
   const locale = useLocale()
   const [step, setStep] = useState<1 | 2 | 3>(1)
   const [participants, setParticipants] = useState<ParticipantDraft[]>([{ ...EMPTY_PARTICIPANT }])
-  const [billing, setBilling] = useState({ companyLegalName: '', billingAddress: '', vatNumber: '' })
+  const [billing, setBilling] = useState(EMPTY_BILLING)
+  const [showErrors, setShowErrors] = useState(false)
   const [terms, setTerms] = useState(false)
   const [tos, setTos] = useState(false)
   const [privacy, setPrivacy] = useState(false)
@@ -40,10 +46,27 @@ export default function BookingWizard({ slug, expeditionTitle, unitHtCents, curr
     [unitHtCents, participants.length, vatRate]
   )
 
-  const participantsComplete = participants.every(
-    (p) => REQUIRED.every((f) => (p[f] as string).trim() !== '') && p.idDocumentKey !== null
-  )
-  const billingComplete = billing.companyLegalName.trim() !== '' && billing.billingAddress.trim() !== ''
+  const participantsValid = participants.every(isParticipantValid)
+  const billingValid = billing.companyLegalName.trim() !== ''
+  const vatLooksOff = billing.vatNumber.trim() !== '' && !EU_VAT_RE.test(billing.vatNumber.toUpperCase().replace(/\s/g, ''))
+
+  function goToStep2() {
+    if (!participantsValid) {
+      setShowErrors(true)
+      return
+    }
+    setShowErrors(false)
+    setStep(2)
+  }
+
+  function goToStep3() {
+    if (!billingValid) {
+      setShowErrors(true)
+      return
+    }
+    setShowErrors(false)
+    setStep(3)
+  }
 
   async function submit() {
     setSubmitting(true)
@@ -52,7 +75,16 @@ export default function BookingWizard({ slug, expeditionTitle, unitHtCents, curr
       const res = await fetch('/api/bookings', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ slug, locale, participants, billing, termsAccepted: terms, tosAccepted: tos, privacyAccepted: privacy }),
+        body: JSON.stringify({
+          slug,
+          locale,
+          // emailConfirm is a client-side check only
+          participants: participants.map(({ emailConfirm: _emailConfirm, ...p }) => p),
+          billing,
+          termsAccepted: terms,
+          tosAccepted: tos,
+          privacyAccepted: privacy,
+        }),
       })
       const data = await res.json()
       if (!res.ok || !data.url) {
@@ -76,6 +108,27 @@ export default function BookingWizard({ slug, expeditionTitle, unitHtCents, curr
     </span>
   )
 
+  const billingField = (
+    name: keyof typeof EMPTY_BILLING,
+    label: string,
+    opts: { optional?: boolean; placeholder?: string; hint?: string; error?: string | null } = {}
+  ) => (
+    <label className="block text-sm">
+      <span className="mb-1 block font-medium">
+        {label}
+        {opts.optional && <span className="ml-1 font-normal text-gray-400">({t('optional')})</span>}
+      </span>
+      <input
+        value={billing[name]}
+        onChange={(e) => setBilling({ ...billing, [name]: e.target.value })}
+        placeholder={opts.placeholder}
+        className={`w-full rounded-button border px-3 py-2 ${opts.error ? 'border-red-400 bg-red-50/40' : 'border-neutral-mid'}`}
+      />
+      {opts.hint && !opts.error && <span className="mt-1 block text-xs text-gray-400">{opts.hint}</span>}
+      {opts.error && <span className="mt-1 block text-xs text-red-600">{opts.error}</span>}
+    </label>
+  )
+
   return (
     <div>
       <h1 className="mb-6 text-3xl font-bold">{t('title', { expedition: expeditionTitle })}</h1>
@@ -90,26 +143,25 @@ export default function BookingWizard({ slug, expeditionTitle, unitHtCents, curr
               index={i}
               value={p}
               stations={stations}
+              showErrors={showErrors}
               onChange={(next) => setParticipants(participants.map((prev, j) => (j === i ? next : prev)))}
               onRemove={participants.length > 1 ? () => setParticipants(participants.filter((_, j) => j !== i)) : null}
             />
           ))}
+          {showErrors && !participantsValid && (
+            <p className="rounded-card bg-red-50 p-3 text-sm font-medium text-red-700">{t('errors.fixAbove')}</p>
+          )}
           <div className="flex items-center justify-between">
             {participants.length < maxSeats ? (
               <button
                 type="button"
                 onClick={() => setParticipants([...participants, { ...EMPTY_PARTICIPANT }])}
-                className="rounded-button border border-neutral-mid px-4 py-2 text-sm hover:bg-white"
+                className="rounded-button border border-neutral-mid px-4 py-2 text-sm transition-colors hover:bg-white"
               >
                 {t('addParticipant')}
               </button>
             ) : <span />}
-            <button
-              type="button"
-              disabled={!participantsComplete}
-              onClick={() => setStep(2)}
-              className="rounded-button bg-rusker-blue px-6 py-3 font-semibold text-white transition-all duration-200 hover:scale-[1.02] hover:shadow-soft-hover active:scale-[0.98] disabled:opacity-40 disabled:hover:scale-100"
-            >
+            <button type="button" onClick={goToStep2} className={PRIMARY_BTN}>
               {t('next')}
             </button>
           </div>
@@ -118,40 +170,46 @@ export default function BookingWizard({ slug, expeditionTitle, unitHtCents, curr
 
       {step === 2 && (
         <div className="max-w-xl space-y-4 rounded-card bg-white p-6 shadow-soft">
-          <label className="block text-sm">
-            <span className="mb-1 block font-medium">{t('companyLegalName')}</span>
-            <input
-              value={billing.companyLegalName}
-              onChange={(e) => setBilling({ ...billing, companyLegalName: e.target.value })}
-              className="w-full rounded-button border border-neutral-mid px-3 py-2"
-            />
-          </label>
-          <label className="block text-sm">
-            <span className="mb-1 block font-medium">{t('billingAddress')}</span>
-            <input
-              value={billing.billingAddress}
-              onChange={(e) => setBilling({ ...billing, billingAddress: e.target.value })}
-              className="w-full rounded-button border border-neutral-mid px-3 py-2"
-            />
-          </label>
-          <label className="block text-sm">
-            <span className="mb-1 block font-medium">{t('vatNumber')}</span>
-            <input
-              value={billing.vatNumber}
-              onChange={(e) => setBilling({ ...billing, vatNumber: e.target.value })}
-              className="w-full rounded-button border border-neutral-mid px-3 py-2"
-            />
-          </label>
+          {billingField('companyLegalName', t('companyLegalName'), {
+            error: showErrors && !billingValid ? t('errors.required') : null,
+          })}
+          <div>
+            <p className="mb-2 mt-2 text-sm font-semibold">{t('billingAddressTitle')}</p>
+            <p className="mb-3 text-xs text-gray-500">{t('billingAddressHint')}</p>
+            <div className="space-y-3">
+              {billingField('addressLine1', t('addressLine1'), { optional: true, placeholder: '12 rue de la République' })}
+              <div className="grid grid-cols-[130px_1fr] gap-3">
+                {billingField('postalCode', t('postalCode'), { optional: true, placeholder: '69001' })}
+                {billingField('city', t('city'), { optional: true, placeholder: 'Lyon' })}
+              </div>
+              <label className="block text-sm">
+                <span className="mb-1 block font-medium">
+                  {t('country')} <span className="ml-1 font-normal text-gray-400">({t('optional')})</span>
+                </span>
+                <select
+                  value={billing.country}
+                  onChange={(e) => setBilling({ ...billing, country: e.target.value })}
+                  className="w-full rounded-button border border-neutral-mid px-3 py-2"
+                >
+                  <option value="">—</option>
+                  {BILLING_COUNTRIES.map((code) => (
+                    <option key={code} value={code}>{countryLabel(code, locale)}</option>
+                  ))}
+                </select>
+              </label>
+            </div>
+          </div>
+          {billingField('vatNumber', t('vatNumber'), {
+            optional: true,
+            placeholder: 'FR12345678901',
+            hint: t('vatHint'),
+            error: vatLooksOff ? t('errors.vatFormat') : null,
+          })}
           <div className="flex justify-between pt-2">
-            <button type="button" onClick={() => setStep(1)} className="text-sm text-gray-500 hover:underline">
+            <button type="button" onClick={() => { setShowErrors(false); setStep(1) }} className="text-sm text-gray-500 hover:underline">
               {t('back')}
             </button>
-            <button
-              type="button"
-              disabled={!billingComplete}
-              onClick={() => setStep(3)}
-              className="rounded-button bg-rusker-blue px-6 py-3 font-semibold text-white transition-all duration-200 hover:scale-[1.02] hover:shadow-soft-hover active:scale-[0.98] disabled:opacity-40 disabled:hover:scale-100"
-            >
+            <button type="button" onClick={goToStep3} className={PRIMARY_BTN}>
               {t('next')}
             </button>
           </div>
@@ -214,7 +272,7 @@ export default function BookingWizard({ slug, expeditionTitle, unitHtCents, curr
               type="button"
               disabled={!terms || !tos || !privacy || submitting}
               onClick={submit}
-              className="rounded-button bg-rusker-blue px-8 py-3 font-semibold text-white transition-all duration-200 hover:scale-[1.02] hover:shadow-soft-hover active:scale-[0.98] disabled:opacity-40 disabled:hover:scale-100"
+              className={`${PRIMARY_BTN} px-8 disabled:opacity-40 disabled:hover:scale-100`}
             >
               {submitting ? t('paying') : t('pay')}
             </button>

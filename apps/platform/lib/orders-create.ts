@@ -8,6 +8,13 @@ const HOLD_MINUTES = 35 // slightly longer than the 30-minute Stripe session
 
 export type CreatedOrder = { orderId: string; participantIds: string[] }
 
+/** "1 rue de la Paix, 69001 Lyon, FR" — or null when no address was given. */
+export function composeBillingAddress(billing: BookingRequest['billing']): string | null {
+  const cityLine = [billing.postalCode, billing.city].filter(Boolean).join(' ')
+  const parts = [billing.addressLine1, cityLine, billing.country].filter(Boolean)
+  return parts.length > 0 ? parts.join(', ') : null
+}
+
 export async function createPendingOrder(
   client: SupabaseClient,
   booking: BookingRequest,
@@ -26,7 +33,7 @@ export async function createPendingOrder(
       buyer_email: booking.participants[0].email,
       buyer_name: `${booking.participants[0].firstName} ${booking.participants[0].lastName}`,
       company_legal_name: booking.billing.companyLegalName,
-      billing_address: booking.billing.billingAddress,
+      billing_address: composeBillingAddress(booking.billing),
       vat_number: booking.billing.vatNumber || null,
       amount_subtotal_cents: amounts.subtotalCents,
       amount_tax_cents: amounts.taxCents,

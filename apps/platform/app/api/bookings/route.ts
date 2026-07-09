@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { getStripe } from '@/lib/stripe'
 import { getSupabase } from '@/lib/supabase'
 import { getExpeditionBySlug, getSeatsTaken } from '@/lib/expeditions'
-import { parseBookingRequest } from '@/lib/booking'
+import { parseBookingRequest, EU_VAT_RE } from '@/lib/booking'
 import { computeAmounts } from '@/lib/pricing'
 import { getOrCreateIva21 } from '@/lib/tax'
 import { createPendingOrder, attachDocuments, discardPendingOrder } from '@/lib/orders-create'
@@ -40,12 +40,19 @@ export async function POST(request: Request) {
     await attachDocuments(client, created, booking)
 
     const stripe = getStripe()
+    // Structured billing address (all optional) flows onto the Stripe checkout + invoice.
+    const address = {
+      ...(booking.billing.addressLine1 ? { line1: booking.billing.addressLine1 } : {}),
+      ...(booking.billing.postalCode ? { postal_code: booking.billing.postalCode } : {}),
+      ...(booking.billing.city ? { city: booking.billing.city } : {}),
+      ...(booking.billing.country ? { country: booking.billing.country } : {}),
+    }
     const customer = await stripe.customers.create({
       name: booking.billing.companyLegalName,
       email: booking.participants[0].email,
-      address: { line1: booking.billing.billingAddress },
+      ...(Object.keys(address).length > 0 ? { address } : {}),
     })
-    if (/^[A-Z]{2}[0-9A-Z]{8,12}$/.test(booking.billing.vatNumber)) {
+    if (EU_VAT_RE.test(booking.billing.vatNumber)) {
       // EU VAT number shows on the Stripe invoice; SIRET or free-form values are skipped.
       await stripe.customers.createTaxId(customer.id, { type: 'eu_vat', value: booking.billing.vatNumber }).catch(() => {})
     }
