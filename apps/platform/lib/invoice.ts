@@ -7,10 +7,10 @@ export const TRANSFER_DUE_DAYS = 14
 export type IssuedInvoice = { invoiceId: string; hostedUrl: string | null }
 
 /**
- * Issue a Stripe invoice for a bank-transfer order: draft → line item → finalize.
- * collection_method 'send_invoice' with a 14-day due date. We FINALIZE (which mints
- * the hosted URL + PDF) rather than send, so Rusker's own branded email is the single
- * message the buyer receives; the hosted URL lets them view/pay the invoice.
+ * Issue a Stripe invoice for a bank-transfer order: draft → line item → send.
+ * collection_method 'send_invoice' with a 14-day due date. Stripe emails the hosted
+ * invoice (reliable even before Resend is configured); Rusker's own branded email is
+ * a complementary heads-up. Returns the hosted URL for that email's "view/pay" link.
  */
 export async function issueTransferInvoice(
   stripe: Stripe,
@@ -45,8 +45,8 @@ export async function issueTransferInvoice(
     description: params.description,
   })
 
-  const finalized = await stripe.invoices.finalizeInvoice(invoice.id, { auto_advance: false })
-  return { invoiceId: invoice.id, hostedUrl: finalized.hosted_invoice_url ?? null }
+  const sent = await stripe.invoices.sendInvoice(invoice.id)
+  return { invoiceId: invoice.id, hostedUrl: sent.hosted_invoice_url ?? null }
 }
 
 /** Void an unpaid invoice when its deadline passes. Best-effort: already-paid/void is fine. */
