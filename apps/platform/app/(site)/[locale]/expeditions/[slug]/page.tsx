@@ -1,8 +1,9 @@
 import { notFound } from 'next/navigation'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { Link } from '@/i18n/navigation'
-import { getExpeditionBySlug } from '@/lib/expeditions'
-import BookingPanel from '@/components/BookingPanel'
+import { getExpeditionBySlug, getSeatsTaken } from '@/lib/expeditions'
+import { computeAmounts } from '@/lib/pricing'
+import { formatPrice } from '@/lib/format'
 
 export const dynamic = 'force-dynamic'
 
@@ -14,8 +15,13 @@ export default async function ExpeditionPage({
   const { locale, slug } = await params
   setRequestLocale(locale)
   const t = await getTranslations('detail')
+  const tc = await getTranslations('catalog')
   const expedition = await getExpeditionBySlug(slug)
   if (!expedition || !expedition.is_active) notFound()
+
+  const taken = await getSeatsTaken(expedition.id)
+  const remaining = expedition.capacity === null ? null : Math.max(0, expedition.capacity - taken)
+  const perSeat = computeAmounts(expedition.price_per_person_cents, 1, expedition.vat_rate)
 
   return (
     <div>
@@ -40,13 +46,32 @@ export default async function ExpeditionPage({
           )}
         </div>
         <div>
-          <BookingPanel
-            slug={expedition.slug}
-            pricePerPersonCents={expedition.price_per_person_cents}
-            currency={expedition.currency}
-            min={expedition.min_participants}
-            max={expedition.max_participants}
-          />
+          <div className="rounded-card bg-white p-6 shadow-soft">
+            {expedition.starts_on && expedition.ends_on && (
+              <p className="mb-2 text-sm font-medium text-gray-700">
+                {tc('dates', { start: expedition.starts_on, end: expedition.ends_on })}
+              </p>
+            )}
+            <p className="mb-1 text-lg font-semibold text-rusker-blue">
+              {t('priceHt', { price: formatPrice(expedition.price_per_person_cents, expedition.currency) })}
+            </p>
+            <p className="mb-4 text-xs text-gray-500">
+              {t('vatNote', { total: formatPrice(perSeat.totalCents, expedition.currency) })}
+            </p>
+            {remaining !== null && (
+              <p className={`mb-4 text-sm font-medium ${remaining === 0 ? 'text-red-600' : 'text-gray-700'}`}>
+                {remaining === 0 ? tc('soldOut') : tc('seatsLeft', { count: remaining })}
+              </p>
+            )}
+            {remaining !== 0 && (
+              <Link
+                href={`/expeditions/${expedition.slug}/book`}
+                className="block w-full rounded-button bg-rusker-blue px-6 py-3 text-center font-semibold text-white hover:opacity-90"
+              >
+                {t('book')}
+              </Link>
+            )}
+          </div>
         </div>
       </div>
     </div>
