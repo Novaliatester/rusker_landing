@@ -37,7 +37,6 @@ export default function BookingWizard({ slug, expeditionTitle, unitPriceCents, c
   const [showErrors, setShowErrors] = useState(false)
   const [paymentMethod, setPaymentMethod] = useState<'card' | 'transfer'>('card')
   const [terms, setTerms] = useState(false)
-  const [tos, setTos] = useState(false)
   const [privacy, setPrivacy] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -84,7 +83,6 @@ export default function BookingWizard({ slug, expeditionTitle, unitPriceCents, c
           participants: participants.map(({ emailConfirm: _emailConfirm, ...p }) => p),
           billing,
           termsAccepted: terms,
-          tosAccepted: tos,
           privacyAccepted: privacy,
         }),
       })
@@ -282,16 +280,6 @@ export default function BookingWizard({ slug, expeditionTitle, unitPriceCents, c
               </span>
             </label>
             <label className="flex items-start gap-2">
-              <input type="checkbox" checked={tos} onChange={(e) => setTos(e.target.checked)} className="mt-1" />
-              <span>
-                {t.rich('acceptTos', {
-                  link: (chunks) => (
-                    <Link href="/terms-of-service" target="_blank" className="text-rusker-blue underline">{chunks}</Link>
-                  ),
-                })}
-              </span>
-            </label>
-            <label className="flex items-start gap-2">
               <input type="checkbox" checked={privacy} onChange={(e) => setPrivacy(e.target.checked)} className="mt-1" />
               <span>
                 {t.rich('acceptPrivacy', {
@@ -309,7 +297,7 @@ export default function BookingWizard({ slug, expeditionTitle, unitPriceCents, c
             </button>
             <button
               type="button"
-              disabled={!terms || !tos || !privacy || submitting}
+              disabled={!terms || !privacy || submitting}
               onClick={submit}
               className={`${PRIMARY_BTN} px-8 disabled:opacity-40 disabled:hover:scale-100`}
             >

@@ -4,6 +4,7 @@ import { NextIntlClientProvider, hasLocale } from 'next-intl'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { notFound } from 'next/navigation'
 import { routing } from '@/i18n/routing'
+import { Link } from '@/i18n/navigation'
 import LocaleSwitcher from '@/components/LocaleSwitcher'
 import '../../globals.css'
 
@@ -56,9 +57,11 @@ export default async function LocaleLayout({
         </header>
         <main className="mx-auto max-w-6xl px-6 py-12">{children}</main>
         <footer className="mt-16 border-t border-neutral-mid/40 bg-white">
-          <div className="mx-auto max-w-6xl px-6 py-8 text-sm text-gray-500">
-            © {new Date().getFullYear()} Rusker Travel ·{' '}
-            <a href="https://rusker-travel.com" className="underline">rusker-travel.com</a>
+          <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-4 gap-y-2 px-6 py-8 text-sm text-gray-500">
+            <span>© {new Date().getFullYear()} Rusker Travel</span>
+            <Link href="/terms" className="underline hover:text-rusker-blue">{t('terms')}</Link>
+            <Link href="/privacy" className="underline hover:text-rusker-blue">{t('privacy')}</Link>
+            <a href="https://rusker-travel.com" className="underline hover:text-rusker-blue">rusker-travel.com</a>
           </div>
         </footer>
         </NextIntlClientProvider>

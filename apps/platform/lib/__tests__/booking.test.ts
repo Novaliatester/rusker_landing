@@ -35,7 +35,6 @@ const VALID = {
     vatNumber: 'FR12345678901',
   },
   termsAccepted: true,
-  tosAccepted: true,
   privacyAccepted: true,
 }
 
@@ -84,7 +83,6 @@ describe('parseBookingRequest', () => {
     ['no participants', { ...VALID, participants: [] }],
     ['too many participants', { ...VALID, participants: Array(21).fill(PARTICIPANT) }],
     ['missing consent (terms)', { ...VALID, termsAccepted: false }],
-    ['missing consent (tos)', { ...VALID, tosAccepted: false }],
     ['missing consent (privacy)', { ...VALID, privacyAccepted: false }],
     ['missing required participant field', { ...VALID, participants: [{ ...PARTICIPANT, lastName: '' }] }],
     ['bad birthdate format', { ...VALID, participants: [{ ...PARTICIPANT, birthdate: '12/04/1980' }] }],

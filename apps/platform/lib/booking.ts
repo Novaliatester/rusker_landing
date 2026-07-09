@@ -56,7 +56,6 @@ export type BookingRequest = {
   participants: ParticipantInput[]
   billing: BillingInput
   termsAccepted: true
-  tosAccepted: true
   privacyAccepted: true
 }
 
@@ -111,7 +110,7 @@ export function parseBookingRequest(body: unknown, now: Date = new Date()): Book
   if (!isNonEmptyString(b.slug)) return null
   if (!LOCALES.includes(b.locale as never)) return null
   if (!PAYMENT_METHODS.includes(b.paymentMethod as never)) return null
-  if (b.termsAccepted !== true || b.tosAccepted !== true || b.privacyAccepted !== true) return null
+  if (b.termsAccepted !== true || b.privacyAccepted !== true) return null
   if (!Array.isArray(b.participants) || b.participants.length < 1 || b.participants.length > 20) return null
   const todayIso = now.toISOString().slice(0, 10)
   const participants: ParticipantInput[] = []
@@ -139,7 +138,6 @@ export function parseBookingRequest(body: unknown, now: Date = new Date()): Book
       vatNumber: optionalString(billing.vatNumber).toUpperCase().replace(/\s/g, ''),
     },
     termsAccepted: true,
-    tosAccepted: true,
     privacyAccepted: true,
   }
 }

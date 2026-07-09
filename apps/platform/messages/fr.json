@@ -55,9 +55,8 @@
     "summary": "Récapitulatif",
     "total": "Total (TVA comprise)",
     "regimeNote": "Régime particulier des agences de voyages (art. 141 à 147 LIVA) — TVA comprise, non ventilée.",
-    "acceptTerms": "J'accepte les <link>conditions de vente</link>",
-    "acceptTos": "J'accepte les <link>conditions de service</link>",
-    "acceptPrivacy": "J'accepte le <link>traitement de mes données personnelles</link>, y compris ma pièce d'identité, pour l'organisation du voyage",
+    "acceptTerms": "J'accepte les <link>conditions générales de vente</link>",
+    "acceptPrivacy": "J'accepte la <link>politique de confidentialité</link> et le traitement de mes données personnelles, y compris ma pièce d'identité, pour l'organisation du voyage",
     "paymentTitle": "Mode de paiement",
     "payCard": "Carte bancaire",
     "payCardHint": "Paiement immédiat et sécurisé. Votre réservation est confirmée dès le paiement.",
@@ -106,5 +105,5 @@
     "note": "Vous n'avez pas reçu l'email ? Vérifiez vos spams ou écrivez-nous.",
     "back": "Retour aux expéditions"
   },
-  "footer": { "tagline": "Learning Expeditions" }
+  "footer": { "tagline": "Learning Expeditions", "terms": "Conditions générales de vente", "privacy": "Politique de confidentialité" }
 }

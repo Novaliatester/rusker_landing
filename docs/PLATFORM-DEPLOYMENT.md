@@ -51,10 +51,14 @@ Rusker Travel project). New migrations: add a timestamped SQL file and run
 
 ## Admin & cron
 
-- Admin dashboard: https://app.rusker-travel.com/admin — **email OTP login** (6-digit code), allowlist in `ADMIN_EMAILS`.
+- Legal documents are live v1.0 (2026-07-09): `/terms` (full CGV, FR+EN) and `/privacy` (GDPR notice,
+  FR+EN), sourced from `lib/legal/cgv.ts` and `lib/legal/privacy.ts`. Checkout requires two consents
+  (CGV + privacy); the separate "terms of service" was removed. Bump `CONSENT_VERSIONS` in
+  `lib/consent.ts` whenever either text changes.
+- Admin dashboard: https://app.rusker-travel.com/admin — **email OTP login** (8-digit code), allowlist in `ADMIN_EMAILS`.
 - Supabase dashboard → Authentication → Email Templates → **Magic Link**: the body must render the
-  code, e.g. include `{{ .Token }}` (otherwise the email only has a link and no code shows). No URL
-  allowlist is needed with OTP.
+  code (`{{ .Token }}`) or the email only has a link and no code shows. The project issues 8-digit
+  codes. No URL allowlist is needed with OTP.
 - Vercel Cron (`apps/platform/vercel.json`) hits `/api/cron/cleanup` daily at 03:00 UTC;
   it purges abandoned pending bookings and ID scans older than 30 days post-expedition.
   `CRON_SECRET` must be set on the Vercel project (Vercel sends it as the Bearer token automatically).

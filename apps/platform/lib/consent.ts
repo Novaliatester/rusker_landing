@@ -7,9 +7,8 @@ import type { BookingRequest } from '@/lib/booking'
  * consent_records stores it so we can prove what was accepted.
  */
 export const CONSENT_VERSIONS = {
-  terms_of_sale: '2026-07-09-draft',
-  terms_of_service: '2026-07-09-draft',
-  privacy: '2026-07-09-draft',
+  terms_of_sale: 'cgv-v1.0-2026-07-09',
+  privacy: 'privacy-v1.0-2026-07-09',
 } as const
 
 export type ConsentType = keyof typeof CONSENT_VERSIONS
