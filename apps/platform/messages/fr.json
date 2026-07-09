@@ -63,8 +63,8 @@
     "title": "Votre expédition est réservée ! 🎉",
     "body": "Merci ! Une confirmation et votre facture ont été envoyées à {email}.",
     "seatCount": "{count, plural, one {# participant inscrit} other {# participants inscrits}}",
-    "processing": "Paiement en cours de confirmation…",
-    "processingBody": "Vous recevrez votre confirmation par email dès validation — inutile de payer à nouveau.",
+    "processing": "Réservation enregistrée — paiement en attente",
+    "processingBody": "Si vous avez choisi le virement bancaire, suivez les instructions transmises par Stripe (affichées et envoyées par email) pour finaliser le paiement : vos places sont réservées. Pour un paiement par carte, la confirmation arrive par email d'ici quelques minutes — inutile de payer à nouveau.",
     "invalid": "Nous ne retrouvons pas ce paiement",
     "invalidBody": "Si vous avez bien payé, vous recevrez votre confirmation par email.",
     "backToCatalog": "Retour aux expéditions"

@@ -27,6 +27,7 @@ export default async function AdminOrderPage({ params }: { params: Promise<{ id:
         <h1 className="mb-2 text-2xl font-bold">{order.expedition?.title}</h1>
         <dl className="grid gap-x-8 gap-y-1 text-sm sm:grid-cols-2">
           <div><dt className="inline font-medium">Status: </dt><dd className="inline">{order.status}</dd></div>
+          <div><dt className="inline font-medium">Payment method: </dt><dd className="inline">{order.payment_method ?? '—'}</dd></div>
           <div><dt className="inline font-medium">Seats: </dt><dd className="inline">{order.quantity}</dd></div>
           <div><dt className="inline font-medium">Company: </dt><dd className="inline">{order.company_legal_name ?? '—'}</dd></div>
           <div><dt className="inline font-medium">VAT no.: </dt><dd className="inline">{order.vat_number ?? '—'}</dd></div>

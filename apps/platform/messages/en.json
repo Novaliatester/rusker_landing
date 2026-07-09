@@ -63,8 +63,8 @@
     "title": "Your expedition is booked! 🎉",
     "body": "Thank you! A confirmation and your invoice have been sent to {email}.",
     "seatCount": "{count, plural, one {# participant registered} other {# participants registered}}",
-    "processing": "Payment being confirmed…",
-    "processingBody": "You'll receive your confirmation by email as soon as it goes through — no need to pay again.",
+    "processing": "Booking registered — payment pending",
+    "processingBody": "If you chose bank transfer, follow the instructions Stripe displayed and emailed you to complete the payment: your seats are reserved. For card payments, the confirmation arrives by email within a few minutes — no need to pay again.",
     "invalid": "We couldn't find that payment",
     "invalidBody": "If you completed a payment, you'll still receive a confirmation email.",
     "backToCatalog": "Back to expeditions"

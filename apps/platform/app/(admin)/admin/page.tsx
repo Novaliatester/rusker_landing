@@ -3,6 +3,14 @@ import { formatPrice } from '@/lib/format'
 
 export const dynamic = 'force-dynamic'
 
+const STATUS_STYLE: Record<string, string> = {
+  paid: 'text-green-700',
+  pending: 'text-amber-600',
+  awaiting_transfer: 'text-blue-700 font-semibold',
+  payment_failed: 'text-red-600 font-semibold',
+  expired: 'text-gray-400',
+}
+
 export default async function AdminHome() {
   const expeditions = await getAdminOverview()
   return (
@@ -33,7 +41,7 @@ export default async function AdminHome() {
             <table className="w-full text-left text-sm">
               <thead>
                 <tr className="text-gray-500">
-                  <th className="py-1">Date</th><th>Company</th><th>Buyer</th><th>Seats</th><th>Total</th><th>Status</th><th />
+                  <th className="py-1">Date</th><th>Company</th><th>Buyer</th><th>Seats</th><th>Total</th><th>Method</th><th>Status</th><th />
                 </tr>
               </thead>
               <tbody>
@@ -44,10 +52,9 @@ export default async function AdminHome() {
                     <td>{order.buyer_email}</td>
                     <td>{order.quantity}</td>
                     <td>{order.amount_total_cents ? formatPrice(order.amount_total_cents, order.currency) : '—'}</td>
+                    <td>{order.payment_method ?? '—'}</td>
                     <td>
-                      <span className={order.status === 'paid' ? 'text-green-700' : order.status === 'pending' ? 'text-amber-600' : 'text-gray-400'}>
-                        {order.status}
-                      </span>
+                      <span className={STATUS_STYLE[order.status] ?? 'text-gray-400'}>{order.status}</span>
                     </td>
                     <td><a href={`/admin/orders/${order.id}`} className="text-rusker-blue hover:underline">View</a></td>
                   </tr>

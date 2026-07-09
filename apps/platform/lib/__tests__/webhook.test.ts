@@ -1,6 +1,11 @@
 import { describe, it, expect, vi } from 'vitest'
 import type Stripe from 'stripe'
-import { handleCheckoutCompleted, type WebhookDeps } from '@/lib/webhook'
+import {
+  handleCheckoutCompleted,
+  handleAsyncPaymentSucceeded,
+  handleAsyncPaymentFailed,
+  type WebhookDeps,
+} from '@/lib/webhook'
 
 const SESSION = {
   id: 'cs_test_123',
@@ -31,6 +36,9 @@ const ORDER = {
 function makeDeps(overrides: Partial<WebhookDeps> = {}): WebhookDeps {
   return {
     markOrderPaid: vi.fn().mockResolvedValue('order-1'),
+    markOrderAwaitingTransfer: vi.fn().mockResolvedValue('order-1'),
+    markPaymentFailed: vi.fn().mockResolvedValue('order-1'),
+    getPaymentMethodType: vi.fn().mockResolvedValue('card'),
     getOrderWithDetails: vi.fn().mockResolvedValue(ORDER),
     getInvoiceUrl: vi.fn().mockResolvedValue('https://invoice.stripe.com/i/xyz'),
     sendBuyerConfirmation: vi.fn().mockResolvedValue(undefined),
@@ -40,12 +48,21 @@ function makeDeps(overrides: Partial<WebhookDeps> = {}): WebhookDeps {
 }
 
 describe('handleCheckoutCompleted', () => {
-  it('transitions the order and sends both emails with the invoice link', async () => {
+  it('transitions a card payment to paid with its method and sends both emails', async () => {
     const deps = makeDeps()
     await handleCheckoutCompleted(SESSION, deps)
-    expect(deps.markOrderPaid).toHaveBeenCalledWith('cs_test_123', 'pi_test_123')
+    expect(deps.markOrderPaid).toHaveBeenCalledWith('cs_test_123', 'pi_test_123', 'card')
     expect(deps.sendBuyerConfirmation).toHaveBeenCalledWith(ORDER, 'https://invoice.stripe.com/i/xyz')
     expect(deps.sendAdminNotification).toHaveBeenCalledWith(ORDER)
+    expect(deps.markOrderAwaitingTransfer).not.toHaveBeenCalled()
+  })
+
+  it('marks unpaid sessions as awaiting_transfer without emails (bank transfer chosen)', async () => {
+    const deps = makeDeps()
+    await handleCheckoutCompleted({ ...SESSION, payment_status: 'unpaid' } as Stripe.Checkout.Session, deps)
+    expect(deps.markOrderAwaitingTransfer).toHaveBeenCalledWith('cs_test_123')
+    expect(deps.markOrderPaid).not.toHaveBeenCalled()
+    expect(deps.sendBuyerConfirmation).not.toHaveBeenCalled()
   })
 
   it('skips emails on duplicate delivery', async () => {
@@ -55,10 +72,10 @@ describe('handleCheckoutCompleted', () => {
     expect(deps.sendAdminNotification).not.toHaveBeenCalled()
   })
 
-  it('does nothing when the session is not paid', async () => {
-    const deps = makeDeps()
-    await handleCheckoutCompleted({ ...SESSION, payment_status: 'unpaid' } as Stripe.Checkout.Session, deps)
-    expect(deps.markOrderPaid).not.toHaveBeenCalled()
+  it('still marks paid when the payment-method lookup fails', async () => {
+    const deps = makeDeps({ getPaymentMethodType: vi.fn().mockRejectedValue(new Error('stripe down')) })
+    await handleCheckoutCompleted(SESSION, deps)
+    expect(deps.markOrderPaid).toHaveBeenCalledWith('cs_test_123', 'pi_test_123', null)
   })
 
   it('propagates transition failures so the webhook 500s and Stripe retries', async () => {
@@ -73,5 +90,23 @@ describe('handleCheckoutCompleted', () => {
       sendAdminNotification: vi.fn().mockRejectedValue(new Error('resend down')),
     })
     await expect(handleCheckoutCompleted(SESSION, deps)).resolves.toBeUndefined()
+  })
+})
+
+describe('handleAsyncPaymentSucceeded', () => {
+  it('transitions awaiting_transfer to paid and sends the emails', async () => {
+    const deps = makeDeps({ getPaymentMethodType: vi.fn().mockResolvedValue('customer_balance') })
+    await handleAsyncPaymentSucceeded({ ...SESSION, payment_status: 'paid' } as Stripe.Checkout.Session, deps)
+    expect(deps.markOrderPaid).toHaveBeenCalledWith('cs_test_123', 'pi_test_123', 'customer_balance')
+    expect(deps.sendBuyerConfirmation).toHaveBeenCalled()
+  })
+})
+
+describe('handleAsyncPaymentFailed', () => {
+  it('flags the order for manual handling', async () => {
+    const deps = makeDeps()
+    await handleAsyncPaymentFailed(SESSION, deps)
+    expect(deps.markPaymentFailed).toHaveBeenCalledWith('cs_test_123')
+    expect(deps.sendBuyerConfirmation).not.toHaveBeenCalled()
   })
 })

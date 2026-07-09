@@ -9,7 +9,7 @@ export async function getAdminOverview() {
     client.from('expeditions').select('id, slug, title, capacity, starts_on, ends_on, is_active').order('starts_on'),
     client
       .from('orders')
-      .select('id, expedition_id, quantity, status, expires_at, buyer_email, company_legal_name, amount_total_cents, currency, created_at')
+      .select('id, expedition_id, quantity, status, expires_at, buyer_email, company_legal_name, amount_total_cents, currency, payment_method, created_at')
       .order('created_at', { ascending: false }),
   ])
   if (e1 || e2) throw new Error(`admin overview failed: ${e1?.message ?? e2?.message}`)

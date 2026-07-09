@@ -4,7 +4,7 @@ import { seatsTaken, remainingSeats } from '@/lib/seats'
 const NOW = '2026-07-09T10:00:00.000Z'
 
 describe('seatsTaken', () => {
-  it('counts paid orders and live pending holds, ignores expired ones', () => {
+  it('counts paid orders, transfer holds, and live pending holds; ignores expired ones', () => {
     expect(
       seatsTaken(
         [
@@ -12,10 +12,12 @@ describe('seatsTaken', () => {
           { quantity: 3, status: 'pending', expires_at: '2026-07-09T10:30:00.000Z' },
           { quantity: 5, status: 'pending', expires_at: '2026-07-09T09:00:00.000Z' },
           { quantity: 4, status: 'expired', expires_at: '2026-07-09T09:00:00.000Z' },
+          { quantity: 6, status: 'awaiting_transfer', expires_at: null },
+          { quantity: 7, status: 'payment_failed', expires_at: null },
         ],
         NOW
       )
-    ).toBe(5)
+    ).toBe(11)
   })
 })
 

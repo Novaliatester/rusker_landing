@@ -1,7 +1,13 @@
 import { NextResponse } from 'next/server'
 import type Stripe from 'stripe'
 import { getStripe } from '@/lib/stripe'
-import { handleCheckoutCompleted } from '@/lib/webhook'
+import { handleCheckoutCompleted, handleAsyncPaymentSucceeded, handleAsyncPaymentFailed } from '@/lib/webhook'
+
+const HANDLERS: Record<string, (session: Stripe.Checkout.Session) => Promise<void>> = {
+  'checkout.session.completed': (session) => handleCheckoutCompleted(session),
+  'checkout.session.async_payment_succeeded': (session) => handleAsyncPaymentSucceeded(session),
+  'checkout.session.async_payment_failed': (session) => handleAsyncPaymentFailed(session),
+}
 
 export async function POST(request: Request) {
   const payload = await request.text()
@@ -21,10 +27,11 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Invalid signature' }, { status: 400 })
   }
 
-  if (event.type === 'checkout.session.completed') {
+  const handler = HANDLERS[event.type]
+  if (handler) {
     const session = event.data.object as Stripe.Checkout.Session
     try {
-      await handleCheckoutCompleted(session)
+      await handler(session)
     } catch (err) {
       console.error('webhook order recording failed', err)
       return NextResponse.json({ error: 'Order recording failed' }, { status: 500 })
