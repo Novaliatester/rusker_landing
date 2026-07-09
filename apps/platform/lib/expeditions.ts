@@ -1,4 +1,5 @@
 import { getSupabase } from '@/lib/supabase'
+import { seatsTaken, type SeatRow } from '@/lib/seats'
 
 export type Expedition = {
   id: string
@@ -49,4 +50,14 @@ export async function getExpeditionById(id: string): Promise<Expedition | null> 
     .maybeSingle()
   if (error) throw new Error(`failed to fetch expedition ${id}: ${error.message}`)
   return data as Expedition | null
+}
+
+export async function getSeatsTaken(expeditionId: string): Promise<number> {
+  const { data, error } = await getSupabase()
+    .from('orders')
+    .select('quantity, status, expires_at')
+    .eq('expedition_id', expeditionId)
+    .in('status', ['paid', 'pending'])
+  if (error) throw new Error(`failed to count seats for ${expeditionId}: ${error.message}`)
+  return seatsTaken((data ?? []) as SeatRow[], new Date().toISOString())
 }
