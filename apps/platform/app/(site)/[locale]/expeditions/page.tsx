@@ -2,6 +2,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { Link } from '@/i18n/navigation'
 import { listActiveExpeditions } from '@/lib/expeditions'
 import { formatPrice } from '@/lib/format'
+import SmartImage from '@/components/SmartImage'
 
 export const dynamic = 'force-dynamic'
 
@@ -40,12 +41,7 @@ export default async function ExpeditionsPage({
             className="block overflow-hidden rounded-card bg-white shadow-soft transition-shadow hover:shadow-soft-hover"
           >
             {expedition.image_url && (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={expedition.image_url}
-                alt={expedition.title}
-                className="h-44 w-full object-cover"
-              />
+              <SmartImage src={expedition.image_url} alt={expedition.title} className="h-44 w-full" />
             )}
             <div className="p-6">
               <h2 className="mb-2 text-xl font-semibold">{expedition.title}</h2>

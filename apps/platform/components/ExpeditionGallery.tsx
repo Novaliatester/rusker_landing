@@ -2,6 +2,8 @@
  * Photo gallery shown on expedition detail pages. Both current delegations are
  * the same trip (AI Summit Barcelona 2026), so they share one image pool.
  */
+import SmartImage from '@/components/SmartImage'
+
 export const GALLERY_IMAGES: { src: string; alt: string }[] = [
   { src: '/images/gallery/wtc-skyview.jpg', alt: 'World Trade Center Barcelona — AI Summit venue' },
   { src: '/images/delegation-aura.jpg', alt: 'Summit floor — AI in action' },
@@ -18,14 +20,7 @@ export default function ExpeditionGallery({ heroUrl }: { heroUrl: string | null 
   return (
     <div className="mb-8 grid grid-cols-2 gap-3 sm:grid-cols-3">
       {images.map((img) => (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          key={img.src}
-          src={img.src}
-          alt={img.alt}
-          loading="lazy"
-          className="h-36 w-full rounded-card object-cover sm:h-40"
-        />
+        <SmartImage key={img.src} src={img.src} alt={img.alt} className="h-36 w-full rounded-card sm:h-40" />
       ))}
     </div>
   )

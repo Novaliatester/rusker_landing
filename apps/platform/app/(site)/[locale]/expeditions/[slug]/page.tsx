@@ -5,6 +5,7 @@ import { getExpeditionBySlug, getSeatsTaken } from '@/lib/expeditions'
 import { formatPrice } from '@/lib/format'
 import ExpeditionDescription from '@/components/ExpeditionDescription'
 import ExpeditionGallery from '@/components/ExpeditionGallery'
+import SmartImage from '@/components/SmartImage'
 
 export const dynamic = 'force-dynamic'
 
@@ -31,12 +32,7 @@ export default async function ExpeditionPage({
       <div className="mt-4 grid items-start gap-10 lg:grid-cols-[1fr_380px]">
         <div>
           {expedition.image_url && (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={expedition.image_url}
-              alt={expedition.title}
-              className="mb-4 h-80 w-full rounded-card object-cover"
-            />
+            <SmartImage src={expedition.image_url} alt={expedition.title} className="mb-4 h-80 w-full rounded-card" />
           )}
           <ExpeditionGallery heroUrl={expedition.image_url} />
           <h1 className="mb-6 text-4xl font-bold">{expedition.title}</h1>

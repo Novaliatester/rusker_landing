@@ -20,6 +20,7 @@ export default function AdminLoginPage() {
     })
     setBusy(false)
     if (res.ok) setStep('code')
+    else if (res.status === 429) setError('Too many attempts — wait a few minutes, then try again.')
     else setError('Could not send the code. Try again.')
   }
 
