@@ -4,6 +4,8 @@ import { Link } from '@/i18n/navigation'
 import { getExpeditionBySlug, getSeatsTaken } from '@/lib/expeditions'
 import { computeAmounts } from '@/lib/pricing'
 import { formatPrice } from '@/lib/format'
+import ExpeditionDescription from '@/components/ExpeditionDescription'
+import ExpeditionGallery from '@/components/ExpeditionGallery'
 
 export const dynamic = 'force-dynamic'
 
@@ -28,24 +30,21 @@ export default async function ExpeditionPage({
       <Link href="/expeditions" className="text-sm text-rusker-blue hover:underline">
         {t('back')}
       </Link>
-      <div className="mt-4 grid gap-10 lg:grid-cols-[1fr_380px]">
+      <div className="mt-4 grid items-start gap-10 lg:grid-cols-[1fr_380px]">
         <div>
           {expedition.image_url && (
             // eslint-disable-next-line @next/next/no-img-element
             <img
               src={expedition.image_url}
               alt={expedition.title}
-              className="mb-6 h-72 w-full rounded-card object-cover"
+              className="mb-4 h-80 w-full rounded-card object-cover"
             />
           )}
-          <h1 className="mb-4 text-4xl font-bold">{expedition.title}</h1>
-          {expedition.description && (
-            <p className="whitespace-pre-line leading-relaxed text-gray-700">
-              {expedition.description}
-            </p>
-          )}
+          <ExpeditionGallery heroUrl={expedition.image_url} />
+          <h1 className="mb-6 text-4xl font-bold">{expedition.title}</h1>
+          {expedition.description && <ExpeditionDescription text={expedition.description} />}
         </div>
-        <div>
+        <div className="lg:sticky lg:top-6">
           <div className="rounded-card bg-white p-6 shadow-soft">
             {expedition.starts_on && expedition.ends_on && (
               <p className="mb-2 text-sm font-medium text-gray-700">
