@@ -1,5 +1,6 @@
 import { getAdminOverview } from '@/lib/admin-queries'
 import { formatPrice } from '@/lib/format'
+import DeleteButton from '@/components/DeleteButton'
 
 export const dynamic = 'force-dynamic'
 
@@ -29,12 +30,22 @@ export default async function AdminHome() {
                 revenue {formatPrice(expedition.revenueCents, 'eur')}
               </p>
             </div>
-            <a
-              href={`/admin/expeditions/${expedition.id}/export`}
-              className="rounded-button border border-neutral-mid px-4 py-2 text-sm hover:bg-bg-light"
-            >
-              Export manifest (CSV)
-            </a>
+            <div className="flex items-center gap-3">
+              <a
+                href={`/admin/expeditions/${expedition.id}/export`}
+                className="rounded-button border border-neutral-mid px-4 py-2 text-sm hover:bg-bg-light"
+              >
+                Export manifest (CSV)
+              </a>
+              {!expedition.is_active && (
+                <DeleteButton
+                  action={`/api/admin/expeditions/${expedition.id}/delete`}
+                  confirmText={`Delete "${expedition.title}" and its ${expedition.orders.length} order(s)? This removes all bookings, participants, and ID scans permanently.`}
+                  label="Delete expedition"
+                  className="rounded-button border border-red-300 px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                />
+              )}
+            </div>
           </div>
           {expedition.orders.length === 0 ? (
             <p className="text-sm text-gray-400">No bookings yet.</p>
@@ -42,7 +53,7 @@ export default async function AdminHome() {
             <table className="w-full text-left text-sm">
               <thead>
                 <tr className="text-gray-500">
-                  <th className="py-1">Date</th><th>Company</th><th>Buyer</th><th>Seats</th><th>Total</th><th>Method</th><th>Status</th><th />
+                  <th className="py-1">Date</th><th>Company</th><th>Buyer</th><th>Seats</th><th>Total</th><th>Method</th><th>Status</th><th /><th />
                 </tr>
               </thead>
               <tbody>
@@ -58,6 +69,13 @@ export default async function AdminHome() {
                       <span className={STATUS_STYLE[order.status] ?? 'text-gray-400'}>{order.status}</span>
                     </td>
                     <td><a href={`/admin/orders/${order.id}`} className="text-rusker-blue hover:underline">View</a></td>
+                    <td>
+                      <DeleteButton
+                        action={`/api/admin/orders/${order.id}/delete`}
+                        confirmText={`Delete the order from ${order.buyer_email} (${order.quantity} seat(s))? This removes its participants and ID scans permanently.`}
+                        label="Delete"
+                      />
+                    </td>
                   </tr>
                 ))}
               </tbody>

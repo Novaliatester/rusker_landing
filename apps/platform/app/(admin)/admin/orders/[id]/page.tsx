@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation'
 import { getAdminOrder, signedDocumentUrl } from '@/lib/admin-queries'
 import { formatPrice } from '@/lib/format'
+import DeleteButton from '@/components/DeleteButton'
 
 export const dynamic = 'force-dynamic'
 
@@ -22,7 +23,15 @@ export default async function AdminOrderPage({ params }: { params: Promise<{ id:
 
   return (
     <div className="space-y-8">
-      <a href="/admin" className="text-sm text-rusker-blue hover:underline">← Back</a>
+      <div className="flex items-center justify-between">
+        <a href="/admin" className="text-sm text-rusker-blue hover:underline">← Back</a>
+        <DeleteButton
+          action={`/api/admin/orders/${order.id}/delete`}
+          confirmText={`Delete this order from ${order.buyer_email}? This removes its participants and ID scans permanently.`}
+          label="Delete order"
+          className="rounded-button border border-red-300 px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+        />
+      </div>
       <section className="rounded-card bg-white p-6 shadow-soft">
         <h1 className="mb-2 text-2xl font-bold">{order.expedition?.title}</h1>
         <dl className="grid gap-x-8 gap-y-1 text-sm sm:grid-cols-2">
