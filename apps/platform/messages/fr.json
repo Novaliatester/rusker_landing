@@ -92,6 +92,10 @@
     "processingBody": "Si vous avez choisi le virement bancaire, suivez les instructions transmises par Stripe (affichées et envoyées par email) pour finaliser le paiement : vos places sont réservées. Pour un paiement par carte, la confirmation arrive par email d'ici quelques minutes — inutile de payer à nouveau.",
     "invalid": "Nous ne retrouvons pas ce paiement",
     "invalidBody": "Si vous avez bien payé, vous recevrez votre confirmation par email.",
+    "downloadInvoice": "Télécharger la facture (PDF)",
+    "viewInvoice": "Voir la facture en ligne",
+    "paymentReceipt": "Reçu de paiement",
+    "documentsEmailed": "Ces documents vous ont également été envoyés par email.",
     "backToCatalog": "Retour aux expéditions"
   },
   "cancelled": {

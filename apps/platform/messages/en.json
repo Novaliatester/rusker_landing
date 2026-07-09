@@ -92,6 +92,10 @@
     "processingBody": "If you chose bank transfer, follow the instructions Stripe displayed and emailed you to complete the payment: your seats are reserved. For card payments, the confirmation arrives by email within a few minutes — no need to pay again.",
     "invalid": "We couldn't find that payment",
     "invalidBody": "If you completed a payment, you'll still receive a confirmation email.",
+    "downloadInvoice": "Download invoice (PDF)",
+    "viewInvoice": "View invoice online",
+    "paymentReceipt": "Payment receipt",
+    "documentsEmailed": "These documents were also emailed to you.",
     "backToCatalog": "Back to expeditions"
   },
   "cancelled": {
