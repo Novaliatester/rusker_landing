@@ -16,6 +16,7 @@
 - `supabase db push` and Vercel prod deploys require explicit user approval (permission classifier). DML (seeds) may go through the REST API with the service-role key in `apps/platform/.env.local`.
 - `apps/web` has a custom client-only i18n (`apps/web/lib/i18n.tsx`); the platform intentionally uses next-intl instead because catalog/detail/success pages and emails are server-rendered.
 - All Supabase data access stays service-role via server code; RLS enabled with no policies. The ONLY exception is Supabase Auth for admins (anon key + cookies via @supabase/ssr).
+- **DEVIATION (discovered in Task 1):** the shared DB already has a CRM table named `participants`, so ours is `public.expedition_participants`. Wherever this plan writes `.from('participants')`, use `.from('expedition_participants')`; in PostgREST embedded selects, alias it back (`participants:expedition_participants ( … )`) so the JS shapes below stay valid.
 
 ---
 

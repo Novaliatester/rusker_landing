@@ -1,4 +1,5 @@
-import Link from 'next/link'
+import { getTranslations, setRequestLocale } from 'next-intl/server'
+import { Link } from '@/i18n/navigation'
 import { listActiveExpeditions } from '@/lib/expeditions'
 import { formatPrice } from '@/lib/format'
 
@@ -6,30 +7,31 @@ export const dynamic = 'force-dynamic'
 
 export const metadata = { title: 'Learning Expeditions — Rusker' }
 
-export default async function ExpeditionsPage() {
+export default async function ExpeditionsPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}) {
+  const { locale } = await params
+  setRequestLocale(locale)
+  const t = await getTranslations('catalog')
+
   let expeditions
   try {
     expeditions = await listActiveExpeditions()
   } catch (err) {
     console.error(err)
-    return (
-      <p className="text-gray-600">
-        We couldn&apos;t load the expeditions right now. Please try again in a moment.
-      </p>
-    )
+    return <p className="text-gray-600">{t('loadError')}</p>
   }
 
   if (expeditions.length === 0) {
-    return <p className="text-gray-600">No expeditions are available right now — check back soon.</p>
+    return <p className="text-gray-600">{t('empty')}</p>
   }
 
   return (
     <div>
-      <h1 className="mb-2 text-4xl font-bold">Learning Expeditions</h1>
-      <p className="mb-10 max-w-2xl text-gray-600">
-        Immersive Barcelona experiences for schools and companies. Pick an expedition, choose your
-        group size, and book online.
-      </p>
+      <h1 className="mb-2 text-4xl font-bold">{t('title')}</h1>
+      <p className="mb-10 max-w-2xl text-gray-600">{t('intro')}</p>
       <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
         {expeditions.map((expedition) => (
           <Link
@@ -47,12 +49,17 @@ export default async function ExpeditionsPage() {
             )}
             <div className="p-6">
               <h2 className="mb-2 text-xl font-semibold">{expedition.title}</h2>
+              {expedition.starts_on && expedition.ends_on && (
+                <p className="mb-2 text-sm font-medium text-gray-700">
+                  {t('dates', { start: expedition.starts_on, end: expedition.ends_on })}
+                </p>
+              )}
               {expedition.description && (
                 <p className="mb-4 line-clamp-3 text-sm text-gray-600">{expedition.description}</p>
               )}
               <p className="font-semibold text-rusker-blue">
                 {formatPrice(expedition.price_per_person_cents, expedition.currency)}
-                <span className="font-normal text-gray-500"> / person</span>
+                <span className="font-normal text-gray-500"> {t('perPerson')}</span>
               </p>
             </div>
           </Link>

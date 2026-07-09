@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation'
-import Link from 'next/link'
+import { getTranslations, setRequestLocale } from 'next-intl/server'
+import { Link } from '@/i18n/navigation'
 import { getExpeditionBySlug } from '@/lib/expeditions'
 import BookingPanel from '@/components/BookingPanel'
 
@@ -8,16 +9,18 @@ export const dynamic = 'force-dynamic'
 export default async function ExpeditionPage({
   params,
 }: {
-  params: Promise<{ slug: string }>
+  params: Promise<{ locale: string; slug: string }>
 }) {
-  const { slug } = await params
+  const { locale, slug } = await params
+  setRequestLocale(locale)
+  const t = await getTranslations('detail')
   const expedition = await getExpeditionBySlug(slug)
   if (!expedition || !expedition.is_active) notFound()
 
   return (
     <div>
       <Link href="/expeditions" className="text-sm text-rusker-blue hover:underline">
-        ← All expeditions
+        {t('back')}
       </Link>
       <div className="mt-4 grid gap-10 lg:grid-cols-[1fr_380px]">
         <div>

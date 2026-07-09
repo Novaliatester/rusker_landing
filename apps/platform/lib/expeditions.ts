@@ -11,10 +11,15 @@ export type Expedition = {
   min_participants: number
   max_participants: number | null
   is_active: boolean
+  starts_on: string | null
+  ends_on: string | null
+  capacity: number | null
+  vat_rate: number
+  departure_stations: string[]
 }
 
 const COLUMNS =
-  'id, slug, title, description, image_url, price_per_person_cents, currency, min_participants, max_participants, is_active'
+  'id, slug, title, description, image_url, price_per_person_cents, currency, min_participants, max_participants, is_active, starts_on, ends_on, capacity, vat_rate, departure_stations'
 
 export async function listActiveExpeditions(): Promise<Expedition[]> {
   const { data, error } = await getSupabase()
