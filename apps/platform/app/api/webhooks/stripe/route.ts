@@ -1,12 +1,12 @@
 import { NextResponse } from 'next/server'
 import type Stripe from 'stripe'
 import { getStripe } from '@/lib/stripe'
-import { handleCheckoutCompleted, handleAsyncPaymentSucceeded, handleAsyncPaymentFailed } from '@/lib/webhook'
+import { handleCheckoutCompleted, handleCheckoutExpired, handleInvoicePaid } from '@/lib/webhook'
 
-const HANDLERS: Record<string, (session: Stripe.Checkout.Session) => Promise<void>> = {
-  'checkout.session.completed': (session) => handleCheckoutCompleted(session),
-  'checkout.session.async_payment_succeeded': (session) => handleAsyncPaymentSucceeded(session),
-  'checkout.session.async_payment_failed': (session) => handleAsyncPaymentFailed(session),
+const HANDLERS: Record<string, (event: Stripe.Event) => Promise<void>> = {
+  'checkout.session.completed': (e) => handleCheckoutCompleted(e.data.object as Stripe.Checkout.Session),
+  'checkout.session.expired': (e) => handleCheckoutExpired(e.data.object as Stripe.Checkout.Session),
+  'invoice.paid': (e) => handleInvoicePaid(e.data.object as Stripe.Invoice),
 }
 
 export async function POST(request: Request) {
@@ -29,9 +29,8 @@ export async function POST(request: Request) {
 
   const handler = HANDLERS[event.type]
   if (handler) {
-    const session = event.data.object as Stripe.Checkout.Session
     try {
-      await handler(session)
+      await handler(event)
     } catch (err) {
       console.error('webhook order recording failed', err)
       return NextResponse.json({ error: 'Order recording failed' }, { status: 500 })

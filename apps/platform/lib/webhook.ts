@@ -1,12 +1,13 @@
 import type Stripe from 'stripe'
 import { getStripe } from '@/lib/stripe'
+import { getSupabase } from '@/lib/supabase'
 import {
   markOrderPaid as defaultMarkOrderPaid,
-  markOrderAwaitingTransfer as defaultMarkOrderAwaitingTransfer,
-  markPaymentFailed as defaultMarkPaymentFailed,
+  markInvoicePaid as defaultMarkInvoicePaid,
   getOrderWithDetails as defaultGetOrderWithDetails,
   type OrderWithDetails,
 } from '@/lib/orders'
+import { promoteDocuments as promoteDocumentsWith, discardOrder as discardOrderWith } from '@/lib/orders-create'
 import {
   sendBuyerConfirmation as defaultSendBuyerConfirmation,
   sendAdminNotification as defaultSendAdminNotification,
@@ -14,8 +15,9 @@ import {
 
 export type WebhookDeps = {
   markOrderPaid: (sessionId: string, paymentIntentId: string | null, paymentMethod: string | null) => Promise<string | null>
-  markOrderAwaitingTransfer: (sessionId: string) => Promise<string | null>
-  markPaymentFailed: (sessionId: string) => Promise<string | null>
+  markInvoicePaid: (invoiceId: string, paymentIntentId: string | null) => Promise<string | null>
+  promoteDocuments: (orderId: string) => Promise<void>
+  discardOrder: (orderId: string) => Promise<void>
   getPaymentMethodType: (paymentIntentId: string | null) => Promise<string | null>
   getOrderWithDetails: (orderId: string) => Promise<OrderWithDetails | null>
   getInvoiceUrl: (invoiceId: string | null) => Promise<string | null>
@@ -39,8 +41,9 @@ async function defaultGetPaymentMethodType(paymentIntentId: string | null): Prom
 
 const defaultDeps: WebhookDeps = {
   markOrderPaid: defaultMarkOrderPaid,
-  markOrderAwaitingTransfer: defaultMarkOrderAwaitingTransfer,
-  markPaymentFailed: defaultMarkPaymentFailed,
+  markInvoicePaid: defaultMarkInvoicePaid,
+  promoteDocuments: (orderId) => promoteDocumentsWith(getSupabase(), orderId),
+  discardOrder: (orderId) => discardOrderWith(getSupabase(), orderId),
   getPaymentMethodType: defaultGetPaymentMethodType,
   getOrderWithDetails: defaultGetOrderWithDetails,
   getInvoiceUrl: defaultGetInvoiceUrl,
@@ -48,25 +51,14 @@ const defaultDeps: WebhookDeps = {
   sendAdminNotification: defaultSendAdminNotification,
 }
 
-/** Shared paid path: transition, then best-effort emails (order stays paid if they fail). */
-async function completePaidOrder(session: Stripe.Checkout.Session, deps: WebhookDeps): Promise<void> {
-  const paymentIntentId = typeof session.payment_intent === 'string' ? session.payment_intent : null
-  const paymentMethod = await deps.getPaymentMethodType(paymentIntentId).catch((err) => {
-    console.error('payment method lookup failed', err)
-    return null
-  })
-  const orderId = await deps.markOrderPaid(session.id, paymentIntentId, paymentMethod)
-  if (!orderId) return // duplicate delivery — already handled
-
+/** After a successful payment: (optionally) promote ID scans, then best-effort emails. */
+async function afterPaid(orderId: string, invoiceUrl: string | null, deps: WebhookDeps, promote: boolean): Promise<void> {
+  if (promote) {
+    await deps.promoteDocuments(orderId).catch((err) => console.error('document promotion failed (order is paid)', err))
+  }
   try {
     const order = await deps.getOrderWithDetails(orderId)
     if (!order) throw new Error(`paid order ${orderId} not found for emails`)
-    const invoiceUrl = await deps
-      .getInvoiceUrl(typeof session.invoice === 'string' ? session.invoice : null)
-      .catch((err) => {
-        console.error('invoice url lookup failed', err)
-        return null
-      })
     const results = await Promise.allSettled([
       deps.sendBuyerConfirmation(order, invoiceUrl),
       deps.sendAdminNotification(order),
@@ -79,30 +71,42 @@ async function completePaidOrder(session: Stripe.Checkout.Session, deps: Webhook
   }
 }
 
-/** checkout.session.completed — paid (card) or unpaid (bank transfer: funds on the way). */
+/** checkout.session.completed — a card order was paid. Promote scans, then email. */
 export async function handleCheckoutCompleted(
   session: Stripe.Checkout.Session,
   deps: WebhookDeps = defaultDeps
 ): Promise<void> {
-  if (session.payment_status === 'paid') {
-    await completePaidOrder(session, deps)
-  } else if (session.payment_status === 'unpaid') {
-    await deps.markOrderAwaitingTransfer(session.id)
-  }
+  if (session.payment_status !== 'paid') return
+  const paymentIntentId = typeof session.payment_intent === 'string' ? session.payment_intent : null
+  const paymentMethod = await deps.getPaymentMethodType(paymentIntentId).catch((err) => {
+    console.error('payment method lookup failed', err)
+    return null
+  })
+  const orderId = await deps.markOrderPaid(session.id, paymentIntentId, paymentMethod)
+  if (!orderId) return // duplicate delivery — already handled
+  const invoiceUrl = await deps
+    .getInvoiceUrl(typeof session.invoice === 'string' ? session.invoice : null)
+    .catch((err) => {
+      console.error('invoice url lookup failed', err)
+      return null
+    })
+  await afterPaid(orderId, invoiceUrl, deps, true)
 }
 
-/** checkout.session.async_payment_succeeded — the transfer arrived. */
-export async function handleAsyncPaymentSucceeded(
+/** checkout.session.expired — an abandoned card order. Hard-delete it and its tmp uploads. */
+export async function handleCheckoutExpired(
   session: Stripe.Checkout.Session,
   deps: WebhookDeps = defaultDeps
 ): Promise<void> {
-  await completePaidOrder(session, deps)
+  const orderId = typeof session.metadata?.order_id === 'string' ? session.metadata.order_id : null
+  if (!orderId) return
+  await deps.discardOrder(orderId)
 }
 
-/** checkout.session.async_payment_failed — flagged for manual handling. */
-export async function handleAsyncPaymentFailed(
-  session: Stripe.Checkout.Session,
-  deps: WebhookDeps = defaultDeps
-): Promise<void> {
-  await deps.markPaymentFailed(session.id)
+/** invoice.paid — a bank-transfer order settled. Scans were promoted at creation. */
+export async function handleInvoicePaid(invoice: Stripe.Invoice, deps: WebhookDeps = defaultDeps): Promise<void> {
+  if (!invoice.id) return
+  const orderId = await deps.markInvoicePaid(invoice.id, null)
+  if (!orderId) return // duplicate delivery — already handled
+  await afterPaid(orderId, invoice.hosted_invoice_url ?? null, deps, false)
 }

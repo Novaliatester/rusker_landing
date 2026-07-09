@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react'
 import { useLocale, useTranslations } from 'next-intl'
-import { Link } from '@/i18n/navigation'
+import { Link, useRouter } from '@/i18n/navigation'
 import { formatPrice } from '@/lib/format'
 import { computeAmounts } from '@/lib/pricing'
 import { EU_VAT_RE } from '@/lib/booking'
@@ -30,10 +30,12 @@ const PRIMARY_BTN =
 export default function BookingWizard({ slug, expeditionTitle, unitPriceCents, currency, stations, maxSeats }: Props) {
   const t = useTranslations('wizard')
   const locale = useLocale()
+  const router = useRouter()
   const [step, setStep] = useState<1 | 2 | 3>(1)
   const [participants, setParticipants] = useState<ParticipantDraft[]>([{ ...EMPTY_PARTICIPANT }])
   const [billing, setBilling] = useState(EMPTY_BILLING)
   const [showErrors, setShowErrors] = useState(false)
+  const [paymentMethod, setPaymentMethod] = useState<'card' | 'transfer'>('card')
   const [terms, setTerms] = useState(false)
   const [tos, setTos] = useState(false)
   const [privacy, setPrivacy] = useState(false)
@@ -77,6 +79,7 @@ export default function BookingWizard({ slug, expeditionTitle, unitPriceCents, c
         body: JSON.stringify({
           slug,
           locale,
+          paymentMethod,
           // emailConfirm is a client-side check only
           participants: participants.map(({ emailConfirm: _emailConfirm, ...p }) => p),
           billing,
@@ -86,8 +89,17 @@ export default function BookingWizard({ slug, expeditionTitle, unitPriceCents, c
         }),
       })
       const data = await res.json()
-      if (!res.ok || !data.url) {
+      if (!res.ok) {
         setError(data.error === 'not_enough_seats' ? t('notEnoughSeats') : (data.error ?? t('genericError')))
+        setSubmitting(false)
+        return
+      }
+      if (data.mode === 'transfer') {
+        router.push('/checkout/invoice-sent')
+        return
+      }
+      if (!data.url) {
+        setError(t('genericError'))
         setSubmitting(false)
         return
       }
@@ -229,6 +241,35 @@ export default function BookingWizard({ slug, expeditionTitle, unitPriceCents, c
             </dl>
             <p className="mt-3 text-xs text-gray-400">{t('regimeNote')}</p>
           </div>
+          <div className="rounded-card bg-white p-6 shadow-soft">
+            <h3 className="mb-3 text-lg font-semibold">{t('paymentTitle')}</h3>
+            <div className="space-y-3">
+              {([
+                ['card', t('payCard'), t('payCardHint')],
+                ['transfer', t('payTransfer'), t('payTransferHint')],
+              ] as const).map(([value, label, hint]) => (
+                <label
+                  key={value}
+                  className={`flex cursor-pointer items-start gap-3 rounded-button border p-3 transition-colors ${
+                    paymentMethod === value ? 'border-rusker-blue bg-rusker-blue/5' : 'border-neutral-mid hover:bg-bg-light'
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    name="paymentMethod"
+                    value={value}
+                    checked={paymentMethod === value}
+                    onChange={() => setPaymentMethod(value)}
+                    className="mt-1"
+                  />
+                  <span className="text-sm">
+                    <span className="block font-medium">{label}</span>
+                    <span className="block text-xs text-gray-500">{hint}</span>
+                  </span>
+                </label>
+              ))}
+            </div>
+          </div>
           <div className="space-y-3 text-sm">
             <label className="flex items-start gap-2">
               <input type="checkbox" checked={terms} onChange={(e) => setTerms(e.target.checked)} className="mt-1" />
@@ -272,7 +313,7 @@ export default function BookingWizard({ slug, expeditionTitle, unitPriceCents, c
               onClick={submit}
               className={`${PRIMARY_BTN} px-8 disabled:opacity-40 disabled:hover:scale-100`}
             >
-              {submitting ? t('paying') : t('pay')}
+              {submitting ? t('paying') : paymentMethod === 'transfer' ? t('payTransferButton') : t('pay')}
             </button>
           </div>
         </div>

@@ -68,6 +68,102 @@ export async function sendBuyerConfirmation(order: OrderWithDetails, invoiceUrl:
   if (error) throw new Error(`buyer confirmation email failed: ${error.message}`)
 }
 
+function formatDate(date: Date, locale: string): string {
+  return date.toLocaleDateString(locale === 'en' ? 'en-GB' : 'fr-FR', { year: 'numeric', month: 'long', day: 'numeric' })
+}
+
+const TRANSFER_COPY = {
+  fr: {
+    subject: (title: string) => `Votre facture pour ${title} — à régler sous 14 jours`,
+    heading: 'Votre réservation est enregistrée',
+    hello: (name: string | null) => `Bonjour${name ? ` ${name}` : ''},`,
+    body: (title: string, count: number) =>
+      `Nous avons bien enregistré votre réservation pour <strong>${title}</strong> (${count} participant${count > 1 ? 's' : ''}). Vos places sont réservées.`,
+    due: (total: string, date: string) =>
+      `Merci de régler la facture de <strong>${total}</strong> par virement <strong>avant le ${date}</strong>. Passé ce délai, la réservation sera automatiquement annulée et vos places libérées.`,
+    invoice: 'Voir et payer la facture',
+    reply: 'Une question ? Répondez simplement à cet email.',
+  },
+  en: {
+    subject: (title: string) => `Your invoice for ${title} — due within 14 days`,
+    heading: 'Your booking is registered',
+    hello: (name: string | null) => `Hi${name ? ` ${name}` : ''},`,
+    body: (title: string, count: number) =>
+      `We've registered your booking for <strong>${title}</strong> (${count} participant${count > 1 ? 's' : ''}). Your seats are reserved.`,
+    due: (total: string, date: string) =>
+      `Please settle the <strong>${total}</strong> invoice by bank transfer <strong>before ${date}</strong>. After that the booking is cancelled automatically and your seats released.`,
+    invoice: 'View and pay the invoice',
+    reply: 'Questions? Just reply to this email.',
+  },
+} as const
+
+/** Bank-transfer heads-up: booking held, invoice link, payment deadline. */
+export async function sendTransferInstructions(
+  order: OrderWithDetails,
+  hostedInvoiceUrl: string | null,
+  dueAt: Date
+): Promise<void> {
+  const copy = TRANSFER_COPY[order.locale === 'en' ? 'en' : 'fr']
+  const total = formatPrice(order.amount_total_cents, order.currency)
+  const { error } = await getResend().emails.send({
+    from: FROM,
+    to: order.buyer_email,
+    subject: copy.subject(order.expedition.title),
+    html: `
+      <div style="font-family: Poppins, system-ui, sans-serif; color: #2f3433; max-width: 560px; margin: 0 auto;">
+        <h1 style="color: #287497;">${copy.heading}</h1>
+        <p>${copy.hello(order.buyer_name)}</p>
+        <p>${copy.body(order.expedition.title, order.quantity)}</p>
+        <p>${copy.due(total, formatDate(dueAt, order.locale))}</p>
+        ${hostedInvoiceUrl ? `<p><a href="${hostedInvoiceUrl}" style="color: #287497;">${copy.invoice}</a></p>` : ''}
+        <p>${copy.reply}</p>
+        <p style="margin-top: 24px; font-size: 12px; color: #8a908f;">${regimeMention(order.locale)}</p>
+        <p style="margin-top: 16px;">— Rusker Travel · <a href="https://rusker-travel.com" style="color: #287497;">rusker-travel.com</a></p>
+      </div>
+    `,
+  })
+  if (error) throw new Error(`transfer instructions email failed: ${error.message}`)
+}
+
+const CANCEL_COPY = {
+  fr: {
+    subject: (title: string) => `Réservation annulée — ${title}`,
+    heading: 'Réservation annulée',
+    hello: (name: string | null) => `Bonjour${name ? ` ${name}` : ''},`,
+    body: (title: string) =>
+      `Faute de paiement dans le délai imparti, votre réservation pour <strong>${title}</strong> a été annulée et vos places ont été libérées.`,
+    again: 'Vous souhaitez toujours participer ? Répondez à cet email ou refaites une réservation, nous serons ravis de vous accueillir.',
+  },
+  en: {
+    subject: (title: string) => `Booking cancelled — ${title}`,
+    heading: 'Booking cancelled',
+    hello: (name: string | null) => `Hi${name ? ` ${name}` : ''},`,
+    body: (title: string) =>
+      `As payment wasn't received in time, your booking for <strong>${title}</strong> has been cancelled and your seats released.`,
+    again: 'Still want to join? Reply to this email or book again — we would be glad to have you.',
+  },
+} as const
+
+/** Sent when an unpaid bank-transfer order is cancelled at its deadline. */
+export async function sendCancellationNotice(order: OrderWithDetails): Promise<void> {
+  const copy = CANCEL_COPY[order.locale === 'en' ? 'en' : 'fr']
+  const { error } = await getResend().emails.send({
+    from: FROM,
+    to: order.buyer_email,
+    subject: copy.subject(order.expedition.title),
+    html: `
+      <div style="font-family: Poppins, system-ui, sans-serif; color: #2f3433; max-width: 560px; margin: 0 auto;">
+        <h1 style="color: #287497;">${copy.heading}</h1>
+        <p>${copy.hello(order.buyer_name)}</p>
+        <p>${copy.body(order.expedition.title)}</p>
+        <p>${copy.again}</p>
+        <p style="margin-top: 24px;">— Rusker Travel · <a href="https://rusker-travel.com" style="color: #287497;">rusker-travel.com</a></p>
+      </div>
+    `,
+  })
+  if (error) throw new Error(`cancellation notice email failed: ${error.message}`)
+}
+
 export async function sendAdminNotification(order: OrderWithDetails): Promise<void> {
   const to = (process.env.ADMIN_NOTIFICATION_EMAILS ?? '')
     .split(',')

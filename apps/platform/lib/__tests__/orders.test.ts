@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest'
-import { markOrderPaidWith, markOrderAwaitingTransferWith, markPaymentFailedWith } from '@/lib/orders'
+import { markOrderPaidWith, markInvoicePaidWith, markTransferPaidWith, cancelUnpaidTransferWith } from '@/lib/orders'
 
 /** update().eq().in().select() and update().eq().eq().select() both resolve to `result`. */
 function fakeSupabase(result: { data: unknown; error: { message: string } | null }) {
@@ -41,18 +41,42 @@ describe('markOrderPaidWith', () => {
   })
 })
 
-describe('markOrderAwaitingTransferWith', () => {
-  it('sets bank_transfer and clears the hold', async () => {
+describe('markInvoicePaidWith', () => {
+  it('flips a transfer order to paid keyed on the invoice id', async () => {
     const { client, update } = fakeSupabase({ data: [{ id: 'order-1' }], error: null })
-    await expect(markOrderAwaitingTransferWith(client, 'cs_test_123')).resolves.toBe('order-1')
-    expect(update).toHaveBeenCalledWith({ status: 'awaiting_transfer', payment_method: 'bank_transfer', expires_at: null })
+    await expect(markInvoicePaidWith(client, 'in_test_123')).resolves.toBe('order-1')
+    expect(update).toHaveBeenCalledWith({ status: 'paid', payment_method: 'bank_transfer', expires_at: null })
+  })
+
+  it('records the payment intent when Stripe provides one', async () => {
+    const { client, update } = fakeSupabase({ data: [{ id: 'order-1' }], error: null })
+    await markInvoicePaidWith(client, 'in_test_123', 'pi_test_9')
+    expect(update).toHaveBeenCalledWith({
+      status: 'paid',
+      payment_method: 'bank_transfer',
+      expires_at: null,
+      stripe_payment_intent_id: 'pi_test_9',
+    })
+  })
+
+  it('returns null on duplicate delivery', async () => {
+    const { client } = fakeSupabase({ data: [], error: null })
+    await expect(markInvoicePaidWith(client, 'in_test_123')).resolves.toBeNull()
   })
 })
 
-describe('markPaymentFailedWith', () => {
-  it('flags the order for manual handling', async () => {
+describe('markTransferPaidWith', () => {
+  it('flips an awaiting_transfer order to paid by id', async () => {
     const { client, update } = fakeSupabase({ data: [{ id: 'order-1' }], error: null })
-    await expect(markPaymentFailedWith(client, 'cs_test_123')).resolves.toBe('order-1')
-    expect(update).toHaveBeenCalledWith({ status: 'payment_failed' })
+    await expect(markTransferPaidWith(client, 'order-1')).resolves.toBe('order-1')
+    expect(update).toHaveBeenCalledWith({ status: 'paid', payment_method: 'bank_transfer', expires_at: null })
+  })
+})
+
+describe('cancelUnpaidTransferWith', () => {
+  it('cancels an awaiting_transfer order by id', async () => {
+    const { client, update } = fakeSupabase({ data: [{ id: 'order-1' }], error: null })
+    await expect(cancelUnpaidTransferWith(client, 'order-1')).resolves.toBe('order-1')
+    expect(update).toHaveBeenCalledWith({ status: 'cancelled' })
   })
 })

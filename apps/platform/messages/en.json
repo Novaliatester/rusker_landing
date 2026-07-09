@@ -58,8 +58,14 @@
     "acceptTerms": "I accept the <link>terms of sale</link>",
     "acceptTos": "I accept the <link>terms of service</link>",
     "acceptPrivacy": "I consent to the <link>processing of my personal data</link>, including my ID document, for the organization of the trip",
+    "paymentTitle": "Payment method",
+    "payCard": "Card",
+    "payCardHint": "Immediate, secure payment. Your booking is confirmed as soon as you pay.",
+    "payTransfer": "Bank transfer",
+    "payTransferHint": "You receive an invoice due within 14 days. Your seats are reserved until then.",
+    "payTransferButton": "Confirm and get the invoice",
     "pay": "Proceed to payment",
-    "paying": "Redirecting to payment…",
+    "paying": "One moment…",
     "next": "Continue",
     "back": "Back",
     "required": "This field is required",
@@ -92,6 +98,12 @@
   "cancelled": {
     "title": "Checkout cancelled",
     "body": "Nothing was charged. Your expedition is still waiting.",
+    "back": "Back to expeditions"
+  },
+  "invoiceSent": {
+    "title": "Your invoice is on its way 📩",
+    "body": "We've emailed you your invoice. Pay it by bank transfer within 14 days to confirm your booking — your seats are held until then.",
+    "note": "Didn't get the email? Check your spam folder or write to us.",
     "back": "Back to expeditions"
   },
   "footer": { "tagline": "Learning Expeditions" }

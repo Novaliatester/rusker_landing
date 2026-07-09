@@ -8,6 +8,7 @@ const STATUS_STYLE: Record<string, string> = {
   pending: 'text-amber-600',
   awaiting_transfer: 'text-blue-700 font-semibold',
   payment_failed: 'text-red-600 font-semibold',
+  cancelled: 'text-red-500',
   expired: 'text-gray-400',
 }
 

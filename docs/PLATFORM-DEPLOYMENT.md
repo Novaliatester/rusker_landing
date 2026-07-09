@@ -20,9 +20,20 @@ is added to the rusker-platform project).
 1. Dashboard → Developers → API keys → copy the secret key → `STRIPE_SECRET_KEY`.
 2. Dashboard → Developers → Webhooks → Add endpoint:
    - URL: `https://app.rusker-travel.com/api/webhooks/stripe`
-   - Events: `checkout.session.completed`
+   - Events: `checkout.session.completed` (card paid), `checkout.session.expired` (card abandoned → order purged), `invoice.paid` (bank transfer settled).
    - Copy the signing secret → `STRIPE_WEBHOOK_SECRET`.
-3. Dashboard → Settings → Emails → enable **Successful payments** (customer receipt).
+3. Dashboard → Settings → Emails: we send our own branded emails via Resend. Leave Stripe's
+   "Email finalized invoices to customers" **off** so bank-transfer buyers don't get a duplicate
+   of the invoice Rusker already emails them.
+
+### Two payment modes
+- **Card** — Stripe Checkout, card only. The order is created `pending` with ID scans held in `tmp/`;
+  on payment it flips to `paid` and the scans are promoted to permanent storage. An abandoned session
+  fires `checkout.session.expired`, which hard-deletes the order and its tmp files (belt-and-suspenders:
+  the daily cron also purges stragglers).
+- **Bank transfer** — a Stripe Invoice (`send_invoice`, due in 14 days) backs an `awaiting_transfer`
+  order; the seat is held. `invoice.paid` (or the admin "Mark as paid" action) flips it to `paid`.
+  The daily cron cancels + notifies unpaid orders past the due date (status `cancelled`).
 
 ## Resend
 

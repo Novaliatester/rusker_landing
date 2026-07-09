@@ -24,6 +24,7 @@ const PARTICIPANT = {
 const VALID = {
   slug: 'aura-ai-summit-2026',
   locale: 'fr',
+  paymentMethod: 'card',
   participants: [PARTICIPANT],
   billing: {
     companyLegalName: 'ACME SA',
@@ -56,6 +57,12 @@ describe('parseBookingRequest', () => {
     expect(parsed.participants[0].phone).toBe('+33612345678')
     expect(parsed.billing.vatNumber).toBe('FR12345678901')
     expect(parsed.billing.country).toBe('FR')
+    expect(parsed.paymentMethod).toBe('card')
+  })
+
+  it('accepts the transfer payment method', () => {
+    const parsed = parseBookingRequest({ ...VALID, paymentMethod: 'transfer' }, NOW)
+    expect(parsed?.paymentMethod).toBe('transfer')
   })
 
   it('accepts an empty billing address (only company name is required)', () => {
@@ -91,6 +98,8 @@ describe('parseBookingRequest', () => {
     ['missing billing name', { ...VALID, billing: { ...VALID.billing, companyLegalName: '' } }],
     ['bad country code', { ...VALID, billing: { ...VALID.billing, country: 'France' } }],
     ['unknown locale', { ...VALID, locale: 'de' }],
+    ['missing payment method', { ...VALID, paymentMethod: undefined }],
+    ['unknown payment method', { ...VALID, paymentMethod: 'crypto' }],
   ])('rejects %s', (_name, body) => {
     expect(parseBookingRequest(body, NOW)).toBeNull()
   })

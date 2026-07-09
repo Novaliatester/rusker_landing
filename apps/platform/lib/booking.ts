@@ -2,6 +2,7 @@ export const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/
 const TMP_KEY = /^tmp\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\.(jpg|jpeg|png|pdf)$/
 const LOCALES = ['fr', 'en'] as const
+const PAYMENT_METHODS = ['card', 'transfer'] as const
 const COUNTRY_RE = /^[A-Z]{2}$/
 
 /** Strip spaces, dots, dashes, parentheses — keeps a leading + and digits. */
@@ -46,9 +47,12 @@ export type BillingInput = {
   vatNumber: string
 }
 
+export type PaymentMethod = (typeof PAYMENT_METHODS)[number]
+
 export type BookingRequest = {
   slug: string
   locale: (typeof LOCALES)[number]
+  paymentMethod: PaymentMethod
   participants: ParticipantInput[]
   billing: BillingInput
   termsAccepted: true
@@ -106,6 +110,7 @@ export function parseBookingRequest(body: unknown, now: Date = new Date()): Book
   const b = body as Record<string, unknown>
   if (!isNonEmptyString(b.slug)) return null
   if (!LOCALES.includes(b.locale as never)) return null
+  if (!PAYMENT_METHODS.includes(b.paymentMethod as never)) return null
   if (b.termsAccepted !== true || b.tosAccepted !== true || b.privacyAccepted !== true) return null
   if (!Array.isArray(b.participants) || b.participants.length < 1 || b.participants.length > 20) return null
   const todayIso = now.toISOString().slice(0, 10)
@@ -123,6 +128,7 @@ export function parseBookingRequest(body: unknown, now: Date = new Date()): Book
   return {
     slug: b.slug as string,
     locale: b.locale as BookingRequest['locale'],
+    paymentMethod: b.paymentMethod as PaymentMethod,
     participants,
     billing: {
       companyLegalName: (billing.companyLegalName as string).trim(),

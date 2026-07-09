@@ -2,8 +2,8 @@ import { describe, it, expect, vi } from 'vitest'
 import type Stripe from 'stripe'
 import {
   handleCheckoutCompleted,
-  handleAsyncPaymentSucceeded,
-  handleAsyncPaymentFailed,
+  handleCheckoutExpired,
+  handleInvoicePaid,
   type WebhookDeps,
 } from '@/lib/webhook'
 
@@ -15,6 +15,12 @@ const SESSION = {
   metadata: { order_id: 'order-1' },
 } as unknown as Stripe.Checkout.Session
 
+const INVOICE = {
+  id: 'in_test_777',
+  payment_intent: 'pi_test_777',
+  hosted_invoice_url: 'https://invoice.stripe.com/i/abc',
+} as unknown as Stripe.Invoice
+
 const ORDER = {
   id: 'order-1',
   locale: 'fr',
@@ -23,8 +29,8 @@ const ORDER = {
   buyer_name: 'Jeanne Martin',
   company_legal_name: 'ACME SA',
   amount_subtotal_cents: 420000,
-  amount_tax_cents: 88200,
-  amount_total_cents: 508200,
+  amount_tax_cents: 0,
+  amount_total_cents: 420000,
   currency: 'eur',
   expedition: { title: 'Délégation AURA', starts_on: '2026-09-21', ends_on: '2026-09-23' },
   participants: [
@@ -36,8 +42,9 @@ const ORDER = {
 function makeDeps(overrides: Partial<WebhookDeps> = {}): WebhookDeps {
   return {
     markOrderPaid: vi.fn().mockResolvedValue('order-1'),
-    markOrderAwaitingTransfer: vi.fn().mockResolvedValue('order-1'),
-    markPaymentFailed: vi.fn().mockResolvedValue('order-1'),
+    markInvoicePaid: vi.fn().mockResolvedValue('order-1'),
+    promoteDocuments: vi.fn().mockResolvedValue(undefined),
+    discardOrder: vi.fn().mockResolvedValue(undefined),
     getPaymentMethodType: vi.fn().mockResolvedValue('card'),
     getOrderWithDetails: vi.fn().mockResolvedValue(ORDER),
     getInvoiceUrl: vi.fn().mockResolvedValue('https://invoice.stripe.com/i/xyz'),
@@ -48,28 +55,27 @@ function makeDeps(overrides: Partial<WebhookDeps> = {}): WebhookDeps {
 }
 
 describe('handleCheckoutCompleted', () => {
-  it('transitions a card payment to paid with its method and sends both emails', async () => {
+  it('transitions a card payment to paid, promotes scans, and sends both emails', async () => {
     const deps = makeDeps()
     await handleCheckoutCompleted(SESSION, deps)
     expect(deps.markOrderPaid).toHaveBeenCalledWith('cs_test_123', 'pi_test_123', 'card')
+    expect(deps.promoteDocuments).toHaveBeenCalledWith('order-1')
     expect(deps.sendBuyerConfirmation).toHaveBeenCalledWith(ORDER, 'https://invoice.stripe.com/i/xyz')
     expect(deps.sendAdminNotification).toHaveBeenCalledWith(ORDER)
-    expect(deps.markOrderAwaitingTransfer).not.toHaveBeenCalled()
   })
 
-  it('marks unpaid sessions as awaiting_transfer without emails (bank transfer chosen)', async () => {
+  it('ignores non-paid sessions (card checkout is always paid or nothing)', async () => {
     const deps = makeDeps()
     await handleCheckoutCompleted({ ...SESSION, payment_status: 'unpaid' } as Stripe.Checkout.Session, deps)
-    expect(deps.markOrderAwaitingTransfer).toHaveBeenCalledWith('cs_test_123')
     expect(deps.markOrderPaid).not.toHaveBeenCalled()
     expect(deps.sendBuyerConfirmation).not.toHaveBeenCalled()
   })
 
-  it('skips emails on duplicate delivery', async () => {
+  it('skips promotion and emails on duplicate delivery', async () => {
     const deps = makeDeps({ markOrderPaid: vi.fn().mockResolvedValue(null) })
     await handleCheckoutCompleted(SESSION, deps)
+    expect(deps.promoteDocuments).not.toHaveBeenCalled()
     expect(deps.sendBuyerConfirmation).not.toHaveBeenCalled()
-    expect(deps.sendAdminNotification).not.toHaveBeenCalled()
   })
 
   it('still marks paid when the payment-method lookup fails', async () => {
@@ -83,9 +89,9 @@ describe('handleCheckoutCompleted', () => {
     await expect(handleCheckoutCompleted(SESSION, deps)).rejects.toThrow('db down')
   })
 
-  it('does NOT throw when emails or invoice lookup fail after the transition', async () => {
+  it('does NOT throw when promotion or emails fail after the transition', async () => {
     const deps = makeDeps({
-      getInvoiceUrl: vi.fn().mockRejectedValue(new Error('stripe down')),
+      promoteDocuments: vi.fn().mockRejectedValue(new Error('storage down')),
       sendBuyerConfirmation: vi.fn().mockRejectedValue(new Error('resend down')),
       sendAdminNotification: vi.fn().mockRejectedValue(new Error('resend down')),
     })
@@ -93,20 +99,33 @@ describe('handleCheckoutCompleted', () => {
   })
 })
 
-describe('handleAsyncPaymentSucceeded', () => {
-  it('transitions awaiting_transfer to paid and sends the emails', async () => {
-    const deps = makeDeps({ getPaymentMethodType: vi.fn().mockResolvedValue('customer_balance') })
-    await handleAsyncPaymentSucceeded({ ...SESSION, payment_status: 'paid' } as Stripe.Checkout.Session, deps)
-    expect(deps.markOrderPaid).toHaveBeenCalledWith('cs_test_123', 'pi_test_123', 'customer_balance')
-    expect(deps.sendBuyerConfirmation).toHaveBeenCalled()
+describe('handleCheckoutExpired', () => {
+  it('discards the abandoned order named in the session metadata', async () => {
+    const deps = makeDeps()
+    await handleCheckoutExpired(SESSION, deps)
+    expect(deps.discardOrder).toHaveBeenCalledWith('order-1')
+  })
+
+  it('does nothing when the session carries no order id', async () => {
+    const deps = makeDeps()
+    await handleCheckoutExpired({ ...SESSION, metadata: {} } as Stripe.Checkout.Session, deps)
+    expect(deps.discardOrder).not.toHaveBeenCalled()
   })
 })
 
-describe('handleAsyncPaymentFailed', () => {
-  it('flags the order for manual handling', async () => {
+describe('handleInvoicePaid', () => {
+  it('transitions a transfer order to paid keyed on the invoice id and emails', async () => {
     const deps = makeDeps()
-    await handleAsyncPaymentFailed(SESSION, deps)
-    expect(deps.markPaymentFailed).toHaveBeenCalledWith('cs_test_123')
+    await handleInvoicePaid(INVOICE, deps)
+    expect(deps.markInvoicePaid).toHaveBeenCalledWith('in_test_777', null)
+    expect(deps.promoteDocuments).not.toHaveBeenCalled() // already promoted at creation
+    expect(deps.sendBuyerConfirmation).toHaveBeenCalledWith(ORDER, 'https://invoice.stripe.com/i/abc')
+    expect(deps.sendAdminNotification).toHaveBeenCalledWith(ORDER)
+  })
+
+  it('skips emails on duplicate delivery', async () => {
+    const deps = makeDeps({ markInvoicePaid: vi.fn().mockResolvedValue(null) })
+    await handleInvoicePaid(INVOICE, deps)
     expect(deps.sendBuyerConfirmation).not.toHaveBeenCalled()
   })
 })

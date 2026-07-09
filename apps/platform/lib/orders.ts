@@ -2,11 +2,10 @@ import type { SupabaseClient } from '@supabase/supabase-js'
 import { getSupabase } from '@/lib/supabase'
 
 /**
- * Flip an order to paid, keyed on the checkout session id. Cards arrive from
- * 'pending'; bank transfers arrive from 'awaiting_transfer'. Returns the order
- * id when THIS call performed the transition, null when it already happened
- * (duplicate webhook delivery) or the session is unknown. Idempotency comes
- * from the status filter: a 'paid' order never matches again.
+ * Flip a CARD order to paid, keyed on the checkout session id. Card orders arrive
+ * from 'pending'. Returns the order id when THIS call performed the transition,
+ * null when it already happened (duplicate webhook delivery) or the session is
+ * unknown. Idempotency comes from the status filter: a 'paid' order never matches.
  */
 export async function markOrderPaidWith(
   client: SupabaseClient,
@@ -23,7 +22,7 @@ export async function markOrderPaidWith(
       ...(paymentMethod ? { payment_method: paymentMethod } : {}),
     })
     .eq('stripe_checkout_session_id', sessionId)
-    .in('status', ['pending', 'awaiting_transfer'])
+    .in('status', ['pending'])
     .select('id')
   if (error) throw new Error(`order transition failed: ${error.message}`)
   return data?.[0]?.id ?? null
@@ -37,36 +36,63 @@ export async function markOrderPaid(
   return markOrderPaidWith(getSupabase(), sessionId, paymentIntentId, paymentMethod)
 }
 
-/** Checkout completed with payment_status 'unpaid' = bank transfer chosen; funds pending. Seats stay held. */
-export async function markOrderAwaitingTransferWith(client: SupabaseClient, sessionId: string): Promise<string | null> {
+/**
+ * Flip a BANK-TRANSFER order to paid, keyed on the Stripe invoice id. Transfer
+ * orders arrive from 'awaiting_transfer'. Same idempotency guarantee as cards.
+ */
+export async function markInvoicePaidWith(
+  client: SupabaseClient,
+  invoiceId: string,
+  paymentIntentId: string | null = null
+): Promise<string | null> {
   const { data, error } = await client
     .from('orders')
-    .update({ status: 'awaiting_transfer', payment_method: 'bank_transfer', expires_at: null })
-    .eq('stripe_checkout_session_id', sessionId)
-    .eq('status', 'pending')
+    .update({
+      status: 'paid',
+      payment_method: 'bank_transfer',
+      expires_at: null,
+      ...(paymentIntentId ? { stripe_payment_intent_id: paymentIntentId } : {}),
+    })
+    .eq('stripe_invoice_id', invoiceId)
+    .in('status', ['awaiting_transfer'])
     .select('id')
-  if (error) throw new Error(`awaiting-transfer transition failed: ${error.message}`)
+  if (error) throw new Error(`invoice paid transition failed: ${error.message}`)
   return data?.[0]?.id ?? null
 }
 
-export async function markOrderAwaitingTransfer(sessionId: string): Promise<string | null> {
-  return markOrderAwaitingTransferWith(getSupabase(), sessionId)
+export async function markInvoicePaid(invoiceId: string, paymentIntentId: string | null = null): Promise<string | null> {
+  return markInvoicePaidWith(getSupabase(), invoiceId, paymentIntentId)
 }
 
-/** Stripe reported the async payment failed — surfaced in /admin for manual handling. */
-export async function markPaymentFailedWith(client: SupabaseClient, sessionId: string): Promise<string | null> {
+/**
+ * Manually flip a bank-transfer order to paid by its id — used by the admin action
+ * when the money lands in Rusker's account outside Stripe's tracking. Idempotent.
+ */
+export async function markTransferPaidWith(client: SupabaseClient, orderId: string): Promise<string | null> {
   const { data, error } = await client
     .from('orders')
-    .update({ status: 'payment_failed' })
-    .eq('stripe_checkout_session_id', sessionId)
-    .eq('status', 'awaiting_transfer')
+    .update({ status: 'paid', payment_method: 'bank_transfer', expires_at: null })
+    .eq('id', orderId)
+    .in('status', ['awaiting_transfer'])
     .select('id')
-  if (error) throw new Error(`payment-failed transition failed: ${error.message}`)
+  if (error) throw new Error(`manual transfer paid transition failed: ${error.message}`)
   return data?.[0]?.id ?? null
 }
 
-export async function markPaymentFailed(sessionId: string): Promise<string | null> {
-  return markPaymentFailedWith(getSupabase(), sessionId)
+export async function markTransferPaid(orderId: string): Promise<string | null> {
+  return markTransferPaidWith(getSupabase(), orderId)
+}
+
+/** Cancel an unpaid bank-transfer order past its invoice due date. Idempotent on status. */
+export async function cancelUnpaidTransferWith(client: SupabaseClient, orderId: string): Promise<string | null> {
+  const { data, error } = await client
+    .from('orders')
+    .update({ status: 'cancelled' })
+    .eq('id', orderId)
+    .in('status', ['awaiting_transfer'])
+    .select('id')
+  if (error) throw new Error(`cancel transfer failed: ${error.message}`)
+  return data?.[0]?.id ?? null
 }
 
 export type OrderWithDetails = {

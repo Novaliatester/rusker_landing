@@ -58,8 +58,14 @@
     "acceptTerms": "J'accepte les <link>conditions de vente</link>",
     "acceptTos": "J'accepte les <link>conditions de service</link>",
     "acceptPrivacy": "J'accepte le <link>traitement de mes données personnelles</link>, y compris ma pièce d'identité, pour l'organisation du voyage",
+    "paymentTitle": "Mode de paiement",
+    "payCard": "Carte bancaire",
+    "payCardHint": "Paiement immédiat et sécurisé. Votre réservation est confirmée dès le paiement.",
+    "payTransfer": "Virement bancaire",
+    "payTransferHint": "Vous recevez une facture à régler sous 14 jours. Vos places sont réservées jusque-là.",
+    "payTransferButton": "Confirmer et recevoir la facture",
     "pay": "Procéder au paiement",
-    "paying": "Redirection vers le paiement…",
+    "paying": "Un instant…",
     "next": "Continuer",
     "back": "Retour",
     "required": "Ce champ est requis",
@@ -92,6 +98,12 @@
   "cancelled": {
     "title": "Paiement annulé",
     "body": "Aucun montant n'a été débité. Votre expédition vous attend toujours.",
+    "back": "Retour aux expéditions"
+  },
+  "invoiceSent": {
+    "title": "Votre facture est en route 📩",
+    "body": "Nous vous avons envoyé votre facture par email. Réglez-la par virement sous 14 jours pour confirmer votre réservation — vos places sont réservées jusque-là.",
+    "note": "Vous n'avez pas reçu l'email ? Vérifiez vos spams ou écrivez-nous.",
     "back": "Retour aux expéditions"
   },
   "footer": { "tagline": "Learning Expeditions" }

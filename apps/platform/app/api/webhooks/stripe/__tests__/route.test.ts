@@ -3,6 +3,8 @@ import Stripe from 'stripe'
 
 vi.mock('@/lib/webhook', () => ({
   handleCheckoutCompleted: vi.fn().mockResolvedValue(undefined),
+  handleCheckoutExpired: vi.fn().mockResolvedValue(undefined),
+  handleInvoicePaid: vi.fn().mockResolvedValue(undefined),
 }))
 
 const SECRET = 'whsec_test_secret'
@@ -10,7 +12,7 @@ process.env.STRIPE_WEBHOOK_SECRET = SECRET
 process.env.STRIPE_SECRET_KEY = 'sk_test_dummy'
 
 import { POST } from '../route'
-import { handleCheckoutCompleted } from '@/lib/webhook'
+import { handleCheckoutCompleted, handleInvoicePaid } from '@/lib/webhook'
 
 const stripe = new Stripe('sk_test_dummy')
 
@@ -54,6 +56,19 @@ describe('POST /api/webhooks/stripe', () => {
     vi.mocked(handleCheckoutCompleted).mockRejectedValueOnce(new Error('db down'))
     const res = await POST(signedRequest(EVENT))
     expect(res.status).toBe(500)
+  })
+
+  it('routes invoice.paid to its handler', async () => {
+    const invoiceEvent = JSON.stringify({
+      id: 'evt_test_3',
+      object: 'event',
+      type: 'invoice.paid',
+      data: { object: { id: 'in_test_1', object: 'invoice' } },
+    })
+    const res = await POST(signedRequest(invoiceEvent))
+    expect(res.status).toBe(200)
+    expect(handleInvoicePaid).toHaveBeenCalledOnce()
+    expect(handleCheckoutCompleted).not.toHaveBeenCalled()
   })
 
   it('acknowledges unhandled event types without processing', async () => {

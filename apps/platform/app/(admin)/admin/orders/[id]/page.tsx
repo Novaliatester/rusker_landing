@@ -64,6 +64,14 @@ export default async function AdminOrderPage({ params }: { params: Promise<{ id:
             </table>
           </div>
         )}
+        {order.status === 'awaiting_transfer' && (
+          <form method="post" action={`/api/admin/orders/${order.id}/mark-paid`} className="mt-4 border-t border-neutral-mid/30 pt-3">
+            <button className="rounded-button bg-rusker-blue px-4 py-2 text-sm font-semibold text-white hover:opacity-90">
+              Mark as paid (bank transfer received)
+            </button>
+            <span className="ml-3 text-xs text-gray-500">Confirms the booking and emails the buyer.</span>
+          </form>
+        )}
       </section>
       {participants.map((p, i) => (
         <section key={p.id} className="rounded-card bg-white p-6 shadow-soft">
