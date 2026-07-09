@@ -33,9 +33,8 @@ export default async function AdminOrderPage({ params }: { params: Promise<{ id:
           <div><dt className="inline font-medium">VAT no.: </dt><dd className="inline">{order.vat_number ?? '—'}</dd></div>
           <div><dt className="inline font-medium">Billing address: </dt><dd className="inline">{order.billing_address ?? '—'}</dd></div>
           <div><dt className="inline font-medium">Buyer: </dt><dd className="inline">{order.buyer_name} &lt;{order.buyer_email}&gt;</dd></div>
-          <div><dt className="inline font-medium">Subtotal HT: </dt><dd className="inline">{order.amount_subtotal_cents ? formatPrice(order.amount_subtotal_cents, order.currency) : '—'}</dd></div>
-          <div><dt className="inline font-medium">VAT 21%: </dt><dd className="inline">{order.amount_tax_cents ? formatPrice(order.amount_tax_cents, order.currency) : '—'}</dd></div>
-          <div><dt className="inline font-medium">Total TTC: </dt><dd className="inline">{formatPrice(order.amount_total_cents, order.currency)}</dd></div>
+          <div><dt className="inline font-medium">Total (VAT incl.): </dt><dd className="inline">{formatPrice(order.amount_total_cents, order.currency)}</dd></div>
+          <div className="sm:col-span-2"><dt className="inline font-medium">Tax regime: </dt><dd className="inline text-gray-500">Travel-agency margin scheme (LIVA arts. 141–147) — VAT not itemised</dd></div>
           <div><dt className="inline font-medium">Locale: </dt><dd className="inline">{order.locale}</dd></div>
           <div><dt className="inline font-medium">Terms accepted: </dt><dd className="inline">{order.terms_accepted_at ?? '—'}</dd></div>
           <div><dt className="inline font-medium">Privacy accepted: </dt><dd className="inline">{order.privacy_accepted_at ?? '—'} (IP {order.consent_ip ?? '—'})</dd></div>

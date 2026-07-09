@@ -1,25 +1,20 @@
 import { describe, it, expect } from 'vitest'
 import { computeAmounts } from '@/lib/pricing'
 
-describe('computeAmounts', () => {
-  it('computes 21% VAT on one seat', () => {
-    expect(computeAmounts(210000, 1, 21)).toEqual({
+describe('computeAmounts (travel-agency margin scheme)', () => {
+  it('charges the all-in price with no VAT added on one seat', () => {
+    expect(computeAmounts(210000, 1)).toEqual({
       subtotalCents: 210000,
-      taxCents: 44100,
-      totalCents: 254100,
+      taxCents: 0,
+      totalCents: 210000,
     })
   })
 
-  it('computes multi-seat totals', () => {
-    expect(computeAmounts(210000, 3, 21)).toEqual({
+  it('multiplies the all-in price across seats without adding tax', () => {
+    expect(computeAmounts(210000, 3)).toEqual({
       subtotalCents: 630000,
-      taxCents: 132300,
-      totalCents: 762300,
+      taxCents: 0,
+      totalCents: 630000,
     })
-  })
-
-  it('rounds tax to the nearest cent', () => {
-    // 1234 * 21% = 259.14 -> 259
-    expect(computeAmounts(1234, 1, 21)).toEqual({ subtotalCents: 1234, taxCents: 259, totalCents: 1493 })
   })
 })

@@ -4,7 +4,7 @@ import { getSupabase } from '@/lib/supabase'
 import { getExpeditionBySlug, getSeatsTaken } from '@/lib/expeditions'
 import { parseBookingRequest, EU_VAT_RE } from '@/lib/booking'
 import { computeAmounts } from '@/lib/pricing'
-import { getOrCreateIva21 } from '@/lib/tax'
+import { regimeMention } from '@/lib/regime'
 import { createPendingOrder, attachDocuments, discardPendingOrder } from '@/lib/orders-create'
 
 export async function POST(request: Request) {
@@ -28,7 +28,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'not_enough_seats', remaining: Math.max(0, remaining) }, { status: 409 })
   }
 
-  const amounts = computeAmounts(expedition.price_per_person_cents, booking.participants.length, expedition.vat_rate)
+  const amounts = computeAmounts(expedition.price_per_person_cents, booking.participants.length)
   const consent = {
     ip: request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ?? null,
     userAgent: request.headers.get('user-agent'),
@@ -64,15 +64,18 @@ export async function POST(request: Request) {
       line_items: [
         {
           quantity: booking.participants.length,
-          tax_rates: [await getOrCreateIva21(stripe)],
           price_data: {
             currency: expedition.currency,
+            // All-in price under the travel-agency margin scheme — no tax added on top.
             unit_amount: expedition.price_per_person_cents,
             product_data: { name: expedition.title },
           },
         },
       ],
-      invoice_creation: { enabled: true },
+      invoice_creation: {
+        enabled: true,
+        invoice_data: { footer: regimeMention(booking.locale) },
+      },
       metadata: { order_id: created.orderId, expedition_id: expedition.id, quantity: String(booking.participants.length) },
       expires_at: Math.floor(Date.now() / 1000) + 30 * 60,
       success_url: `${origin}/${booking.locale}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,

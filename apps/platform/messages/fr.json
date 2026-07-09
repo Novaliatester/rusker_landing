@@ -2,7 +2,7 @@
   "catalog": {
     "title": "Learning Expeditions",
     "intro": "Des immersions professionnelles à Barcelone. Choisissez votre expédition et réservez votre place en ligne.",
-    "perPerson": "/ personne (HT)",
+    "perPerson": "/ personne · TVA comprise",
     "loadError": "Impossible de charger les expéditions pour le moment. Réessayez dans un instant.",
     "empty": "Aucune expédition disponible pour le moment.",
     "seatsLeft": "{count, plural, one {# place restante} other {# places restantes}}",
@@ -12,8 +12,8 @@
   "detail": {
     "back": "← Toutes les expéditions",
     "book": "Réserver ma place",
-    "priceHt": "{price} HT / personne",
-    "vatNote": "TVA espagnole 21% en sus — total {total} TTC par personne"
+    "price": "{price} / personne",
+    "vatNote": "TVA comprise — régime particulier des agences de voyages (art. 141 à 147 LIVA)."
   },
   "wizard": {
     "title": "Réservation — {expedition}",
@@ -53,9 +53,8 @@
     "vatNumber": "N° de TVA intracommunautaire",
     "vatHint": "Facultatif — affiché sur la facture s'il est renseigné.",
     "summary": "Récapitulatif",
-    "subtotal": "Sous-total HT",
-    "vat": "TVA espagnole (21%)",
-    "total": "Total TTC",
+    "total": "Total (TVA comprise)",
+    "regimeNote": "Régime particulier des agences de voyages (art. 141 à 147 LIVA) — TVA comprise, non ventilée.",
     "acceptTerms": "J'accepte les <link>conditions de vente</link>",
     "acceptTos": "J'accepte les <link>conditions de service</link>",
     "acceptPrivacy": "J'accepte le <link>traitement de mes données personnelles</link>, y compris ma pièce d'identité, pour l'organisation du voyage",

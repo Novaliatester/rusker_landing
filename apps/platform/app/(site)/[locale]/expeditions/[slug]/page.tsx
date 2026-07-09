@@ -2,7 +2,6 @@ import { notFound } from 'next/navigation'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { Link } from '@/i18n/navigation'
 import { getExpeditionBySlug, getSeatsTaken } from '@/lib/expeditions'
-import { computeAmounts } from '@/lib/pricing'
 import { formatPrice } from '@/lib/format'
 import ExpeditionDescription from '@/components/ExpeditionDescription'
 import ExpeditionGallery from '@/components/ExpeditionGallery'
@@ -23,7 +22,6 @@ export default async function ExpeditionPage({
 
   const taken = await getSeatsTaken(expedition.id)
   const remaining = expedition.capacity === null ? null : Math.max(0, expedition.capacity - taken)
-  const perSeat = computeAmounts(expedition.price_per_person_cents, 1, expedition.vat_rate)
 
   return (
     <div>
@@ -52,11 +50,9 @@ export default async function ExpeditionPage({
               </p>
             )}
             <p className="mb-1 text-lg font-semibold text-rusker-blue">
-              {t('priceHt', { price: formatPrice(expedition.price_per_person_cents, expedition.currency) })}
+              {t('price', { price: formatPrice(expedition.price_per_person_cents, expedition.currency) })}
             </p>
-            <p className="mb-4 text-xs text-gray-500">
-              {t('vatNote', { total: formatPrice(perSeat.totalCents, expedition.currency) })}
-            </p>
+            <p className="mb-4 text-xs text-gray-500">{t('vatNote')}</p>
             {remaining !== null && (
               <p className={`mb-4 text-sm font-medium ${remaining === 0 ? 'text-red-600' : 'text-gray-700'}`}>
                 {remaining === 0 ? tc('soldOut') : tc('seatsLeft', { count: remaining })}

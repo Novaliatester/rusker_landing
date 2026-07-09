@@ -2,7 +2,7 @@
   "catalog": {
     "title": "Learning Expeditions",
     "intro": "Professional immersions in Barcelona. Pick an expedition and book your seat online.",
-    "perPerson": "/ person (excl. VAT)",
+    "perPerson": "/ person · VAT incl.",
     "loadError": "We couldn't load the expeditions right now. Please try again in a moment.",
     "empty": "No expeditions are available right now.",
     "seatsLeft": "{count, plural, one {# seat left} other {# seats left}}",
@@ -12,8 +12,8 @@
   "detail": {
     "back": "← All expeditions",
     "book": "Book my seat",
-    "priceHt": "{price} excl. VAT / person",
-    "vatNote": "Spanish VAT 21% added — total {total} incl. VAT per person"
+    "price": "{price} / person",
+    "vatNote": "VAT included — special scheme for travel agents (LIVA arts. 141–147)."
   },
   "wizard": {
     "title": "Booking — {expedition}",
@@ -53,9 +53,8 @@
     "vatNumber": "EU VAT number",
     "vatHint": "Optional — shown on the invoice when provided.",
     "summary": "Summary",
-    "subtotal": "Subtotal (excl. VAT)",
-    "vat": "Spanish VAT (21%)",
-    "total": "Total (incl. VAT)",
+    "total": "Total (VAT included)",
+    "regimeNote": "Special scheme for travel agents (LIVA arts. 141–147) — VAT included, not itemised.",
     "acceptTerms": "I accept the <link>terms of sale</link>",
     "acceptTos": "I accept the <link>terms of service</link>",
     "acceptPrivacy": "I consent to the <link>processing of my personal data</link>, including my ID document, for the organization of the trip",

@@ -16,9 +16,8 @@ import ParticipantFields, {
 type Props = {
   slug: string
   expeditionTitle: string
-  unitHtCents: number
+  unitPriceCents: number
   currency: string
-  vatRate: number
   stations: string[]
   maxSeats: number
 }
@@ -28,7 +27,7 @@ const EMPTY_BILLING = { companyLegalName: '', addressLine1: '', postalCode: '', 
 const PRIMARY_BTN =
   'rounded-button bg-rusker-blue px-6 py-3 font-semibold text-white transition-all duration-200 hover:scale-[1.02] hover:shadow-soft-hover active:scale-[0.98]'
 
-export default function BookingWizard({ slug, expeditionTitle, unitHtCents, currency, vatRate, stations, maxSeats }: Props) {
+export default function BookingWizard({ slug, expeditionTitle, unitPriceCents, currency, stations, maxSeats }: Props) {
   const t = useTranslations('wizard')
   const locale = useLocale()
   const [step, setStep] = useState<1 | 2 | 3>(1)
@@ -42,8 +41,8 @@ export default function BookingWizard({ slug, expeditionTitle, unitHtCents, curr
   const [error, setError] = useState<string | null>(null)
 
   const amounts = useMemo(
-    () => computeAmounts(unitHtCents, participants.length, vatRate),
-    [unitHtCents, participants.length, vatRate]
+    () => computeAmounts(unitPriceCents, participants.length),
+    [unitPriceCents, participants.length]
   )
 
   const participantsValid = participants.every(isParticipantValid)
@@ -226,10 +225,9 @@ export default function BookingWizard({ slug, expeditionTitle, unitHtCents, curr
               ))}
             </ul>
             <dl className="space-y-1 text-sm">
-              <div className="flex justify-between"><dt>{t('subtotal')}</dt><dd>{formatPrice(amounts.subtotalCents, currency)}</dd></div>
-              <div className="flex justify-between"><dt>{t('vat')}</dt><dd>{formatPrice(amounts.taxCents, currency)}</dd></div>
               <div className="flex justify-between text-base font-bold"><dt>{t('total')}</dt><dd>{formatPrice(amounts.totalCents, currency)}</dd></div>
             </dl>
+            <p className="mt-3 text-xs text-gray-400">{t('regimeNote')}</p>
           </div>
           <div className="space-y-3 text-sm">
             <label className="flex items-start gap-2">

@@ -1,5 +1,6 @@
 import { Resend } from 'resend'
 import { formatPrice } from '@/lib/format'
+import { regimeMention } from '@/lib/regime'
 import type { OrderWithDetails } from '@/lib/orders'
 
 const FROM = 'Rusker Expeditions <bookings@rusker-travel.com>'
@@ -21,8 +22,7 @@ const BUYER_COPY = {
     hello: (name: string | null) => `Bonjour${name ? ` ${name}` : ''},`,
     body: (title: string, count: number) =>
       `Merci d'avoir réservé <strong>${title}</strong> pour <strong>${count} participant${count > 1 ? 's' : ''}</strong>.`,
-    amounts: (subtotal: string, tax: string, total: string) =>
-      `Sous-total HT : <strong>${subtotal}</strong> · TVA espagnole 21% : <strong>${tax}</strong> · Total TTC : <strong>${total}</strong>`,
+    amounts: (total: string) => `Montant total : <strong>${total}</strong> (TVA comprise).`,
     invoice: 'Télécharger votre facture',
     next: "L'équipe Rusker vous contactera sous 2 jours ouvrés pour organiser la logistique (billets de train, hôtel, programme).",
     reply: 'Une question ? Répondez simplement à cet email.',
@@ -33,8 +33,7 @@ const BUYER_COPY = {
     hello: (name: string | null) => `Hi${name ? ` ${name}` : ''},`,
     body: (title: string, count: number) =>
       `Thank you for booking <strong>${title}</strong> for <strong>${count} participant${count > 1 ? 's' : ''}</strong>.`,
-    amounts: (subtotal: string, tax: string, total: string) =>
-      `Subtotal (excl. VAT): <strong>${subtotal}</strong> · Spanish VAT 21%: <strong>${tax}</strong> · Total: <strong>${total}</strong>`,
+    amounts: (total: string) => `Total amount: <strong>${total}</strong> (VAT included).`,
     invoice: 'Download your invoice',
     next: 'The Rusker team will contact you within 2 business days to organize logistics (train tickets, hotel, program).',
     reply: 'Questions? Just reply to this email.',
@@ -43,8 +42,6 @@ const BUYER_COPY = {
 
 export async function sendBuyerConfirmation(order: OrderWithDetails, invoiceUrl: string | null): Promise<void> {
   const copy = BUYER_COPY[order.locale === 'en' ? 'en' : 'fr']
-  const subtotal = formatPrice(order.amount_subtotal_cents, order.currency)
-  const tax = formatPrice(order.amount_tax_cents, order.currency)
   const total = formatPrice(order.amount_total_cents, order.currency)
   const participantRows = order.participants
     .map((p) => `<li>${p.first_name} ${p.last_name} — ${p.departure_station}</li>`)
@@ -59,11 +56,12 @@ export async function sendBuyerConfirmation(order: OrderWithDetails, invoiceUrl:
         <p>${copy.hello(order.buyer_name)}</p>
         <p>${copy.body(order.expedition.title, order.quantity)}</p>
         <ul>${participantRows}</ul>
-        <p>${copy.amounts(subtotal, tax, total)}</p>
+        <p>${copy.amounts(total)}</p>
         ${invoiceUrl ? `<p><a href="${invoiceUrl}" style="color: #287497;">${copy.invoice}</a></p>` : ''}
         <p>${copy.next}</p>
         <p>${copy.reply}</p>
-        <p style="margin-top: 32px;">— Rusker Travel · <a href="https://rusker-travel.com" style="color: #287497;">rusker-travel.com</a></p>
+        <p style="margin-top: 24px; font-size: 12px; color: #8a908f;">${regimeMention(order.locale)}</p>
+        <p style="margin-top: 16px;">— Rusker Travel · <a href="https://rusker-travel.com" style="color: #287497;">rusker-travel.com</a></p>
       </div>
     `,
   })

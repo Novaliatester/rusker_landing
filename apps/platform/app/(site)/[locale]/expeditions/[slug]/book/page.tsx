@@ -26,9 +26,8 @@ export default async function BookPage({
     <BookingWizard
       slug={expedition.slug}
       expeditionTitle={expedition.title}
-      unitHtCents={expedition.price_per_person_cents}
+      unitPriceCents={expedition.price_per_person_cents}
       currency={expedition.currency}
-      vatRate={expedition.vat_rate}
       stations={expedition.departure_stations}
       maxSeats={remaining}
     />
