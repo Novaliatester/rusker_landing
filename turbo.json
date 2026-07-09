@@ -15,7 +15,10 @@
         "STRIPE_SECRET_KEY",
         "STRIPE_WEBHOOK_SECRET",
         "RESEND_API_KEY",
-        "TEAM_NOTIFICATION_EMAIL"
+        "TEAM_NOTIFICATION_EMAIL",
+        "ADMIN_EMAILS",
+        "ADMIN_NOTIFICATION_EMAILS",
+        "CRON_SECRET"
       ]
     },
     "lint": {},
