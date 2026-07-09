@@ -51,9 +51,10 @@ Rusker Travel project). New migrations: add a timestamped SQL file and run
 
 ## Admin & cron
 
-- Admin dashboard: https://app.rusker-travel.com/admin — magic-link login, allowlist in `ADMIN_EMAILS`.
-- Supabase dashboard → Authentication → URL Configuration must allowlist
-  `https://app.rusker-travel.com/admin/auth/confirm` (and `http://localhost:3001/admin/auth/confirm` for dev).
+- Admin dashboard: https://app.rusker-travel.com/admin — **email OTP login** (6-digit code), allowlist in `ADMIN_EMAILS`.
+- Supabase dashboard → Authentication → Email Templates → **Magic Link**: the body must render the
+  code, e.g. include `{{ .Token }}` (otherwise the email only has a link and no code shows). No URL
+  allowlist is needed with OTP.
 - Vercel Cron (`apps/platform/vercel.json`) hits `/api/cron/cleanup` daily at 03:00 UTC;
   it purges abandoned pending bookings and ID scans older than 30 days post-expedition.
   `CRON_SECRET` must be set on the Vercel project (Vercel sends it as the Bearer token automatically).

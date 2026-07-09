@@ -6,7 +6,7 @@ import { routing } from './i18n/routing'
 import { isAdminEmail } from './lib/admin'
 
 const intlMiddleware = createMiddleware(routing)
-const PUBLIC_ADMIN_PATHS = ['/admin/login', '/admin/auth']
+const PUBLIC_ADMIN_PATHS = ['/admin/login']
 
 export default async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl

@@ -14,14 +14,11 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: true })
   }
   const supabase = await getAuthClient()
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3001'
-  const { error } = await supabase.auth.signInWithOtp({
-    email,
-    options: { emailRedirectTo: `${siteUrl}/admin/auth/confirm` },
-  })
+  // No emailRedirectTo → Supabase sends a one-time code (email template must render {{ .Token }}).
+  const { error } = await supabase.auth.signInWithOtp({ email })
   if (error) {
-    console.error('magic link send failed', error)
-    return NextResponse.json({ error: 'Could not send link' }, { status: 502 })
+    console.error('OTP send failed', error)
+    return NextResponse.json({ error: 'Could not send code' }, { status: 502 })
   }
   return NextResponse.json({ ok: true })
 }
