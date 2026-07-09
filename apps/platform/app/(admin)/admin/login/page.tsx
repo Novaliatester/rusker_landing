@@ -74,14 +74,14 @@ export default function AdminLoginPage() {
             autoComplete="one-time-code"
             required
             value={code}
-            onChange={(e) => setCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
-            placeholder="123456"
-            className="w-full rounded-button border border-neutral-mid px-3 py-2 text-center text-2xl tracking-[0.4em]"
+            onChange={(e) => setCode(e.target.value.replace(/\D/g, '').slice(0, 10))}
+            placeholder="12345678"
+            className="w-full rounded-button border border-neutral-mid px-3 py-2 text-center text-2xl tracking-[0.3em]"
           />
           {error && <p className="text-sm text-red-600">{error}</p>}
           <button
             type="submit"
-            disabled={busy || code.length !== 6}
+            disabled={busy || code.length < 6}
             className="w-full rounded-button bg-rusker-blue px-6 py-3 font-semibold text-white disabled:opacity-50"
           >
             {busy ? 'Verifying…' : 'Sign in'}
