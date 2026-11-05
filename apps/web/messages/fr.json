@@ -6,9 +6,8 @@
     "home": "Accueil",
     "blog": "Blog",
     "form": "Formulaire",
-    "ourUniverses": "Nos Univers",
-    "contactUs": "Nous contacter",
-    "bookExpedition": "Réserver une expédition",
+    "ourUniverses": "Nos expériences",
+    "contactUs": "Parlons de votre projet",
     "back": "Retour",
     "continue": "Continuer",
     "send": "Envoyer",
@@ -16,7 +15,7 @@
     "explore": "Explorer",
     "learnMore": "En savoir plus",
     "createProject": "CRÉER MON PROJET",
-    "buildImmersion": "CONSTRUIRE MON IMMERSION",
+    "buildImmersion": "PARLONS DE VOTRE PROJET",
     "discover": "Découvrir",
     "clickToLearnMore": "Cliquez pour en savoir plus",
     "touchToLearnMore": "Toucher pour en savoir plus",
@@ -36,33 +35,21 @@
     "learnMore": "En savoir plus"
   },
   "hero": {
-    "badge": "Travel • Events • Network",
+    "badge": "Expériences innovation · Barcelone",
     "headline": "Explorez. Connectez. Transformez.",
-    "description": "Immersions sur mesure pour entreprises et grandes écoles dans l'écosystème le plus inspirant d'Europe",
+    "description": "Rusker est une agence barcelonaise qui conçoit des expériences immersives exposant dirigeants, équipes et talents aux tendances business, tech et sociétales qui façonnent demain. Née de l'AI Summit Barcelona, Rusker ouvre ce même réseau d'entreprises, d'experts et de speakers à vos équipes, vos étudiants et vos délégations.",
     "tags": {
-      "learningExpeditions": "Learning Expeditions",
-      "seminars": "Séminaires",
-      "events": "Événements"
+      "learningExpeditions": "Entreprises",
+      "seminars": "Écoles & universités",
+      "events": "Délégations"
     },
     "partnerText": "Partenaire de +80 écoles & entreprises"
   },
   "services": {
-    "title": "Nos univers",
-    "headline": "Trois expertises pour designer votre",
-    "headlineEmphasis": "expérience sur mesure",
-    "subtitle": "Travel, Events, Network : combinez les formats pour créer une learning expedition unique.",
-    "travel": {
-      "title": "RUSKER TRAVEL",
-      "description": "Séjours étudiants et séminaires d'entreprise à Barcelone. Entre culture, apprentissage et rencontres inspirantes."
-    },
-    "events": {
-      "title": "RUSKER EVENTS",
-      "description": "Événements sur mesure pour les entreprises. De la salle à la scène, nous concevons des expériences à impact."
-    },
-    "network": {
-      "title": "RUSKER NETWORK",
-      "description": "Un réseau vivant de talents et d'entreprises innovantes à Barcelone connectés à la French Tech. Rencontrez, collaborez, évoluez."
-    },
+    "title": "Nos expériences",
+    "headline": "Des immersions pensées pour",
+    "headlineEmphasis": "chaque public",
+    "subtitle": "Entreprises, écoles et délégations : chaque programme est cadré personnellement avec vous.",
     "universes": {
       "travel": {
         "description": "Séjours étudiants & séminaires"
@@ -73,15 +60,30 @@
       "network": {
         "description": "Communauté & networking"
       }
+    },
+    "companies": {
+      "title": "Pour les entreprises",
+      "description": "Séminaires, Learning Expeditions et expériences d'équipe pour inspirer vos collaborateurs et construire votre feuille de route stratégique, au cœur de l'écosystème IA & tech de Barcelone.",
+      "cta": "Voir nos formats entreprises"
+    },
+    "schools": {
+      "title": "Pour les écoles et universités",
+      "description": "Learning Expeditions et study trips pour les cohortes Bachelor, Master, MBA et Executive Education : visites d'entreprises, sessions d'experts, workshops et expériences culturelles, avec une pédagogie adaptée au cursus.",
+      "cta": "Voir nos formats académiques"
+    },
+    "delegations": {
+      "title": "Pour les délégations",
+      "description": "Emmenez un groupe d'entreprises à Barcelone autour de l'AI Summit : rendez-vous B2B qualifiés, accès institutionnels, un moment de scène et une logistique complète, pour les clusters, réseaux, chambres et cercles d'investisseurs.",
+      "cta": "Organiser une délégation"
     }
   },
   "whyBarcelona": {
-    "badge": "Pourquoi Barcelone ?",
+    "badge": "Pourquoi Barcelone",
     "headline": "La capitale européenne des expériences mêlant",
     "innovation": "innovation",
     "creativity": "créativité",
     "internationalCommunities": "communautés internationales",
-    "subtitle": "Chaque immersion est pensée comme une exploration à 360° : rencontres stratégiques, lieux iconiques, hubs d'innovation et écosystème francophone engagé.",
+    "subtitle": "5e écosystème startup de l'UE et 1er d'Europe du Sud · 2 400+ startups · 1,1 Md€ levés en 2025 · 1er hub européen pour les fondateurs internationaux · 10 000+ participants à l'AI Summit Barcelona 2026. Une ville où votre équipe rencontre ceux qui construisent le futur. Source : ACCIÓ 2026.",
     "features": {
       "creative": {
         "title": "Une énergie créative unique",
@@ -110,8 +112,11 @@
       },
       "innovation": {
         "title": "Un écosystème tourné vers l'avenir",
-        "description": "Plus de 1 500 startups, 300 000 m² dédiés à l'innovation, des hubs comme 22@, Norrsken, Pier 01.",
-        "stats": ["1 500+ startups", "300 000 m² innovation"],
+        "description": "2 400+ startups, 1,1 Md€ levés en 2025 et 1er hub européen pour les fondateurs internationaux, avec des hubs comme 22@, Norrsken et Pier 01.",
+        "stats": [
+          "2 400+ startups",
+          "1,1 Md€ levés en 2025"
+        ],
         "highlights": [
           "22@ Barcelona : quartier de l'innovation",
           "Norrsken House : hub d'impact social",
@@ -234,15 +239,15 @@
     }
   },
   "footer": {
-    "brand": "Rusker Travel",
-    "description": "Expériences immersives sur mesure à Barcelone pour écoles, universités et entreprises.",
+    "brand": "Rusker",
+    "description": "Rusker — expériences innovation à Barcelone. Née de l'AI Summit Barcelona.",
     "location": "Barcelone, Espagne",
     "contact": "Contact",
     "services": "Services",
     "createExperience": "Créer votre expérience",
     "whyBarcelona": "Pourquoi Barcelone",
     "ourProjects": "Nos projets",
-    "copyright": "© {year} Rusker Travel. Tous droits réservés.",
+    "copyright": "© {year} Rusker. Tous droits réservés.",
     "simpleCopyright": "© {year} Rusker. Tous droits réservés."
   },
   "testimonials": {
@@ -301,21 +306,21 @@
     "headline2": "BARCELONE",
     "headline3": "AUTREMENT ?",
     "description": "Nos équipes conçoivent des expériences sur mesure pour chaque objectif et chaque groupe.",
-    "button": "Construire votre expérience",
-    "buttonMobile": "Créer votre projet",
+    "button": "Parlons de votre projet",
+    "buttonMobile": "Parlons-en",
     "step": "Étape",
     "highlights": {
       "0": {
-        "title": "Profil & objectifs",
-        "detail": "Écoles, universités, entreprises"
+        "title": "Vos objectifs",
+        "detail": "Entreprises, écoles, délégations"
       },
       "1": {
-        "title": "Format idéal",
-        "detail": "Learning expedition, séminaire, events"
+        "title": "Le bon format",
+        "detail": "Séminaire, Learning Expedition, délégation"
       },
       "2": {
-        "title": "Logistique premium",
-        "detail": "Groupes, dates, durée, budget"
+        "title": "On s'occupe de tout",
+        "detail": "Hôtel, transferts, lieux, programme"
       }
     }
   },
@@ -642,10 +647,11 @@
     "badge": "Ils nous font confiance",
     "title": "Des écoles, startups et grandes entreprises françaises et européennes",
     "metrics": {
-      "schools": "écoles et universités accompagnées",
-      "companies": "Entreprises Partenaires",
-      "students": "Étudiants déplacés cette année",
-      "speakers": "Intervenants issus de l'écosystème tech, innovation et durabilité"
+      "participants": "participants à l'AI Summit Barcelona 2026",
+      "speakers": "speakers",
+      "partners": "entreprises partenaires",
+      "network": "entreprises, startups & experts",
+      "schools": "écoles et entreprises accompagnées"
     },
     "partners": "Partenaires et Sponsors"
   },
@@ -697,9 +703,9 @@
     "aiSummit": {
       "title": "AI Summit Barcelona",
       "client": "Évènement Public",
-      "description": "1 200 participants, 80 intervenants, 3 jours de conférences et d'expériences tech. Résultat : Barcelone au cœur de l'intelligence artificielle européenne.",
+      "description": "10 000+ participants, 290 speakers, 75 entreprises partenaires et 2 jours de conférences et d'expériences tech. Résultat : Barcelone au cœur de l'intelligence artificielle européenne.",
       "highlights": [
-        "80+ speakers internationaux : chercheurs, entrepreneurs, investisseurs",
+        "290 speakers internationaux : chercheurs, entrepreneurs, investisseurs",
         "Keynotes sur l'IA générative, l'éthique de l'IA, et l'innovation",
         "Démos interactives et expériences immersives avec l'IA",
         "Networking avec les leaders de l'écosystème tech européen"
@@ -757,7 +763,12 @@
         "title": "Événements Corporate",
         "subtitle": "Séminaires & Lancements",
         "description": "Anniversaires d'entreprise, lancements de produit, inaugurations : créez des moments forts pour votre marque.",
-        "features": ["Lieux d'exception à Barcelone", "Scénographie sur mesure", "Production technique complète", "Couverture média & photo/vidéo"],
+        "features": [
+          "Lieux d'exception à Barcelone",
+          "Scénographie sur mesure",
+          "Production technique complète",
+          "Couverture média & photo/vidéo"
+        ],
         "cta": "Créer mon événement corporate",
         "statsLabel": "événements réalisés"
       },
@@ -765,7 +776,12 @@
         "title": "Événements Publics",
         "subtitle": "Conférences & Summits",
         "description": "AI Summit, French Tech Nights, Retail Tech Talks : des événements qui rassemblent et inspirent.",
-        "features": ["Format conférence ou summit", "Speakers internationaux", "Networking facilité", "Amplification digitale"],
+        "features": [
+          "Format conférence ou summit",
+          "Speakers internationaux",
+          "Networking facilité",
+          "Amplification digitale"
+        ],
         "cta": "Organiser une conférence",
         "statsLabel": "participants au dernier Summit"
       }
@@ -838,7 +854,12 @@
         "title": "Écoles & Universités",
         "subtitle": "Learning Expeditions",
         "description": "Offrez à vos étudiants une immersion transformante dans l'écosystème tech et innovation de Barcelone.",
-        "features": ["Visites d'entreprises & startups", "Rencontres avec des entrepreneurs", "Networking avec la French Tech", "Conférences & workshops"],
+        "features": [
+          "Visites d'entreprises & startups",
+          "Rencontres avec des entrepreneurs",
+          "Networking avec la French Tech",
+          "Conférences & workshops"
+        ],
         "cta": "Organiser une Learning Expedition",
         "statsLabel": "écoles accompagnées"
       },
@@ -846,7 +867,12 @@
         "title": "Entreprises",
         "subtitle": "Séminaires sur mesure",
         "description": "Inspirez et fédérez vos équipes avec un séminaire immersif dans la capitale européenne de l'innovation.",
-        "features": ["Team building & cohésion", "Visites d'inspiration", "Ateliers innovation", "Soirées networking"],
+        "features": [
+          "Team building & cohésion",
+          "Visites d'inspiration",
+          "Ateliers innovation",
+          "Soirées networking"
+        ],
         "cta": "Créer mon séminaire",
         "statsLabel": "entreprises partenaires"
       }
@@ -919,7 +945,12 @@
         "title": "Talentboard Barcelona",
         "subtitle": "Plateforme de recrutement",
         "description": "Connectez talents francophones et entreprises innovantes de Barcelone. Stages, VIE, CDI : trouvez votre opportunité.",
-        "highlights": ["Profils francophones qualifiés", "Startups & scale-ups partenaires", "Matching intelligent", "Accompagnement personnalisé"],
+        "highlights": [
+          "Profils francophones qualifiés",
+          "Startups & scale-ups partenaires",
+          "Matching intelligent",
+          "Accompagnement personnalisé"
+        ],
         "cta": "Accéder au Talentboard",
         "statsLabel": "talents inscrits"
       },
@@ -927,7 +958,12 @@
         "title": "French Tech Events",
         "subtitle": "Networking & inspiration",
         "description": "Afterworks, conférences, French Tech Nights : des événements mensuels pour connecter et inspirer la communauté.",
-        "highlights": ["Événements mensuels", "Speakers de qualité", "Networking ciblé", "Communauté engagée"],
+        "highlights": [
+          "Événements mensuels",
+          "Speakers de qualité",
+          "Networking ciblé",
+          "Communauté engagée"
+        ],
         "cta": "Voir les prochains événements",
         "statsLabel": "événements / an"
       }
@@ -1065,24 +1101,25 @@
   },
   "aiSummit": {
     "badge": "Organisateur officiel",
-    "title": "Organisateurs officiels de l'AI Summit Barcelona 2026",
-    "subtitle": "Le plus grand événement IA d'Europe revient à Barcelone",
-    "description": "L'AI Summit est l'événement principal de l'AI Week Barcelona — une semaine entière de conférences, hackathons, workshops et plus de 50 side events à travers la ville. Rusker organise ce rendez-vous réunissant plus de 10 000 builders, fondateurs et leaders tech.",
-    "date": "16-23 Septembre 2026",
+    "title": "Née de l'AI Summit Barcelona",
+    "subtitle": "Prochaine édition : septembre 2027",
+    "description": "10 000+ participants, 290 speakers et 75 entreprises partenaires en 2026.",
+    "date": "Prochaine édition : septembre 2027",
     "location": "Barcelone, Espagne",
-    "cta": "Découvrir le Summit",
+    "cta": "Venez en délégation en 2027",
     "readStory": "Lire l'histoire",
     "stats": {
       "attendees": "Participants",
       "speakers": "Speakers",
       "days": "Jours",
-      "sideEvents": "Side Events"
+      "sideEvents": "Side Events",
+      "partners": "Partenaires"
     }
   },
   "summitPopup": {
-    "badge": "AI Summit Barcelona 2026",
-    "title": "AI Summit Barcelona 2026",
-    "description": "Rusker organise le plus grand événement IA d'Europe. Rejoignez plus de 10 000 builders, fondateurs et décideurs à Barcelone en septembre.",
+    "badge": "AI Summit Barcelona 2027",
+    "title": "Née de l'AI Summit Barcelona",
+    "description": "10 000+ participants, 290 speakers et 75 entreprises partenaires en 2026.",
     "cta": "Découvrir le Summit",
     "dismiss": "Peut-être plus tard"
   }

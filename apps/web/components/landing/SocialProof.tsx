@@ -8,13 +8,15 @@ import { getAssetPath } from '@/lib/utils'
 import { useI18n } from '@/lib/i18n'
 
 export default function SocialProof() {
-  const { t } = useI18n()
+  const { t, locale } = useI18n()
+  const numberLocale = locale === 'en' ? 'en-US' : locale === 'es' ? 'es-ES' : 'fr-FR'
   
   const metrics = useMemo(() => [
-    { value: 50, label: t('socialProof.metrics.schools'), suffix: '+' },
-    { value: 30, label: t('socialProof.metrics.companies'), suffix: '+' },
-    { value: 500, label: t('socialProof.metrics.students'), suffix: '+' },
-    { value: 100, label: t('socialProof.metrics.speakers'), suffix: '+' },
+    { value: 10000, label: t('socialProof.metrics.participants'), suffix: '+' },
+    { value: 290, label: t('socialProof.metrics.speakers'), suffix: '' },
+    { value: 75, label: t('socialProof.metrics.partners'), suffix: '' },
+    { value: 1000, label: t('socialProof.metrics.network'), suffix: '+' },
+    { value: 80, label: t('socialProof.metrics.schools'), suffix: '+' },
   ], [t])
 
 const logos = [
@@ -87,12 +89,12 @@ const logos = [
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
           variants={fadeInUp}
-          className="mt-12 md:mt-16 grid grid-cols-1 gap-6 md:gap-8 lg:gap-10 text-center sm:grid-cols-2 lg:grid-cols-4"
+          className="mt-12 md:mt-16 grid grid-cols-1 gap-6 md:gap-8 lg:gap-10 text-center sm:grid-cols-2 lg:grid-cols-5"
         >
           {metrics.map((metric, index) => (
             <div key={index} className="px-2">
               <div className="text-5xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-neutral-dark leading-[1.1]">
-                {animatedValues[index]}
+                {animatedValues[index].toLocaleString(numberLocale)}
                 {metric.suffix}
               </div>
               <p className="mt-2 md:mt-3 text-sm md:text-base lg:text-lg text-gray-600 leading-relaxed break-words">{metric.label}</p>

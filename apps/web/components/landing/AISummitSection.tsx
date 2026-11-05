@@ -22,7 +22,7 @@ function SummitMarquee() {
               className="text-xs font-semibold uppercase tracking-[0.25em]"
               style={{ color: '#E85D3A', opacity: 0.75 }}
             >
-              AI Summit Barcelona 2026
+              AI Summit Barcelona 2027
             </span>
             <span className="text-xs" style={{ color: 'rgba(232,93,58,0.25)' }}>—</span>
           </div>
@@ -39,8 +39,8 @@ function SummitContent() {
 
   const stats = [
     { value: '10K+', label: t('aiSummit.stats.attendees'), color: '#E85D3A' },
-    { value: '200+', label: t('aiSummit.stats.speakers'), color: '#0098B5' },
-    { value: '50+', label: t('aiSummit.stats.sideEvents'), color: '#2D6DF6' },
+    { value: '290', label: t('aiSummit.stats.speakers'), color: '#0098B5' },
+    { value: '75', label: t('aiSummit.stats.partners'), color: '#2D6DF6' },
   ]
 
   return (
@@ -139,9 +139,7 @@ function SummitContent() {
             className="flex flex-col sm:flex-row md:flex-col items-start md:items-end gap-3 flex-shrink-0"
           >
             <motion.a
-              href="https://aisummitbarcelona.com/"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="/#form-section"
               className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold transition-all backdrop-blur-sm"
               style={{ backgroundColor: '#E85D3A', color: '#FAF0E6' }}
               whileHover={{ scale: 1.03, boxShadow: '0 0 20px rgba(232,93,58,0.3)' }}
@@ -149,7 +147,7 @@ function SummitContent() {
             >
               {t('aiSummit.cta')}
               <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
               </svg>
             </motion.a>
             <motion.a

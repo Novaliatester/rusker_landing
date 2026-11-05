@@ -31,7 +31,7 @@ export default function ProjectsShowcase() {
         client: t('projects.aiSummit.client'),
         description: t('projects.aiSummit.description'),
         image: aiSummitPost?.image ? getAssetPath(aiSummitPost.image) : getAssetPath('/images/ai-summit-0201.jpg'),
-        stats: { participants: '1 200', speakers: 80, days: 3 },
+        stats: { participants: '10 000+', speakers: 290, days: 2 },
         blogSlug: 'ai-summit-barcelona-story',
       },
       {
