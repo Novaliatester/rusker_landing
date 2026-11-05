@@ -19,8 +19,9 @@ export default function ServicesPreview() {
   const services = [
     {
       iconPath: getAssetPath('/images/2026 Rusker/Icons/Travel.png'),
-      title: t('services.travel.title'),
-      description: t('services.travel.description'),
+      title: t('services.companies.title'),
+      description: t('services.companies.description'),
+      cta: t('services.companies.cta'),
       image: getAssetPath('/images/accueil-rusker-travel-background-0201.jpg'),
       href: '/travel',
       color: '#236a89',
@@ -28,19 +29,21 @@ export default function ServicesPreview() {
     },
     {
       iconPath: getAssetPath('/images/2026 Rusker/Icons/Events.png'),
-      title: t('services.events.title'),
-      description: t('services.events.description'),
+      title: t('services.schools.title'),
+      description: t('services.schools.description'),
+      cta: t('services.schools.cta'),
       image: getAssetPath('/images/ai-summit-0201.jpg'),
-      href: '/events',
+      href: '/travel',
       color: '#0d5c4a',
       colorLight: '#6ee3a8',
     },
     {
       iconPath: getAssetPath('/images/2026 Rusker/Icons/Network.png'),
-      title: t('services.network.title'),
-      description: t('services.network.description'),
+      title: t('services.delegations.title'),
+      description: t('services.delegations.description'),
+      cta: t('services.delegations.cta'),
       image: getAssetPath('/images/accueil-rusker-network-background-unique-0201.jpg'),
-      href: '/network',
+      href: '/#form-section',
       color: '#a61e40',
       colorLight: '#ffdfeb',
     },
@@ -348,8 +351,7 @@ export default function ServicesPreview() {
                     whileHover={{ x: 4 }}
                   >
                     <span className="relative">
-                      <span className="hidden sm:inline">{t('common.explore')}</span>
-                      <span className="sm:hidden">{t('common.learnMore')}</span>
+                      {service.cta}
                     </span>
                     <motion.svg
                       className="h-4 w-4"

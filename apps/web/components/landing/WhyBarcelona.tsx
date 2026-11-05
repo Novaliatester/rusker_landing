@@ -137,6 +137,12 @@ export default function WhyBarcelona() {
             <span style={{ color: '#ffdfeb' }}>{t('whyBarcelona.internationalCommunities')}</span>
             .
           </motion.h2>
+          <motion.p
+            variants={fadeInUp}
+            className="mx-auto max-w-4xl text-sm md:text-base lg:text-lg text-white/75 leading-relaxed"
+          >
+            {t('whyBarcelona.subtitle')}
+          </motion.p>
         </motion.div>
 
         {/* Main Showcase */}

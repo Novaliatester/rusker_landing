@@ -104,7 +104,7 @@ export default function SummitPopup() {
               <div className="relative h-44 md:h-52 overflow-hidden">
                 <img
                   src={getAssetPath('/images/summit/hero-visual.jpg')}
-                  alt="AI Summit Barcelona 2026"
+                  alt="AI Summit Barcelona"
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#111111] via-transparent to-transparent" />
@@ -137,7 +137,7 @@ export default function SummitPopup() {
                     className="text-sm font-semibold"
                     style={{ color: '#0098B5' }}
                   >
-                    22-23 Sep 2026
+                    {t('aiSummit.date')}
                   </span>
                   <span style={{ color: 'rgba(250,240,230,0.3)' }}>|</span>
                   <span
@@ -159,9 +159,9 @@ export default function SummitPopup() {
                 <div className="grid grid-cols-4 gap-2 mb-6">
                   {[
                     { val: '10K+', label: t('aiSummit.stats.attendees'), color: '#E85D3A' },
-                    { val: '200+', label: t('aiSummit.stats.speakers'), color: '#0098B5' },
+                    { val: '290', label: t('aiSummit.stats.speakers'), color: '#0098B5' },
                     { val: '2', label: t('aiSummit.stats.days'), color: '#2D6DF6' },
-                    { val: '50+', label: t('aiSummit.stats.sideEvents'), color: '#E85D3A' },
+                    { val: '75', label: t('aiSummit.stats.partners'), color: '#E85D3A' },
                   ].map((s, i) => (
                     <div
                       key={i}
