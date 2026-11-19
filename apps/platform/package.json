@@ -13,7 +13,7 @@
     "@rusker/ui": "*",
     "@supabase/ssr": "^0.7.0",
     "@supabase/supabase-js": "^2.97.0",
-    "next": "^15.5.20",
+    "next": "^15.5.29",
     "next-intl": "^4.0.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
